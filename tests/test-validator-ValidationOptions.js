@@ -5,12 +5,12 @@ import {typeOf, keys, isString, concat, isType} from 'fjl';
 import {expect, assert} from 'chai';
 import {log, peek} from './utils';
 
-import {validationOptions, validationResult, getErrorMsgByKey} from '../src/validator/ValidationOptions';
+import {validationOptions, validationResult, getErrorMsgByKey} from '../src/ValidationOptions';
 
 describe('#fjl.validator.ValidationOptions', function () {
 
     describe('#validationOptions', function () {
-        it('should merge incoming options to `self` on construction', function () {
+        test ('should merge incoming options to `self` on construction', function () {
             const messageTemplates = {
                     A: 'some message',
                     B: value => `some message with value in it.  Value: ${value}`
@@ -36,7 +36,7 @@ describe('#fjl.validator.ValidationOptions', function () {
                 messageTemplates: 'Object'
             };
 
-        it('should have the expected properties as expected types.', function () {
+        test ('should have the expected properties as expected types.', function () {
             let validator = validationOptions();
             Object.keys(expectedPropertyAndTypes).forEach(key => {
                 expect(validator.hasOwnProperty(peek(key))).to.equal(true);
@@ -51,7 +51,7 @@ describe('#fjl.validator.ValidationOptions', function () {
                 EXAMPLE_CASE: value => `Some case is not allowed for value ${value}`
             },
             v = validationOptions({messageTemplates});
-        it('should return a `string` when key exists on options.messageTemplates', function () {
+        test ('should return a `string` when key exists on options.messageTemplates', function () {
             expect(
                 concat([
                     [getErrorMsgByKey(v, 'EMPTY_NOT_ALLOWED', 'someValue')],
@@ -62,7 +62,7 @@ describe('#fjl.validator.ValidationOptions', function () {
             )
                 .to.equal(true);
         });
-        it('should have returned expected error messages when key is valid (exists and is string or function)', function () {
+        test ('should have returned expected error messages when key is valid (exists and is string or function)', function () {
             const someValue = 'someValue',
                 messages = concat([
                 [getErrorMsgByKey(v, 'EMPTY_NOT_ALLOWED', 'someValue')],
@@ -74,7 +74,7 @@ describe('#fjl.validator.ValidationOptions', function () {
             expect(messages[1]).to.equal(messageTemplates.EXAMPLE_CASE(v, 'someValue'));
             expect(messages[2]).to.equal('Inline error message callback');
         });
-        it('should return `undefined` if `key` is not a function and `key` doesn\'t exist on ' +
+        test ('should return `undefined` if `key` is not a function and `key` doesn\'t exist on ' +
             '`messageTemplates`', function () {
             expect(getErrorMsgByKey(v, 'SOME_OTHER_CASE', 'someValue')).to.equal(undefined);
         });
@@ -84,7 +84,7 @@ describe('#fjl.validator.ValidationOptions', function () {
 
 describe ('#fjl.validator.ValidationResults', function () {
 
-    it ('should return an object with `messages`, and `result` properties', function () {
+    test ('should return an object with `messages`, and `result` properties', function () {
         const vResults = validationResult();
         expect(
             ['messages', 'result', 'value']
@@ -93,7 +93,7 @@ describe ('#fjl.validator.ValidationResults', function () {
             .to.equal(true);
     });
 
-    it ('should have properties that obey their types', function () {
+    test ('should have properties that obey their types', function () {
         const
             vResults = validationResult(),
             cases = [

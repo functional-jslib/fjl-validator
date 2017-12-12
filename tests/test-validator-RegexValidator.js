@@ -1,14 +1,14 @@
 /**
  * Created by edelacruz on 7/28/2014.
  */
-import {regexValidator, regexValidatorOptions} from '../src/validator/RegexValidator';
+import {regexValidator, regexValidatorOptions} from '../src/RegexValidator';
 import {expect, assert} from 'chai';
 import {typeOf, keys} from 'fjl';
 
 describe('sjl.validator.RegexValidator`', function () {
 
     describe ('#regexValidatorOptions', function () {
-        it ('should be an object with a `pattern` property', function () {
+        test ('should be an object with a `pattern` property', function () {
             expect(regexValidatorOptions().hasOwnProperty('pattern')).to.equal(true);
         });
     });
@@ -16,7 +16,7 @@ describe('sjl.validator.RegexValidator`', function () {
     describe ('#regexValidator', function () {
         const regexTest = (keyValMap, expected) => {
                keys(keyValMap).map(key => {
-                    it('should return ' + expected + ' when testing "' + key + '" with "' + keyValMap[key] + '".', function () {
+                    test ('should return ' + expected + ' when testing "' + key + '" with "' + keyValMap[key] + '".', function () {
                         const value = keyValMap[key],
                             {result, messages} = regexValidator({pattern: new RegExp(key, 'i')}, value);
                         expect(result).to.equal(expected);

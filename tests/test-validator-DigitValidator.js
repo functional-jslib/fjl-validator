@@ -1,13 +1,13 @@
 /**
  * Created by elyde on 1/15/2016.
  */
-import {digitValidator} from '../src/validator/DigitValidator';
+import {digitValidator} from '../src/DigitValidator';
 import {expect, assert} from 'chai';
 import {typeOf} from 'fjl';
 
 describe('sjl.validator.DigitValidator', function () {
 
-    it ('should return `true` if value contains only digits.', function () {
+    test ('should return `true` if value contains only digits.', function () {
         let validator = digitValidator({}),
             values = [
                 [true, '999'],

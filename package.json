@@ -6,12 +6,28 @@
   "repository": "git@github.com:functional-jslib/fjl-validator.git",
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
+  "directories": [
+    "tests"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "fjl": "^0.17.14",
     "fjl-mutable": "^0.16.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
+    "fjl-range": "^1.0.3",
     "jest": "^21.2.1"
+  },
+  "jest": {
+    "testMatch": [
+      "**/tests/test-*.js"
+    ],
+    "testEnvironment": "node"
   }
 }

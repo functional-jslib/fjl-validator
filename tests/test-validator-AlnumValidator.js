@@ -1,12 +1,12 @@
 /**
  * Created by elyde on 1/15/2016.
  */
-import alnumValidator from '../src/validator/AlnumValidator';
+import alnumValidator from '../src/AlnumValidator';
 import {expect, assert} from 'chai';
 
 describe('sjl.validator.AlnumValidator', function () {
 
-    it ('should return `true` value is `alpha numeric` and `false` otherwise.', function () {
+    test ('should return `true` value is `alpha numeric` and `false` otherwise.', function () {
         let  validator = alnumValidator({}),
             values = [
                 [true, 'helloworld'],
