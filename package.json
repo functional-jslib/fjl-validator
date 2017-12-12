@@ -1,0 +1,17 @@
+{
+  "name": "fjl-validator",
+  "version": "1.0.0",
+  "description": "Functional validators for forms and the like.\"",
+  "main": "./dist/cjs/fjlValidator.js",
+  "repository": "git@github.com:functional-jslib/fjl-validator.git",
+  "author": "Ely De La Cruz <elycruz@elycruz.com>",
+  "license": "BSD",
+  "dependencies": {
+    "fjl": "^0.17.14",
+    "fjl-mutable": "^0.16.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "jest": "^21.2.1"
+  }
+}
