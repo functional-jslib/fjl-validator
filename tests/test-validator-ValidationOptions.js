@@ -30,7 +30,6 @@ describe('#fjl.validator.ValidationOptions', function () {
         });
 
         const expectedPropertyAndTypes = {
-                messagesMaxLength: 'Number',
                 valueObscured: 'Boolean',
                 valueObscurator: 'Function',
                 messageTemplates: 'Object'

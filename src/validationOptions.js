@@ -32,7 +32,6 @@ export const
 
     validationOptions = (...options) => {
         const _options = defineEnumProps$([
-            [Number, 'messagesMaxLength', 100],
             [Object, 'messageTemplates', {}],
             [Boolean, 'valueObscured', false],
             [Function, 'valueObscurator', defaultValueObscurator]
