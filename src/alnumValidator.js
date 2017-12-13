@@ -1,7 +1,7 @@
 /**
  * Created by Ely on 1/21/2015.
  */
-import {regexValidator} from "./RegexValidator";
+import {regexValidator} from "./regexValidator";
 import {curry, assignDeep} from 'fjl';
 
 export const alnumValidator = curry((options, value) => regexValidator(assignDeep({

@@ -1,11 +1,6 @@
-import Validator from 'validator/Validator';
-import RegexValidator from 'validator/RegexValidator';
-import DigitValidator from 'validator/DigitValidator';
-import AlnumValidator from 'validator/AlnumValidator';
-
-export default {
-    Validator,
-    RegexValidator,
-    DigitValidator,
-    AlnumValidator
-}
+export * from './alnumValidator';
+export * from './digitValidator';
+export * from './notEmptyValidator';
+export * from './regexValidator';
+export * from './stringLengthValidator';
+export * from './validationOptions';

@@ -1,7 +1,7 @@
 /**
  * Created by elyde on 1/15/2016.
  */
-import alnumValidator from '../src/AlnumValidator';
+import alnumValidator from '../src/alnumValidator';
 import {expect, assert} from 'chai';
 
 describe('sjl.validator.AlnumValidator', function () {

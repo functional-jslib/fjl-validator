@@ -5,7 +5,7 @@ import {typeOf, keys, isString, concat, isType} from 'fjl';
 import {expect, assert} from 'chai';
 import {log, peek} from './utils';
 
-import {validationOptions, validationResult, getErrorMsgByKey} from '../src/ValidationOptions';
+import {validationOptions, validationResult, getErrorMsgByKey} from '../src/validationOptions';
 
 describe('#fjl.validator.ValidationOptions', function () {
 

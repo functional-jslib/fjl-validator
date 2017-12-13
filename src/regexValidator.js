@@ -1,8 +1,8 @@
 /**
  * Created by Ely on 7/21/2014.
  */
-import {validationResult, validationOptions} from "./ValidationOptions";
-import {getErrorMsgByKey} from "./ValidationOptions";
+import {validationResult, validationOptions} from "./validationOptions";
+import {getErrorMsgByKey} from "./validationOptions";
 import {defineEnumProp$} from "fjl-mutable";
 import {curry, assignDeep} from 'fjl';
 

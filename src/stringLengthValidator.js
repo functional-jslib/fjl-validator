@@ -1,7 +1,7 @@
 /**
  * Created by Ely on 1/21/2015.
  */
-import {validationResult, getErrorMsgByKey, validationOptions} from "./ValidationOptions";
+import {validationResult, getErrorMsgByKey, validationOptions} from "./validationOptions";
 import {typeOf, isString, apply, concat, assign, assignDeep, curry} from 'fjl';
 import {defineEnumProps$} from 'fjl-mutable';
 

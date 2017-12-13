@@ -1,5 +1,5 @@
-import {stringLengthOptions, stringLengthValidator} from '../src/StringLengthValidator';
-import {validationOptions, validationResult} from '../src/ValidationOptions';
+import {stringLengthOptions, stringLengthValidator} from '../src/stringLengthValidator';
+import {validationOptions, validationResult} from '../src/validationOptions';
 import {typeOf, repeat} from 'fjl';
 import {expect} from 'chai';
 import {peek} from './utils';

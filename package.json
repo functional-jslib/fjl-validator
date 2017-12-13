@@ -6,9 +6,6 @@
   "repository": "git@github.com:functional-jslib/fjl-validator.git",
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
-  "directories": [
-    "tests"
-  ],
   "scripts": {
     "test": "jest"
   },

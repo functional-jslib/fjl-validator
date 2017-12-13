@@ -1,7 +1,7 @@
 /**
  * Created by Ely on 7/21/2014.
  */
-import {validationResult, validationOptions, getErrorMsgByKey} from "./ValidationOptions";
+import {validationResult, validationOptions, getErrorMsgByKey} from "./validationOptions";
 import {isEmpty, curry} from 'fjl';
 
 export const

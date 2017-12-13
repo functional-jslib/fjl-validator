@@ -1,7 +1,7 @@
 /**
  * Created by edelacruz on 7/28/2014.
  */
-import {regexValidator, regexValidatorOptions} from '../src/RegexValidator';
+import {regexValidator, regexValidatorOptions} from '../src/regexValidator';
 import {expect, assert} from 'chai';
 import {typeOf, keys} from 'fjl';
 
