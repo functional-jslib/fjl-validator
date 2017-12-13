@@ -27,7 +27,7 @@ export const
 
             // If test failed
             messages = !result ?
-                [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] :
+                [getErrorMsgByKey(ops, 'DOES_NOT_MATCH_PATTERN', value)] :
                 [];
 
         return validationResult({ result, messages, value });

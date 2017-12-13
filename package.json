@@ -8,6 +8,9 @@
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
   "scripts": {
+    "build": "gulp clean && gulp build && npm run test-builds",
+    "build-docs": "gulp jsdoc",
+    "test-builds": "jest --testMatch tests/**/*-test-*.js",
     "test": "jest"
   },
   "dependencies": {
