@@ -3,9 +3,7 @@
  * Initial idea borrowed from Zend Framework 2's Zend/Validator
  */
 import {assignDeep, assign, isset,
-    isType, typeOf, call, isFunction,
-    isString, apply, repeat,
-    concat, curry} from 'fjl';
+    call, isFunction, isString, apply, repeat, curry} from 'fjl';
 
 import {defineEnumProps$} from 'fjl-mutable';
 

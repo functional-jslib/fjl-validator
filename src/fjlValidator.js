@@ -4,3 +4,4 @@ export * from './notEmptyValidator';
 export * from './regexValidator';
 export * from './stringLengthValidator';
 export * from './validationOptions';
+export * from './generated/version';

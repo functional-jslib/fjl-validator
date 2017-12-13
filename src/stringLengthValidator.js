@@ -1,27 +1,11 @@
 /**
  * Created by Ely on 1/21/2015.
  */
-import {validationResult, getErrorMsgByKey, validationOptions} from "./validationOptions";
-import {typeOf, isString, apply, concat, assign, assignDeep, curry} from 'fjl';
+import {validationResult, getErrorMsgByKey, validationOptions} from './validationOptions';
+import {typeOf, isString, assignDeep, curry} from 'fjl';
 import {defineEnumProps$} from 'fjl-mutable';
 
-export const validate = (options, value) => {
-        const messages = [],
-            isOfType = isString(value),
-            valLength = isOfType ? value.length : 0,
-            isWithinRange = valLength >= options.min && valLength <= options.max;
-        if (!isOfType) {
-            messages.push(getErrorMsgByKey('NOT_OF_TYPE', value, options));
-        }
-        else if (!isWithinRange) {
-            messages.push(getErrorMsgByKey('NOT_WITHIN_RANGE', value, options));
-        }
-        return validationResult({
-            result: isOfType && isWithinRange,
-            messages,
-            value
-        });
-    },
+export const
 
     stringLengthOptions = options => {
         const _options = defineEnumProps$([
@@ -33,8 +17,8 @@ export const validate = (options, value) => {
             NOT_OF_TYPE: (value) => `Value is not a String.  ` +
                 `Value type received: ${typeOf(value)}.` +
                 `Value received: "${value}".`,
-            NOT_WITHIN_RANGE: (value, options) => `Value is not within range ` +
-                `${options.min} to ${options.max}.` +
+            NOT_WITHIN_RANGE: (value, ops) => `Value is not within range ` +
+                `${ops.min} to ${ops.max}.` +
                 `Value length given: "` + value.length + `".` +
                 `Value received: "` + value + `".`
         };
@@ -43,7 +27,22 @@ export const validate = (options, value) => {
     },
 
     stringLengthValidator = curry((options, value) => {
-        return validate (stringLengthOptions(options), value);
+        const ops = stringLengthOptions(options),
+            messages = [],
+            isOfType = isString(value),
+            valLength = isOfType ? value.length : 0,
+            isWithinRange = valLength >= ops.min && valLength <= ops.max;
+        if (!isOfType) {
+            messages.push(getErrorMsgByKey('NOT_OF_TYPE', value, ops));
+        }
+        else if (!isWithinRange) {
+            messages.push(getErrorMsgByKey('NOT_WITHIN_RANGE', value, ops));
+        }
+        return validationResult({
+            result: isOfType && isWithinRange,
+            messages,
+            value
+        });
     });
 
 export default stringLengthValidator;

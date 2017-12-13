@@ -1,31 +1,20 @@
 /**
  * Created by Ely on 7/21/2014.
  */
-import {validationResult, validationOptions} from "./validationOptions";
-import {getErrorMsgByKey} from "./validationOptions";
-import {defineEnumProp$} from "fjl-mutable";
+import {validationResult, validationOptions, getErrorMsgByKey}
+    from './validationOptions';
+import {defineEnumProp$} from 'fjl-mutable';
 import {curry, assignDeep} from 'fjl';
 
 export const
 
-    validate = (options, value) => {
-        const result = options.pattern.test(value),
-
-            // If test failed
-            messages = !result ?
-                [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] :
-                [];
-
-        return validationResult({ result, messages, value });
-    },
-
     regexValidatorOptions = options => {
         const [_options] = defineEnumProp$(RegExp, {}, 'pattern', /./);
         _options.messageTemplates = {
-            DOES_NOT_MATCH_PATTERN: (value, options) =>
+            DOES_NOT_MATCH_PATTERN: (value, ops) =>
                 'The value passed in does not match pattern"'
-                + options.pattern + '".  Value passed in: "'
-                + options.value + '".'
+                + ops.pattern + '".  Value passed in: "'
+                + ops.value + '".'
         };
         return validationOptions(
             options ? assignDeep(_options, options) : _options
@@ -33,7 +22,15 @@ export const
     },
 
     regexValidator = curry((options, value) => {
-        return validate (regexValidatorOptions(options), value);
+        const ops = regexValidatorOptions(options),
+            result = ops.pattern.test(value),
+
+            // If test failed
+            messages = !result ?
+                [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] :
+                [];
+
+        return validationResult({ result, messages, value });
     });
 
 export default regexValidator;
