@@ -19,6 +19,7 @@ const fs = require('fs'),
     fncallback =    require('gulp-fncallback'),
     jsdoc =         require('gulp-jsdoc3'),
     lazyPipe =      require('lazypipe'),
+    gulpUglifyEs =  require('gulp-uglify-es').default,
     gulpRollup =    require('gulp-better-rollup'),
     gulpBabel =     require('gulp-babel'),
 
@@ -125,32 +126,44 @@ gulp.task('iife', ['eslint', 'version'], () =>
         sourcemap: true
     })));
 
-gulp.task('es6-module', ['eslint', 'version'], () =>
-    gulp.src(inputFilePath)
-        .pipe(gulpRollup({external: ['fjl-mutable', 'fjl']}, {
-            name: inputModuleName,
-            format: 'es',
-        }))
-        .pipe(concat(buildPath(es6Module, outputFileName)))
-        .pipe(gulp.dest('./')));
+gulp.task('es6-module', ['eslint', 'version'], () => {
+    return Promise.all([
+        gulp.src(inputFilePath)
+            .pipe(gulpRollup({external: ['fjl-mutable', 'fjl']}, {
+                name: inputModuleName,
+                format: 'es',
+            }))
+            .pipe(concat(buildPath(es6Module, outputFileName)))
+            .pipe(gulp.dest('./'))
+        ])
+        .then(_ =>
+            gulp.src(buildPath(es6Module, outputFileName))
+                .pipe(gulpUglifyEs())
+                .pipe(concat(buildPath(es6Module, outputFileNameMin)))
+                .pipe(gulp.dest('./')));
+});
 
 gulp.task('uglify', ['iife'], () => {
-    const data = {version: packageJson.version};
+    const data = {
+        version: packageJson.version,
+        license: packageJson.license,
+        fileHash: ''
+    };
     return gulp.src(buildPath(iife, outputFileName))
         .pipe(concat(buildPath(iife, outputFileNameMin)))
+        .pipe(uglify({}))
         .pipe(fncallback((file, enc, cb) => {
             let hasher = crypto.createHash('md5');
             hasher.update(file.contents.toString(enc));
             data.fileHash = hasher.digest('hex');
-            cb();
+            return cb();
         }))
-        .pipe(uglify())
         .pipe(header('/**! ' + outputFileNameMin + ' <%= version %> | License: <%= license %> | ' +
             'md5checksum: <%= fileHash %> | Built-on: <%= (new Date()) %> **/', data))
         .pipe(gulp.dest('./'));
 });
 
-gulp.task('build-js', ['version', /*'uglify',*/ 'cjs', 'amd', 'umd', 'es6-module']);
+gulp.task('build-js', ['version', 'iife', 'uglify', 'cjs', 'amd', 'umd', 'es6-module']);
 
 gulp.task('jsdoc', () =>
     deleteFilePaths(['./docs/**/*'])
