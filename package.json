@@ -9,7 +9,7 @@
   "license": "BSD",
   "scripts": {
     "build": "gulp clean && gulp build && npm run test-builds",
-    "build-docs": "gulp jsdoc",
+    "docs": "gulp jsdoc",
     "test-builds": "jest --testMatch tests/**/*-test-*.js",
     "test": "jest"
   },
