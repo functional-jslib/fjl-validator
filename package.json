@@ -1,9 +1,9 @@
 {
   "name": "fjl-validator",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Functional validators for forms and the like.\"",
-  "main": "./dist/cjs/fjl-validator.js",
-  "module": "./dist/es6-module/fjl-validator.js",
+  "main": "dist/cjs/fjl-validator.js",
+  "module": "dist/es6-module/fjl-validator.js",
   "repository": "git@github.com:functional-jslib/fjl-validator.git",
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
