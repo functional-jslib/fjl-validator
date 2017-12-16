@@ -1,3 +1,6 @@
+/**
+ * @module fjlValidator
+ */
 export * from './alnumValidator';
 export * from './digitValidator';
 export * from './notEmptyValidator';

@@ -1,6 +1,6 @@
 {
   "name": "fjl-validator",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Functional validators for forms and the like.\"",
   "main": "./dist/cjs/fjl-validator.js",
   "module": "./dist/es6-module/fjl-validator.js",
@@ -10,8 +10,8 @@
   "scripts": {
     "build": "gulp clean && gulp build && npm run test-builds",
     "docs": "gulp jsdoc",
-    "test-builds": "jest --testMatch tests/**/*-test-*.js",
-    "test": "jest"
+    "test-builds": "jest --testMatch **/tests/*-test-*.js",
+    "test": "jest --testMatch **/tests/test-*.js"
   },
   "dependencies": {
     "fjl": "^0.17.14",
@@ -48,9 +48,6 @@
     "yargs": "^10.0.3"
   },
   "jest": {
-    "testMatch": [
-      "**/tests/test-*.js"
-    ],
     "testEnvironment": "node"
   },
   "buildConfig": {

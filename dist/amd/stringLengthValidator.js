@@ -11,7 +11,14 @@ var _fjl = require('fjl');
 
 var _fjlMutable = require('fjl-mutable');
 
-var stringLengthOptions = exports.stringLengthOptions = function stringLengthOptions(options) {
+var
+
+/**
+ * @function module:stringLengthValidator.stringLengthOptions
+ * @param options {Object}
+ * @returns {Object}
+ */
+stringLengthOptions = exports.stringLengthOptions = function stringLengthOptions(options) {
     var _options = (0, _fjlMutable.defineEnumProps$)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], {});
 
     _options.messageTemplates = {
@@ -25,7 +32,15 @@ var stringLengthOptions = exports.stringLengthOptions = function stringLengthOpt
 
     return (0, _validationOptions.validationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
 },
-    stringLengthValidator = exports.stringLengthValidator = (0, _fjl.curry)(function (options, value) {
+
+
+/**
+ * @function module:stringLengthValidator.stringLengthValidator
+ * @param options {Object}
+ * @value {*}
+ * @returns {Object}
+ */
+stringLengthValidator = exports.stringLengthValidator = (0, _fjl.curry)(function (options, value) {
     var ops = stringLengthOptions(options),
         messages = [],
         isOfType = (0, _fjl.isString)(value),
@@ -43,5 +58,6 @@ var stringLengthOptions = exports.stringLengthOptions = function stringLengthOpt
     });
 }); /**
      * Created by Ely on 1/21/2015.
+     * @module stringLengthValidator
      */
 exports.default = stringLengthValidator;

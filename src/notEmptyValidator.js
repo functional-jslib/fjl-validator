@@ -1,11 +1,17 @@
 /**
  * Created by Ely on 7/21/2014.
+ * @module notEmptyValidator
  */
 import {validationResult, validationOptions, getErrorMsgByKey} from './validationOptions';
 import {isEmpty, curry} from 'fjl';
 
 export const
 
+    /**
+     * @function module:notEmptyValidator.notEmptyOptions
+     * @param options {Object}
+     * @returns {Object}
+     */
     notEmptyOptions = options =>
         validationOptions({
             messageTemplates: {
@@ -14,6 +20,12 @@ export const
             }
         }, options),
 
+    /**
+     * @function module:notEmptyValidator.notEmptyValidator
+     * @param options {Object}
+     * @param value {*}
+     * @returns {Object}
+     */
     notEmptyValidator = curry((options, value) => {
         const ops = notEmptyOptions(options),
             result = !isEmpty(value),

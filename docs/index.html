@@ -44,7 +44,100 @@
 
     <section>
         <article><h1>fjl-validator</h1><p>Functional validator(s) implementation (inspired by Zend/Validator validators).</p>
-<h1>License</h1><p>BSD 3.0</p></article>
+<h2>Virtual Types:</h2><ul>
+<li><p><code>ValidatorOptions {Object}</code></p>
+<ul>
+<li><code>valueObscured {Boolean}</code> - Whether to obscure value in validation error messages
+when value doesn't pass validation.  Default <code>false</code>.</li>
+<li><code>valueObscurator {Function}</code> - Function that takes the value
+and returns an obscured version;  E.g., <pre class="prettyprint source"><code>const obscurator = x => Array.fill('*', 0, (x + '').length).join('');
+obscure('hello') === '*****' // equals `true`</code></pre></li>
+<li><p><code>messageTemplates {Object}</code> - Key-value pair hash where
+the values should be either strings and/or functions in the form of <code>(value, options) =&gt; &quot;&quot;</code> 
+or functions that return error messages for failed validations;  E.g.,</p>
+<pre class="prettyprint source"><code>import {digitValidator} from 'fjl-validator';
+
+const validateDigits = digitValidator({
+    messageTemplates: {
+        DOES_NOT_MATCH_PATTERN: x =>
+            `Only digits accepted.  Value entered: &quot;${x}&quot;.`
+    }
+});
+
+deepEquals(validateDigits('abcdef'), {
+    result: false,
+    messages: ['Only digits accepted.  Value entered: &quot;abcdef&quot;']
+})
+; // true</code></pre></li>
+</ul>
+</li>
+<li><p><code>MessageTemplateCallback {Function}</code></p>
+<ul>
+<li><code>value {*}</code></li>
+<li><code>options {ValidatorOptions}</code></li>
+</ul>
+</li>
+<li><code>ValidationResult {Object}</code><ul>
+<li><code>result {Boolean}</code> - Whether value passes validation or not.</li>
+<li><code>messages {Array}</code> - Validation error messages if any.</li>
+<li><code>value {*}</code> - Value that was validated.</li>
+</ul>
+</li>
+</ul>
+<h2>Exported</h2><ul>
+<li>All methods are curried.</li>
+</ul>
+<h4><code>validatorOptions(...options) {ValidatorOptions}</code></h4><p>Returns valid options objects that can be used as validator options;</p>
+<h5>Params</h5><ul>
+<li><code>options {Object}</code><ul>
+<li><code>valueObscured {Boolean}</code> </li>
+<li><code>valueObscurator {Function}</code> - Obscurator function; E.g. <code>x =&gt; &quot;...&quot;</code></li>
+<li><code>messageTemplates {Object}</code> - Key value pairs of error messages or error message callbacks (
+See virtual type <code>MessageTemplateCallback</code> above).<h5>Returns</h5>A strictly typed options object;  Merges passed in options onto strictly typed version which 
+will throw clear error message(s) if type(s) do not match.</li>
+</ul>
+</li>
+</ul>
+<h4><code>alnumValidator(options, value) {ValidatorResult}</code></h4><p>Alpha-numeric value validator.</p>
+<h5>Params</h5><ul>
+<li><code>options {Object}</code></li>
+<li><code>value {*}</code></li>
+</ul>
+<h5>Returns</h5><p><code>{ValidationResult}</code></p>
+<h4><code>regexValidator(options, value) {ValidatorResult}</code></h4><p>Validates values using a regular expression.</p>
+<h5>Params</h5><ul>
+<li><code>options {Object}</code><ul>
+<li><code>pattern {RegExp}</code></li>
+<li><code>messageTemplates {Object}</code></li>
+</ul>
+</li>
+<li><code>value {*}</code> - Value to validate.</li>
+</ul>
+<h5>Returns</h5><p><code>{ValidationResult}</code></p>
+<h4><code>digitValidator(options, value) {ValidatorResult}</code></h4><h5>Params</h5><ul>
+<li><code>options {Object}</code></li>
+<li><code>value {*}</code> - Value to validate.</li>
+</ul>
+<h5>Returns</h5><p><code>{ValidationResult}</code></p>
+<h4><code>notEmptyValidator(options, value) {ValidatorResult}</code></h4><h5>Params</h5><ul>
+<li><code>options {Object}</code></li>
+<li><code>value {*}</code> - Value to validate.</li>
+</ul>
+<h5>Returns</h5><p><code>{ValidationResult}</code></p>
+<h4><code>stringLengthValidator(options, value) {ValidatorResult}</code></h4><h5>Params</h5><ul>
+<li><code>options {Object}</code><ul>
+<li><code>min {Number}</code> - Default <code>0</code>.</li>
+<li><code>max {Number}</code> - Default <code>Number.MAX_SAFE_INTEGER</code></li>
+</ul>
+</li>
+<li><code>value {*}</code> - Value to validate.</li>
+</ul>
+<h5>Returns</h5><p><code>{ValidationResult}</code></p>
+<h4><code>version {String}</code></h4><p>Library's version number.</p>
+<h2>Resources</h2><ul>
+<li>Zend/Validator - https://zendframework.github.io/zend-validator/intro/</li>
+</ul>
+<h2>License</h2><p>BSD 3.0</p></article>
     </section>
 
 
@@ -55,13 +148,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#version">version</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-alnumValidator.html">alnumValidator</a></li><li><a href="module-digitValidator.html">digitValidator</a></li><li><a href="module-fjlValidator.html">fjlValidator</a></li><li><a href="module-notEmptyValidator.html">notEmptyValidator</a></li><li><a href="module-regexValidator.html">regexValidator</a></li><li><a href="module-stringLengthValidator.html">stringLengthValidator</a></li><li><a href="module-validationOptions.html">validationOptions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#version">version</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 13:17:57 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 15 2017 21:25:32 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -11,8 +11,16 @@ var _fjl = require('fjl');
 
 /**
  * Created by Ely on 7/21/2014.
+ * @module notEmptyValidator
  */
-var notEmptyOptions = exports.notEmptyOptions = function notEmptyOptions(options) {
+var
+
+/**
+ * @function module:notEmptyValidator.notEmptyOptions
+ * @param options {Object}
+ * @returns {Object}
+ */
+notEmptyOptions = exports.notEmptyOptions = function notEmptyOptions(options) {
     return (0, _validationOptions.validationOptions)({
         messageTemplates: {
             EMPTY_NOT_ALLOWED: function EMPTY_NOT_ALLOWED() {
@@ -21,7 +29,15 @@ var notEmptyOptions = exports.notEmptyOptions = function notEmptyOptions(options
         }
     }, options);
 },
-    notEmptyValidator = exports.notEmptyValidator = (0, _fjl.curry)(function (options, value) {
+
+
+/**
+ * @function module:notEmptyValidator.notEmptyValidator
+ * @param options {Object}
+ * @param value {*}
+ * @returns {Object}
+ */
+notEmptyValidator = exports.notEmptyValidator = (0, _fjl.curry)(function (options, value) {
     var ops = notEmptyOptions(options),
         result = !(0, _fjl.isEmpty)(value),
 

@@ -1,5 +1,6 @@
 /**
  * Created by Ely on 7/21/2014.
+ * @module regexValidator
  */
 import {validationResult, validationOptions, getErrorMsgByKey}
     from './validationOptions';
@@ -8,6 +9,11 @@ import {curry, assignDeep} from 'fjl';
 
 export const
 
+    /**
+     * @function module:regexValidator.regexValidatorOptions
+     * @param options {Object}
+     * @returns {Object}
+     */
     regexValidatorOptions = options => {
         const [_options] = defineEnumProp$(RegExp, {}, 'pattern', /./);
         _options.messageTemplates = {
@@ -21,6 +27,12 @@ export const
         );
     },
 
+    /**
+     * @function module:regexValidator.regexValidator
+     * @param options {Object}
+     * @param value {*}
+     * @returns {Object}
+     */
     regexValidator = curry((options, value) => {
         const ops = regexValidatorOptions(options),
             result = ops.pattern.test(value),
