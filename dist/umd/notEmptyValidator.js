@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.notEmptyValidator = exports.notEmptyOptions = undefined;
 
-var _validationOptions = require('./validationOptions');
+var _ValidationUtils = require('./ValidationUtils');
 
 var _fjl = require('fjl');
 
@@ -21,7 +21,7 @@ var
  * @returns {Object}
  */
 notEmptyOptions = exports.notEmptyOptions = function notEmptyOptions(options) {
-    return (0, _validationOptions.validationOptions)({
+    return (0, _ValidationUtils.toValidationOptions)({
         messageTemplates: {
             EMPTY_NOT_ALLOWED: function EMPTY_NOT_ALLOWED() {
                 return 'Empty values are not allowed.';
@@ -42,8 +42,8 @@ notEmptyValidator = exports.notEmptyValidator = (0, _fjl.curry)(function (option
         result = !(0, _fjl.isEmpty)(value),
 
     // If test failed
-    messages = !result ? [(0, _validationOptions.getErrorMsgByKey)(ops, 'EMPTY_NOT_ALLOWED', value)] : [];
-    return (0, _validationOptions.validationResult)({ result: result, messages: messages, value: value });
+    messages = !result ? [(0, _ValidationUtils.getErrorMsgByKey)(ops, 'EMPTY_NOT_ALLOWED', value)] : [];
+    return (0, _ValidationUtils.toValidationResult)({ result: result, messages: messages, value: value });
 });
 
 exports.default = notEmptyValidator;

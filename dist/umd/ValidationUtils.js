@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.validationResult = exports.validationOptions = exports.getErrorMsgByKey = exports.defaultValueObscurator = undefined;
+exports.toValidationResult = exports.toValidationOptions = exports.getErrorMsgByKey = exports.defaultValueObscurator = undefined;
 
 var _fjl = require('fjl');
 
@@ -12,13 +12,13 @@ var _fjlMutable = require('fjl-mutable');
 /**
  * Created by Ely on 7/21/2014.
  * Initial idea borrowed from Zend Framework 2's Zend/Validator
- * @module validationOptions
+ * @module ValidatorOptions
  */
 var
 
 /**
  * Default value obscurator.
- * @function module:validationOptions.defaultValueObscurator
+ * @function module:ValidatorOptions.defaultValueObscurator
  * @param x {*} - Value to obscurate.
  * @returns {String} - Obscurated value.
  */
@@ -29,7 +29,7 @@ defaultValueObscurator = exports.defaultValueObscurator = function defaultValueO
 
 /**
  * Gets an error message by `messageTemplates` key from `options` object.
- * @function module:validationOptions.getErrorMsgByKey
+ * @function module:ValidatorOptions.getErrorMsgByKey
  * @param options {Object}
  * @param key {(String|Function)}
  * @param value {*}
@@ -58,12 +58,12 @@ getErrorMsgByKey = exports.getErrorMsgByKey = (0, _fjl.curry)(function (options,
 
 
 /**
- * Returns a strongly typed/normalized validationOptions object.
- * @function module:validationOptions.validationOptions
+ * Returns a strongly typed/normalized ValidatorOptions object.
+ * @function module:ValidatorOptions.toValidationOptions
  * @param options {...Object}
  * @returns {Object}
  */
-validationOptions = exports.validationOptions = function validationOptions() {
+toValidationOptions = exports.toValidationOptions = function toValidationOptions() {
     for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
         options[_key] = arguments[_key];
     }
@@ -75,14 +75,14 @@ validationOptions = exports.validationOptions = function validationOptions() {
 
 /**
  * Returns a strongly typed, normalized validation result object.
- * @function module:validationOptions.validationResult
+ * @function module:ValidatorOptions.toValidationResult
  * @param options {Object}
  * @returns {*}
  */
-validationResult = exports.validationResult = function validationResult(options) {
+toValidationResult = exports.toValidationResult = function toValidationResult(options) {
     var _options = (0, _fjlMutable.defineEnumProps$)([[Boolean, 'result'], [Array, 'messages']], {});
     _options.value = undefined;
     return options ? (0, _fjl.assign)(_options, options) : _options;
 };
 
-exports.default = validationResult;
+exports.default = toValidationResult;

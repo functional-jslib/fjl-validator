@@ -11,7 +11,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           */
 
 
-var _validationOptions = require('./validationOptions');
+var _ValidationUtils = require('./ValidationUtils');
 
 var _fjlMutable = require('fjl-mutable');
 
@@ -34,7 +34,7 @@ regexValidatorOptions = exports.regexValidatorOptions = function regexValidatorO
             return 'The value passed in does not match pattern"' + ops.pattern + '".  Value passed in: "' + ops.value + '".';
         }
     };
-    return (0, _validationOptions.validationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
+    return (0, _ValidationUtils.toValidationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
 },
 
 
@@ -50,9 +50,9 @@ regexValidator = exports.regexValidator = (0, _fjl.curry)(function (options, val
 
 
     // If test failed
-    messages = !result ? [(0, _validationOptions.getErrorMsgByKey)(ops, 'DOES_NOT_MATCH_PATTERN', value)] : [];
+    messages = !result ? [(0, _ValidationUtils.getErrorMsgByKey)(ops, 'DOES_NOT_MATCH_PATTERN', value)] : [];
 
-    return (0, _validationOptions.validationResult)({ result: result, messages: messages, value: value });
+    return (0, _ValidationUtils.toValidationResult)({ result: result, messages: messages, value: value });
 });
 
 exports.default = regexValidator;

@@ -2,7 +2,7 @@
  * Created by Ely on 1/21/2015.
  * @module stringLengthValidator
  */
-import {validationResult, getErrorMsgByKey, validationOptions} from './validationOptions';
+import {toValidationResult, getErrorMsgByKey, toValidationOptions} from './ValidationUtils';
 import {typeOf, isString, assignDeep, curry} from 'fjl';
 import {defineEnumProps$} from 'fjl-mutable';
 
@@ -29,7 +29,7 @@ export const
                 `Value received: "` + value + `".`
         };
 
-        return validationOptions(options ? assignDeep(_options, options) : _options);
+        return toValidationOptions(options ? assignDeep(_options, options) : _options);
     },
 
     /**
@@ -50,7 +50,7 @@ export const
         else if (!isWithinRange) {
             messages.push(getErrorMsgByKey('NOT_WITHIN_RANGE', value, ops));
         }
-        return validationResult({
+        return toValidationResult({
             result: isOfType && isWithinRange,
             messages,
             value

@@ -2,8 +2,8 @@
  * Created by Ely on 7/21/2014.
  * @module regexValidator
  */
-import {validationResult, validationOptions, getErrorMsgByKey}
-    from './validationOptions';
+import {toValidationResult, toValidationOptions, getErrorMsgByKey}
+    from './ValidationUtils';
 import {defineEnumProp$} from 'fjl-mutable';
 import {curry, assignDeep} from 'fjl';
 
@@ -22,7 +22,7 @@ export const
                 + ops.pattern + '".  Value passed in: "'
                 + ops.value + '".'
         };
-        return validationOptions(
+        return toValidationOptions(
             options ? assignDeep(_options, options) : _options
         );
     },
@@ -42,7 +42,7 @@ export const
                 [getErrorMsgByKey(ops, 'DOES_NOT_MATCH_PATTERN', value)] :
                 [];
 
-        return validationResult({ result, messages, value });
+        return toValidationResult({ result, messages, value });
     });
 
 export default regexValidator;

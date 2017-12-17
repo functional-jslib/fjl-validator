@@ -2,7 +2,7 @@
  * Created by Ely on 7/21/2014.
  * @module notEmptyValidator
  */
-import {validationResult, validationOptions, getErrorMsgByKey} from './validationOptions';
+import {toValidationResult, toValidationOptions, getErrorMsgByKey} from './ValidationUtils';
 import {isEmpty, curry} from 'fjl';
 
 export const
@@ -13,7 +13,7 @@ export const
      * @returns {Object}
      */
     notEmptyOptions = options =>
-        validationOptions({
+        toValidationOptions({
             messageTemplates: {
                 EMPTY_NOT_ALLOWED: () =>
                     'Empty values are not allowed.'
@@ -33,7 +33,7 @@ export const
             messages = !result ? [getErrorMsgByKey(
                 ops, 'EMPTY_NOT_ALLOWED', value
             )] : [];
-        return validationResult({result, messages, value});
+        return toValidationResult({result, messages, value});
     });
 
 export default notEmptyValidator;

@@ -64,14 +64,14 @@ Object.keys(_stringLengthValidator).forEach(function (key) {
   });
 });
 
-var _validationOptions = require('./validationOptions');
+var _ValidationUtils = require('./ValidationUtils');
 
-Object.keys(_validationOptions).forEach(function (key) {
+Object.keys(_ValidationUtils).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _validationOptions[key];
+      return _ValidationUtils[key];
     }
   });
 });

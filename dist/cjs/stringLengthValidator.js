@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.stringLengthValidator = exports.stringLengthOptions = undefined;
 
-var _validationOptions = require('./validationOptions');
+var _ValidationUtils = require('./ValidationUtils');
 
 var _fjl = require('fjl');
 
@@ -30,7 +30,7 @@ stringLengthOptions = exports.stringLengthOptions = function stringLengthOptions
         }
     };
 
-    return (0, _validationOptions.validationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
+    return (0, _ValidationUtils.toValidationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
 },
 
 
@@ -47,11 +47,11 @@ stringLengthValidator = exports.stringLengthValidator = (0, _fjl.curry)(function
         valLength = isOfType ? value.length : 0,
         isWithinRange = valLength >= ops.min && valLength <= ops.max;
     if (!isOfType) {
-        messages.push((0, _validationOptions.getErrorMsgByKey)('NOT_OF_TYPE', value, ops));
+        messages.push((0, _ValidationUtils.getErrorMsgByKey)('NOT_OF_TYPE', value, ops));
     } else if (!isWithinRange) {
-        messages.push((0, _validationOptions.getErrorMsgByKey)('NOT_WITHIN_RANGE', value, ops));
+        messages.push((0, _ValidationUtils.getErrorMsgByKey)('NOT_WITHIN_RANGE', value, ops));
     }
-    return (0, _validationOptions.validationResult)({
+    return (0, _ValidationUtils.toValidationResult)({
         result: isOfType && isWithinRange,
         messages: messages,
         value: value

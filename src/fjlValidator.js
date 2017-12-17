@@ -6,5 +6,5 @@ export * from './digitValidator';
 export * from './notEmptyValidator';
 export * from './regexValidator';
 export * from './stringLengthValidator';
-export * from './validationOptions';
+export * from './ValidationUtils';
 export * from './generated/version';
