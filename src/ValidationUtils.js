@@ -34,7 +34,7 @@ export const
         if (isFunction(key)) {
             message = call(key, options, _value);
         }
-        else if (!isString(key) || !messageTemplates[key]) {
+        else if (!isString(key) || !messageTemplates || !messageTemplates[key]) {
             return;
         }
         else if (isFunction(messageTemplates[key])) {

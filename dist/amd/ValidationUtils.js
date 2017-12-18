@@ -46,7 +46,7 @@ getErrorMsgByKey = exports.getErrorMsgByKey = (0, _fjl.curry)(function (options,
 
     if ((0, _fjl.isFunction)(key)) {
         message = (0, _fjl.call)(key, options, _value);
-    } else if (!(0, _fjl.isString)(key) || !messageTemplates[key]) {
+    } else if (!(0, _fjl.isString)(key) || !messageTemplates || !messageTemplates[key]) {
         return;
     } else if ((0, _fjl.isFunction)(messageTemplates[key])) {
         message = (0, _fjl.call)(messageTemplates[key], options, _value);

@@ -1,6 +1,5 @@
 import {stringLengthOptions, stringLengthValidator} from '../src/stringLengthValidator';
-import {toValidationOptions, toValidationResult} from '../src/ValidationUtils';
-import {typeOf, repeat} from 'fjl';
+import {typeOf, repeat, subsequences, concat} from 'fjl';
 import {expect} from 'chai';
 import {peek} from './utils';
 
@@ -9,10 +8,8 @@ import {peek} from './utils';
  */
 describe('sjl.validator.StringLengthValidator', function () {
 
-
     describe ('#stringLengthOptions', function () {
         const strLenOptions = stringLengthOptions();
-
         test ('should have a min and max property.', function () {
             expect(typeOf(strLenOptions.min)).to.equal(Number.name);
             expect(typeOf(strLenOptions.max)).to.equal(Number.name);
@@ -25,51 +22,43 @@ describe('sjl.validator.StringLengthValidator', function () {
         });
     });
 
-    test ('should return `true` value.length is within default range.', function () {
-        let strLenValidator = stringLengthValidator,
-            values = [
-                [true, 'helloworld'],
-                [true, 'testingtesting123testingtesting123'],
-                [true, 'sallysellsseashellsdownbytheseashore'],
-                [true, 'hello[]world'],
-                [true, '99 bottles of beer on the wall']
-            ];
-
-        // Validate values and expect value[0] to be return value of validation check
-        values.forEach(function (value) {
-            const {result, messages} = strLenValidator({}, value[1]);
-            expect(result).to.equal(value[0]);
-            expect(messages.length).to.equal(0);
+    describe ('#stringLengthValidator', function () {
+        const testArgs = subsequences('hello')
+            .concat([repeat(21, 'a'), repeat(14, 'b')])
+            .map(x => x.join(''));
+        test ('it should return a validation result object with a `result` of `false` and ' +
+            'one error message when the passed in value is not of type `String`', function () {
+            const strValidator = stringLengthValidator(null);
+            [false, 99, () => null, null, undefined, [], {}]
+                .map(x => [false, x, 1])
+                .forEach(([expected, value, messagesLength]) => {
+                    const {result, messages} = strValidator(value);
+                    expect(result).to.equal(expected);
+                    expect(messages.length).to.equal(messagesLength);
+                });
         });
-
-    });
-
-    describe ('isValid with set min and max values', function () {
-        let strLenValidator = stringLengthValidator({min: 0, max: 55}),
-            values = [
-                [true, 'within', 'helloworld'],
-                [true, 'within', 'testingtesting123testingtesting123'],
-                [true, 'within', 'sallysellsseashellsdownbytheseashore'],
-                [true, 'within', 'hello[]world'],
-                [true, 'within', '99 bottles of beer on the wall'],
-                [false, 'without', repeat(56, 'a')],
-                [false, 'without', repeat(99, 'b')]
-            ];
-
-        // Validate values and expect value[0] to be return value of validation check
-        values.forEach(function (args) {
-            test ('should return `' + args[0] + '` when value.length is '+ args[1] +' allowed range.', function () {
-                expect(strLenValidator(args[2]).result).to.equal(args[0]);
-            });
+        test ('it should return a validation result object with a `result` of `false` and ' +
+            'one error message when the passed in value is not within length range', function () {
+            const strValidator = stringLengthValidator({min: 6, max: 13});
+                testArgs
+                .map(x => [false, x, 1])
+                .forEach(([expected, value, messagesLength]) => {
+                    const {result, messages} = strValidator(value);
+                    expect(result).to.equal(expected);
+                    expect(messages.length).to.equal(messagesLength);
+                });
         });
-
-        // Validate values and expect value[0] to be return value of validation check
-        values.forEach(function (value) {
-            const {result, messages} = strLenValidator(value[2]);
-            expect(result).to.equal(value[0]);
-            expect(!messages.length).to.equal(result);
+        test ('it should return a validation result object with a `result` of `true` and ' +
+            'no error messages when the passed in value is a string within range `String`', function () {
+            const strValidator = stringLengthValidator({min: 0, max: 22});
+                testArgs
+                .map(x => [true, x, 0])
+                .forEach(([expected, value, messagesLength]) => {
+                    const {result, messages} = strValidator(peek(value));
+                    expect(result).to.equal(expected);
+                    expect(messages.length).to.equal(messagesLength);
+                });
         });
-
     });
 
 });

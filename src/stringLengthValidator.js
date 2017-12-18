@@ -45,10 +45,10 @@ export const
             valLength = isOfType ? value.length : 0,
             isWithinRange = valLength >= ops.min && valLength <= ops.max;
         if (!isOfType) {
-            messages.push(getErrorMsgByKey('NOT_OF_TYPE', value, ops));
+            messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
         }
         else if (!isWithinRange) {
-            messages.push(getErrorMsgByKey('NOT_WITHIN_RANGE', value, ops));
+            messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
         }
         return toValidationResult({
             result: isOfType && isWithinRange,
