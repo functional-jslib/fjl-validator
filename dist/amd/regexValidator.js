@@ -31,7 +31,7 @@ regexValidatorOptions = exports.regexValidatorOptions = function regexValidatorO
 
     _options.messageTemplates = {
         DOES_NOT_MATCH_PATTERN: function DOES_NOT_MATCH_PATTERN(value, ops) {
-            return 'The value passed in does not match pattern"' + ops.pattern + '".  Value passed in: "' + ops.value + '".';
+            return 'The value passed in does not match pattern"' + ops.pattern + '".  Value passed in: "' + value + '".';
         }
     };
     return (0, _ValidationUtils.toValidationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);

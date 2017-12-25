@@ -23,10 +23,10 @@ stringLengthOptions = exports.stringLengthOptions = function stringLengthOptions
 
     _options.messageTemplates = {
         NOT_OF_TYPE: function NOT_OF_TYPE(value) {
-            return 'Value is not a String.  ' + ('Value type received: ' + (0, _fjl.typeOf)(value) + '.') + ('Value received: "' + value + '".');
+            return 'Value is not a String.  ' + ('Value type received: ' + (0, _fjl.typeOf)(value) + '.  ') + ('Value received: "' + value + '".');
         },
         NOT_WITHIN_RANGE: function NOT_WITHIN_RANGE(value, ops) {
-            return 'Value is not within range ' + (ops.min + ' to ' + ops.max + '.') + 'Value length given: "' + value.length + '".' + 'Value received: "' + value + '".';
+            return 'Value is not within range ' + (ops.min + ' to ' + ops.max + '.  ') + 'Value length given: "' + value.length + '".  ' + 'Value received: "' + value + '".';
         }
     };
 
