@@ -43,37 +43,34 @@ describe('#fjl.validator.toValidationOptions', function () {
     });
 
     describe('#getErrorMsgByKey', function () {
-        const messageTemplates = {
-                EMPTY_NOT_ALLOWED: 'Empty values are not allowed.',
-                EXAMPLE_CASE: value => `Some case is not allowed for value ${value}`
+        const emptyNotAllowedMsg = 'Empty values are not allowed.',
+            exampleCaseCall = value => `Some case is not allowed for value ${value}`,
+            EMPTY_NOT_ALLOWED = 'EMPTY_NOT_ALLOWED',
+            EXAMPLE_CASE = 'EXAMPLE_CASE',
+            messageTemplates = {
+                [EMPTY_NOT_ALLOWED]: emptyNotAllowedMsg,
+                [EXAMPLE_CASE]: exampleCaseCall
             },
-            v = toValidationOptions({messageTemplates});
+            validationOptions = toValidationOptions({messageTemplates}),
+            testErrorMessages = concat([
+                [getErrorMsgByKey(validationOptions, EMPTY_NOT_ALLOWED, 'someEmptyValue')],
+                [getErrorMsgByKey(validationOptions, EXAMPLE_CASE, 'someValue')],
+                [getErrorMsgByKey(validationOptions, _ => emptyNotAllowedMsg, 'someValue')]
+            ]);
         test ('should return a `string` when key exists on options.messageTemplates', function () {
-            expect(
-                concat([
-                    [getErrorMsgByKey(v, 'EMPTY_NOT_ALLOWED', 'someValue')],
-                    [getErrorMsgByKey(v, 'EXAMPLE_CASE', 'someValue')],
-                    [getErrorMsgByKey(v, _ => 'Inline error message callback', 'someValue')]
-                ])
-                .every(x => isString(x))
-            )
-                .to.equal(true);
+            expect(testErrorMessages.every(x => isString(x))).to.equal(true);
         });
         test ('should have returned expected error messages when key is valid (exists and is string or function)', function () {
             const someValue = 'someValue',
-                messages = concat([
-                [getErrorMsgByKey(v, 'EMPTY_NOT_ALLOWED', 'someValue')],
-                [getErrorMsgByKey(v, 'EXAMPLE_CASE', 'someValue')],
-                [getErrorMsgByKey(v, _ => 'Inline error message callback', 'someValue')]
-            ]);
+                messages = testErrorMessages;
             expect(messages.length).to.equal(3);
             expect(messages[0]).to.equal(messageTemplates.EMPTY_NOT_ALLOWED);
-            expect(messages[1]).to.equal(messageTemplates.EXAMPLE_CASE(v, 'someValue'));
-            expect(messages[2]).to.equal('Inline error message callback');
+            expect(messages[1]).to.equal(messageTemplates.EXAMPLE_CASE('someValue', validationOptions));
+            expect(messages[2]).to.equal(emptyNotAllowedMsg);
         });
         test ('should return `undefined` if `key` is not a function and `key` doesn\'t exist on ' +
             '`messageTemplates`', function () {
-            expect(getErrorMsgByKey(v, 'SOME_OTHER_CASE', 'someValue')).to.equal(undefined);
+            expect(getErrorMsgByKey(validationOptions, 'SOME_OTHER_CASE', 'someValue')).to.equal(undefined);
         });
     });
 

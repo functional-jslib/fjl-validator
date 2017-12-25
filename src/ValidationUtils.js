@@ -32,7 +32,7 @@ export const
         const {messageTemplates, valueObscured, valueObscurator} = options,
             _value = valueObscured ? valueObscurator(value) : value;
         if (isFunction(key)) {
-            message = call(key, options, _value);
+            message = call(key, _value, options);
         }
         else if (!isString(key) || !messageTemplates || !messageTemplates[key]) {
             return;
