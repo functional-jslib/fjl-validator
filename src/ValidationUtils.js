@@ -38,7 +38,7 @@ export const
             return;
         }
         else if (isFunction(messageTemplates[key])) {
-            message = call(messageTemplates[key], options, _value);
+            message = call(messageTemplates[key], _value, options);
         }
         else {
             message = messageTemplates[key];

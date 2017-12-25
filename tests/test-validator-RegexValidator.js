@@ -14,6 +14,13 @@ describe('sjl.validator.RegexValidator`', function () {
     });
 
     describe ('#regexValidator', function () {
+
+        test ('should generate expected error message for failing values', function () {
+            const {result, messages} = regexValidator({pattern: /[a-z]+/}, '');
+            expect(result).to.equal(false);
+            expect(messages[0]).to.equal('');
+        });
+
         const regexTest = (keyValMap, expected) => {
                keys(keyValMap).map(key => {
                     test ('should return ' + expected + ' when testing "' + key + '" with "' + keyValMap[key] + '".', function () {
