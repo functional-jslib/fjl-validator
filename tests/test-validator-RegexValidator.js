@@ -11,14 +11,20 @@ describe('sjl.validator.RegexValidator`', function () {
         test ('should be an object with a `pattern` property', function () {
             expect(regexValidatorOptions().hasOwnProperty('pattern')).to.equal(true);
         });
+        test ('should generate expected error messages from ')
     });
 
     describe ('#regexValidator', function () {
 
         test ('should generate expected error message for failing values', function () {
-            const {result, messages} = regexValidator({pattern: /[a-z]+/}, '');
+            const exampleOps = {pattern: /[a-z]+/},
+                {result, messages} = regexValidator(exampleOps, ''),
+                expectedErrMsg = (value, ops) =>
+                    'The value passed in does not match pattern"'
+                    + ops.pattern + '".  Value passed in: "'
+                    + value + '".';
             expect(result).to.equal(false);
-            expect(messages[0]).to.equal('');
+            expect(messages[0]).to.equal(expectedErrMsg('', exampleOps));
         });
 
         const regexTest = (keyValMap, expected) => {

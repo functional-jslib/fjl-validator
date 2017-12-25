@@ -20,7 +20,7 @@ export const
             DOES_NOT_MATCH_PATTERN: (value, ops) =>
                 'The value passed in does not match pattern"'
                 + ops.pattern + '".  Value passed in: "'
-                + ops.value + '".'
+                + value + '".'
         };
         return toValidationOptions(
             options ? assignDeep(_options, options) : _options
