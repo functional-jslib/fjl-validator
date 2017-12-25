@@ -43,7 +43,8 @@ describe('sjl.validator.StringLengthValidator', function () {
         });
         test ('it should return a validation result object with a `result` of `false` and ' +
             'one error message when the passed in value is not within length range', function () {
-            const strValidator = stringLengthValidator({min: 6, max: 13}),
+            const exampleOps = {min: 6, max: 13},
+                strValidator = stringLengthValidator(exampleOps),
                 errMsgTmpl = (value, ops) =>
                     `Value is not within range ` +
                     `${ops.min} to ${ops.max}.  ` +
@@ -55,7 +56,7 @@ describe('sjl.validator.StringLengthValidator', function () {
                     const {result, messages} = strValidator(value);
                     expect(result).to.equal(expected);
                     expect(messages.length).to.equal(messagesLength);
-                    expect(messages[0]).to.equal(errMsgTmpl(value));
+                    expect(messages[0]).to.equal(errMsgTmpl(value, exampleOps));
                 });
         });
         test ('it should return a validation result object with a `result` of `true` and ' +
