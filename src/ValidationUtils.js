@@ -71,8 +71,8 @@ export const
      */
     toValidationResult = options => {
         const _options = defineEnumProps$([
-            [Boolean, 'result'],
-            [Array, 'messages']
+            [Boolean, 'result', false],
+            [Array, 'messages', []]
         ], {});
         _options.value = undefined;
         return options ? assign(_options, options) : _options;

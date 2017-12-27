@@ -1,6 +1,6 @@
 {
   "name": "fjl-validator",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Functional validators for forms and the like.\"",
   "main": "dist/cjs/fjlValidator.js",
   "module": "dist/es6-module/fjl-validator.js",
@@ -8,6 +8,8 @@
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
   "scripts": {
+    "pre-publish": "npm test && npm run build && npm run docs",
+    "prepub": "npm run pre-publish",
     "build": "gulp clean && gulp build && npm run test-builds",
     "docs": "gulp jsdoc",
     "test-builds": "jest --testMatch **/tests/*-test-*.js",

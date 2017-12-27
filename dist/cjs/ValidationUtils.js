@@ -80,7 +80,7 @@ toValidationOptions = exports.toValidationOptions = function toValidationOptions
  * @returns {*}
  */
 toValidationResult = exports.toValidationResult = function toValidationResult(options) {
-    var _options = (0, _fjlMutable.defineEnumProps$)([[Boolean, 'result'], [Array, 'messages']], {});
+    var _options = (0, _fjlMutable.defineEnumProps$)([[Boolean, 'result', false], [Array, 'messages', []]], {});
     _options.value = undefined;
     return options ? (0, _fjl.assign)(_options, options) : _options;
 };
