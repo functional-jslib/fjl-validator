@@ -1,6 +1,6 @@
 {
   "name": "fjl-validator",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "Functional validators for forms and the like.\"",
   "main": "dist/cjs/fjlValidator.js",
   "module": "dist/es6-module/fjl-validator.js",
@@ -16,7 +16,7 @@
     "test": "jest --testMatch **/tests/test-*.js"
   },
   "dependencies": {
-    "fjl": "^0.17.14",
+    "fjl": "0.19.4",
     "fjl-mutable": "^0.16.0"
   },
   "devDependencies": {
