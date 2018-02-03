@@ -32,29 +32,38 @@ export const
         return options ? assignDeep(_options, options) : _options;
     },
 
-    /**
-     * @function module:stringLengthValidator.stringLengthValidator
-     * @param options {Object}
-     * @value {*}
-     * @returns {Object}
-     */
-    stringLengthValidator = curry((options, value) => {
-        const ops = stringLengthOptions(options),
-            messages = [],
+    toStringLengthOptions = stringLengthOptions,
+
+    stringLengthValidator1$ = (options, value) => {
+        const messages = [],
             isOfType = isString(value),
             valLength = isOfType ? value.length : 0,
-            isWithinRange = valLength >= ops.min && valLength <= ops.max;
+            isWithinRange = valLength >= options.min && valLength <= options.max;
         if (!isOfType) {
-            messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
+            messages.push(getErrorMsgByKey(options, 'NOT_OF_TYPE', value));
         }
         else if (!isWithinRange) {
-            messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
+            messages.push(getErrorMsgByKey(options, 'NOT_WITHIN_RANGE', value));
         }
         return toValidationResult({
             result: isOfType && isWithinRange,
             messages,
             value
         });
-    });
+    },
+
+    stringLengValidator$ = (options, value) => stringLengthValidator1$(toStringLengthOptions(options), value),
+
+    stringLengthValidator1 = curry(stringLengthValidator1$),
+
+    /**
+     * @function module:stringLengthValidator.stringLengthValidator
+     * @param options {Object}
+     * @value {*}
+     * @returns {Object}
+     */
+    stringLengthValidator = curry(stringLengValidator$)
+
+;
 
 export default stringLengthValidator;

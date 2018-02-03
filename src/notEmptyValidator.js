@@ -20,20 +20,27 @@ export const
             }
         }, options),
 
+    toNotEmptyOptions = notEmptyOptions,
+
+    notEmptyValidator1$ = (options, value) => {
+        const result = !isEmpty(value),
+            // If test failed
+            messages = !result ? [getErrorMsgByKey(
+                options, 'EMPTY_NOT_ALLOWED', value
+            )] : [];
+        return toValidationResult({result, messages, value});
+    },
+
+    notEmptyValidator$ = (options, value) => notEmptyValidator1$(toNotEmptyOptions(options), value),
+
+    notEmptyValidator1 = curry(notEmptyValidator1$),
+
     /**
      * @function module:notEmptyValidator.notEmptyValidator
      * @param options {Object}
      * @param value {*}
      * @returns {Object}
      */
-    notEmptyValidator = curry((options, value) => {
-        const ops = notEmptyOptions(options),
-            result = !isEmpty(value),
-            // If test failed
-            messages = !result ? [getErrorMsgByKey(
-                ops, 'EMPTY_NOT_ALLOWED', value
-            )] : [];
-        return toValidationResult({result, messages, value});
-    });
+    notEmptyValidator = curry(notEmptyValidator$);
 
 export default notEmptyValidator;

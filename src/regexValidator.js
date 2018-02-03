@@ -25,22 +25,31 @@ export const
         return options ? assignDeep(_options, options) : _options;
     },
 
+    toRegexValidatorOptions = regexValidatorOptions,
+
+    regexValidator1$ = (options, value) => {
+        const result = options.pattern.test(value),
+
+            // If test failed
+            messages = !result ?
+                [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] :
+                [];
+
+        return toValidationResult({ result, messages, value });
+    },
+
+    regexValidator$ = (options, value) => regexValidator1$(toRegexValidatorOptions(options), value),
+
+    regexValidator1 = curry(regexValidator1$),
+
     /**
      * @function module:regexValidator.regexValidator
      * @param options {Object}
      * @param value {*}
      * @returns {Object}
      */
-    regexValidator = curry((options, value) => {
-        const ops = regexValidatorOptions(options),
-            result = ops.pattern.test(value),
+    regexValidator = curry(regexValidator$)
 
-            // If test failed
-            messages = !result ?
-                [getErrorMsgByKey(ops, 'DOES_NOT_MATCH_PATTERN', value)] :
-                [];
-
-        return toValidationResult({ result, messages, value });
-    });
+;
 
 export default regexValidator;
