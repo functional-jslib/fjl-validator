@@ -17,19 +17,19 @@ export const
         const _options = defineEnumProps$([
             [Number, 'min', 0],
             [Number, 'max', Number.MAX_SAFE_INTEGER]
-        ], {});
+        ], toValidationOptions());
 
         _options.messageTemplates = {
             NOT_OF_TYPE: (value) => `Value is not a String.  ` +
                 `Value type received: ${typeOf(value)}.  ` +
                 `Value received: "${value}".`,
-                NOT_WITHIN_RANGE: (value, ops) => `Value is not within range ` +
-                    `${ops.min} to ${ops.max}.  ` +
-                    `Value length given: "` + value.length + `".  ` +
-                    `Value received: "` + value + `".`
+            NOT_WITHIN_RANGE: (value, ops) => `Value is not within range ` +
+                `${ops.min} to ${ops.max}.  ` +
+                `Value length given: "` + value.length + `".  ` +
+                `Value received: "` + value + `".`
         };
 
-        return toValidationOptions(options ? assignDeep(_options, options) : _options);
+        return options ? assignDeep(_options, options) : _options;
     },
 
     /**

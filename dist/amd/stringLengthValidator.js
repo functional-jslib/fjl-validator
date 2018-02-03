@@ -19,7 +19,7 @@ var
  * @returns {Object}
  */
 stringLengthOptions = exports.stringLengthOptions = function stringLengthOptions(options) {
-    var _options = (0, _fjlMutable.defineEnumProps$)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], {});
+    var _options = (0, _fjlMutable.defineEnumProps$)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
 
     _options.messageTemplates = {
         NOT_OF_TYPE: function NOT_OF_TYPE(value) {
@@ -30,7 +30,7 @@ stringLengthOptions = exports.stringLengthOptions = function stringLengthOptions
         }
     };
 
-    return (0, _ValidationUtils.toValidationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
+    return options ? (0, _fjl.assignDeep)(_options, options) : _options;
 },
 
 

@@ -25,7 +25,7 @@ var
  * @returns {Object}
  */
 regexValidatorOptions = exports.regexValidatorOptions = function regexValidatorOptions(options) {
-    var _defineEnumProp$ = (0, _fjlMutable.defineEnumProp$)(RegExp, {}, 'pattern', /./),
+    var _defineEnumProp$ = (0, _fjlMutable.defineEnumProp$)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
         _defineEnumProp$2 = _slicedToArray(_defineEnumProp$, 1),
         _options = _defineEnumProp$2[0];
 
@@ -34,7 +34,7 @@ regexValidatorOptions = exports.regexValidatorOptions = function regexValidatorO
             return 'The value passed in does not match pattern"' + ops.pattern + '".  Value passed in: "' + value + '".';
         }
     };
-    return (0, _ValidationUtils.toValidationOptions)(options ? (0, _fjl.assignDeep)(_options, options) : _options);
+    return options ? (0, _fjl.assignDeep)(_options, options) : _options;
 },
 
 

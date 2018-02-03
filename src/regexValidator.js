@@ -15,16 +15,14 @@ export const
      * @returns {Object}
      */
     regexValidatorOptions = options => {
-        const [_options] = defineEnumProp$(RegExp, {}, 'pattern', /./);
+        const [_options] = defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./);
         _options.messageTemplates = {
             DOES_NOT_MATCH_PATTERN: (value, ops) =>
                 'The value passed in does not match pattern"'
                 + ops.pattern + '".  Value passed in: "'
                 + value + '".'
         };
-        return toValidationOptions(
-            options ? assignDeep(_options, options) : _options
-        );
+        return options ? assignDeep(_options, options) : _options;
     },
 
     /**
