@@ -52,31 +52,25 @@ export const
      * @param options {...Object}
      * @returns {Object}
      */
-    toValidationOptions = (...options) => {
-        const _options = defineEnumProps$([
+    toValidationOptions = (...options) =>
+        assignDeep(defineEnumProps$([
             [Object, 'messageTemplates', {}],
             [Boolean, 'valueObscured', false],
             [Function, 'valueObscurator', defaultValueObscurator]
-        ], {});
-        return options.length ?
-            apply(assignDeep, [_options].concat(options.filter(isset))) :
-            _options;
-    },
+        ], {}), ...options),
 
     /**
      * Returns a strongly typed, normalized validation result object.
      * @function module:ValidatorOptions.toValidationResult
-     * @param options {Object}
+     * @param options {...Object}
      * @returns {*}
      */
-    toValidationResult = options => {
-        const _options = defineEnumProps$([
+    toValidationResult = (...options) =>
+        assignDeep(defineEnumProps$([
             [Boolean, 'result', false],
             [Array, 'messages', []]
-        ], {});
-        _options.value = undefined;
-        return options ? assign(_options, options) : _options;
-    }
+        ], {}), {value: undefined}, ...options)
+
 ;
 
 export default toValidationResult;

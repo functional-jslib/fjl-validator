@@ -1554,9 +1554,9 @@ fjl-range@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/fjl-range/-/fjl-range-1.0.3.tgz#89ef9d2312fde50835603c95ffa52da72f10f138"
 
-fjl@0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/fjl/-/fjl-0.23.0.tgz#89437a774f5dd46f3db9e82c5f3914fd8ca00802"
+fjl@0.23.1:
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/fjl/-/fjl-0.23.1.tgz#28e0563f02d29508e237fa0fcf4e8898b1f63806"
 
 fjl@^0.17.14, fjl@^0.17.7:
   version "0.17.14"

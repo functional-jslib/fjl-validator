@@ -11,18 +11,14 @@ import {curry, assignDeep} from 'fjl';
  * @param value {*}
  * @returns {Object}
  */
-export const alnumValidator = curry((options, value) => {
-    const _options = {
+export const alnumValidator = curry((options, value) =>
+    regexValidator(assignDeep({
         pattern: /^[\da-z]+$/i,
         messageTemplates: {
             DOES_NOT_MATCH_PATTERN: x =>
                 `Value is not alpha-numeric.  Value received: '${x}'.`
         }
-    };
-    return regexValidator(
-        options ? assignDeep(_options, options) : _options,
-        value
-    );
-});
+    }, options), value)
+);
 
 export default alnumValidator;
