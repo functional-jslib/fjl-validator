@@ -31,7 +31,8 @@ export const
         return toValidationResult({result, messages, value});
     },
 
-    notEmptyValidator$ = (options, value) => notEmptyValidator1$(toNotEmptyOptions(options), value),
+    notEmptyValidator$ = (options, value) =>
+        notEmptyValidator1$(toNotEmptyOptions(options), value),
 
     notEmptyValidator1 = curry(notEmptyValidator1$),
 
