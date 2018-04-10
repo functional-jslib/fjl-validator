@@ -1,15 +1,15 @@
 /**
  * Created by edelacruz on 7/28/2014.
  */
-import {regexValidator, regexValidatorOptions} from '../src/regexValidator';
+import {regexValidator, toRegexValidatorOptions} from '../src/regexValidator';
 import {expect, assert} from 'chai';
 import {typeOf, keys} from 'fjl';
 
-describe('sjl.validator.RegexValidator`', function () {
+describe('regexValidator`', function () {
 
-    describe ('#regexValidatorOptions', function () {
+    describe ('#toRegexValidatorOptions', function () {
         test ('should be an object with a `pattern` property', function () {
-            expect(regexValidatorOptions().hasOwnProperty('pattern')).to.equal(true);
+            expect(toRegexValidatorOptions().hasOwnProperty('pattern')).to.equal(true);
         });
         test ('should generate expected error messages from ')
     });

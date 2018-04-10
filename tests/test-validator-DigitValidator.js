@@ -5,7 +5,7 @@ import {digitValidator} from '../src/digitValidator';
 import {expect, assert} from 'chai';
 import {typeOf} from 'fjl';
 
-describe('sjl.validator.DigitValidator', function () {
+describe('digitValidator', function () {
 
     test ('should return `true` if value contains only digits.', function () {
         let validator = digitValidator(null),

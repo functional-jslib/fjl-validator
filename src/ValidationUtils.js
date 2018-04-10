@@ -57,7 +57,7 @@ export const
             [Object, 'messageTemplates', {}],
             [Boolean, 'valueObscured', false],
             [Function, 'valueObscurator', defaultValueObscurator]
-        ], {}), ...options),
+        ], {}), ...(options.length ? options : [{}])),
 
     /**
      * Returns a strongly typed, normalized validation result object.
@@ -67,9 +67,12 @@ export const
      */
     toValidationResult = (...options) =>
         assignDeep(defineEnumProps$([
-            [Boolean, 'result', false],
-            [Array, 'messages', []]
-        ], {}), {value: undefined}, ...options)
+                [Boolean, 'result', false],
+                [Array, 'messages', []]
+            ], {}),
+            {value: undefined},
+            ...(options.length ? options : [{}])
+        )
 
 ;
 

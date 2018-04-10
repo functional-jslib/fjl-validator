@@ -1,15 +1,19 @@
 /**
  * Created by elyde on 1/15/2016.
  */
-import {typeOf, keys, isString, concat, isType} from 'fjl';
+import {typeOf, keys, isString, concat, isType, jsonClone, log, peek} from 'fjl';
 import {expect, assert} from 'chai';
-import {log, peek} from './utils';
 
 import {toValidationOptions, toValidationResult, getErrorMsgByKey} from '../src/ValidationUtils';
 
 describe('#fjl.validator.toValidationOptions', function () {
 
     describe('#toValidationOptions', function () {
+        const expectedPropertyAndTypes = {
+            valueObscured: 'Boolean',
+            valueObscurator: 'Function',
+            messageTemplates: 'Object'
+        };
         test ('should merge incoming options to `self` on construction', function () {
             const messageTemplates = {
                     A: 'some message',
@@ -26,19 +30,21 @@ describe('#fjl.validator.toValidationOptions', function () {
             // messages must be of type `Array` so should throw error
             assert.throws(() => toValidationOptions({messageTemplates: 99}), Error);
         });
-
-        const expectedPropertyAndTypes = {
-                valueObscured: 'Boolean',
-                valueObscurator: 'Function',
-                messageTemplates: 'Object'
-            };
-
         test ('should have the expected properties as expected types.', function () {
-            let validator = toValidationOptions();
+            let validator = peek(toValidationOptions());
             Object.keys(expectedPropertyAndTypes).forEach(key => {
                 expect(validator.hasOwnProperty(key)).to.equal(true);
                 expect(typeOf(validator[key])).to.equal(expectedPropertyAndTypes[key]);
             });
+        });
+        test ('should still return a valid "ValidationOptions" object even if receiving `null` or `undefined`.', () => {
+            [toValidationOptions(null), toValidationOptions()]
+                .forEach(validationOptions => {
+                    Object.keys(expectedPropertyAndTypes).forEach(key => {
+                        expect(validationOptions.hasOwnProperty(key)).to.equal(true);
+                        expect(typeOf(validationOptions[key])).to.equal(expectedPropertyAndTypes[key]);
+                    });
+                });
         });
     });
 
@@ -114,6 +120,19 @@ describe ('#fjl.validator.toValidationResults', function () {
             );
         });
 
+    });
+    test ('should still return a valid "ValidationOptions" object even if receiving `null` or `undefined`.', () => {
+        const expectedPropertyAndTypes = {
+            result: 'Boolean',
+            messages: 'Array'
+        };
+        [toValidationResult(null), toValidationResult()]
+            .forEach(validationResult => {
+                Object.keys(expectedPropertyAndTypes).forEach(key => {
+                    expect(validationResult.hasOwnProperty(key)).to.equal(true);
+                    expect(typeOf(validationResult[key])).to.equal(expectedPropertyAndTypes[key]);
+                });
+            });
     });
 
 });

@@ -6,7 +6,7 @@ import {peek} from './utils';
 /**
  * Created by elyde on 1/15/2016.
  */
-describe('sjl.validator.StringLengthValidator', function () {
+describe('stringLengthValidator', function () {
 
     describe ('#stringLengthOptions', function () {
         const strLenOptions = stringLengthOptions();

@@ -4,7 +4,7 @@
 import {notEmptyValidator} from '../src/notEmptyValidator';
 import {expect, assert} from 'chai';
 
-describe('sjl.validator.NotEmptyValidator', function () {
+describe('notEmptyValidator', function () {
 
     test ('should return `true` if value is not `empty`.', function () {
         let validator = notEmptyValidator({});

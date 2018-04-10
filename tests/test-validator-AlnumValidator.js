@@ -4,7 +4,7 @@
 import alnumValidator from '../src/alnumValidator';
 import {expect, assert} from 'chai';
 
-describe('sjl.validator.AlnumValidator', function () {
+describe('alnumValidator', function () {
 
     test ('should return `true` value is `alpha numeric` and `false` otherwise.', function () {
         let  validator = alnumValidator({}),

@@ -1,5 +1,6 @@
 /**
  * Created by Ely on 7/21/2014.
+ * Module for validating a value by regular expression.
  * @module regexValidator
  */
 import {toValidationResult, toValidationOptions, getErrorMsgByKey}
@@ -10,11 +11,12 @@ import {curry, assignDeep} from 'fjl';
 export const
 
     /**
-     * @function module:regexValidator.regexValidatorOptions
+     * Normalizes `regexValidator` options.
+     * @function module:regexValidator.toRegexValidatorOptions
      * @param options {Object}
      * @returns {Object}
      */
-    regexValidatorOptions = options => {
+    toRegexValidatorOptions = options => {
         const [_options] = defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./);
         _options.messageTemplates = {
             DOES_NOT_MATCH_PATTERN: (value, ops) =>
@@ -25,9 +27,17 @@ export const
         return options ? assignDeep(_options, options) : _options;
     },
 
-    toRegexValidatorOptions = regexValidatorOptions,
-
-    regexValidator1$ = (options, value) => {
+    /**
+     * Same as `regexValidator` except this version is not curried and doesn't normalize incoming `options` parameter.
+     * @note Useful when the user has a need for calling `toRegexValidatorOptions`
+     *  externally/from-outside-the-`regexValidator` call (helps to remove that one extra call in this case (since
+     *  `regexValidator` calls `toRegexValidatorOptions` internally)).
+     * @function module:regexValidator.regexValidatorPure$
+     * @param options {Object}
+     * @param value {*}
+     * @returns {*}
+     */
+    regexValidatorPure$ = (options, value) => {
         const result = options.pattern.test(value),
 
             // If test failed
@@ -38,11 +48,18 @@ export const
         return toValidationResult({ result, messages, value });
     },
 
-    regexValidator$ = (options, value) => regexValidator1$(toRegexValidatorOptions(options), value),
-
-    regexValidator1 = curry(regexValidator1$),
+    /**
+     * Un-curried version of `regexValidator`.
+     * @function module:regexValidator.regexValidator$
+     * @param options {Object}
+     * @param value {*}
+     * @returns {Object}
+     */
+    regexValidator$ = (options, value) => regexValidatorPure$(toRegexValidatorOptions(options), value),
 
     /**
+     * Validates a value with the regex `pattern` option passed in.
+     * @curried
      * @function module:regexValidator.regexValidator
      * @param options {Object}
      * @param value {*}
