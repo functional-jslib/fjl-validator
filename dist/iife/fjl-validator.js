@@ -1,47 +1,6 @@
 var fjlValidator = (function (exports,fjl,fjlMutable) {
 'use strict';
 
-/**
- * Created by Ely on 7/21/2014.
- * Initial idea borrowed from Zend Framework 2's Zend/Validator
- * @module ValidatorOptions
- */
-var defaultValueObscurator = function defaultValueObscurator(x) {
-    return fjl.repeat((x + '').length, '*');
-};
-var getErrorMsgByKey = fjl.curry(function (options, key, value) {
-    var message = void 0;
-
-    var messageTemplates = options.messageTemplates,
-        valueObscured = options.valueObscured,
-        valueObscurator = options.valueObscurator,
-        _value = valueObscured ? valueObscurator(value) : value;
-
-    if (fjl.isFunction(key)) {
-        message = fjl.call(key, _value, options);
-    } else if (!fjl.isString(key) || !messageTemplates || !messageTemplates[key]) {
-        return;
-    } else if (fjl.isFunction(messageTemplates[key])) {
-        message = fjl.call(messageTemplates[key], _value, options);
-    } else {
-        message = messageTemplates[key];
-    }
-    return message;
-});
-var toValidationOptions = function toValidationOptions() {
-    for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
-        options[_key] = arguments[_key];
-    }
-
-    var _options = fjlMutable.defineEnumProps$([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {});
-    return options.length ? fjl.apply(fjl.assignDeep, [_options].concat(options.filter(fjl.isset))) : _options;
-};
-var toValidationResult = function toValidationResult(options) {
-    var _options = fjlMutable.defineEnumProps$([[Boolean, 'result', false], [Array, 'messages', []]], {});
-    _options.value = undefined;
-    return options ? fjl.assign(_options, options) : _options;
-};
-
 var slicedToArray = function () {
   function sliceIterator(arr, i) {
     var _arr = [];
@@ -80,11 +39,76 @@ var slicedToArray = function () {
   };
 }();
 
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
 /**
  * Created by Ely on 7/21/2014.
+ * Initial idea borrowed from Zend Framework 2's Zend/Validator
+ * @module ValidationUtils
+ */
+var defaultValueObscurator = function defaultValueObscurator(x) {
+    return fjl.repeat((x + '').length, '*');
+};
+var getErrorMsgByKey = fjl.curry(function (options, key, value) {
+    var message = void 0;
+
+    var messageTemplates = options.messageTemplates,
+        valueObscured = options.valueObscured,
+        valueObscurator = options.valueObscurator,
+        _value = valueObscured ? valueObscurator(value) : value;
+
+    if (fjl.isFunction(key)) {
+        message = fjl.call(key, _value, options);
+    } else if (!fjl.isString(key) || !messageTemplates || !messageTemplates[key]) {
+        return;
+    } else if (fjl.isFunction(messageTemplates[key])) {
+        message = fjl.call(messageTemplates[key], _value, options);
+    } else {
+        message = messageTemplates[key];
+    }
+    return message;
+});
+var toValidationOptions = function toValidationOptions() {
+    for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
+        options[_key] = arguments[_key];
+    }
+
+    return fjl.assignDeep.apply(undefined, [fjlMutable.defineEnumProps$([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(toConsumableArray(options.length ? options : [{}])));
+};
+var toValidationResult = function toValidationResult() {
+    for (var _len2 = arguments.length, options = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        options[_key2] = arguments[_key2];
+    }
+
+    return fjl.assignDeep.apply(undefined, [fjlMutable.defineEnumProps$([[Boolean, 'result', false], [Array, 'messages', []]], {}), { value: undefined }].concat(toConsumableArray(options.length ? options : [{}])));
+};
+
+/**
+ * Created by Ely on 7/21/2014.
+ * Module for validating a value by regular expression.
  * @module regexValidator
  */
-var regexValidatorOptions = function regexValidatorOptions(options) {
+var toRegexValidatorOptions = function toRegexValidatorOptions(options) {
     var _defineEnumProp$ = fjlMutable.defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./),
         _defineEnumProp$2 = slicedToArray(_defineEnumProp$, 1),
         _options = _defineEnumProp$2[0];
@@ -96,19 +120,23 @@ var regexValidatorOptions = function regexValidatorOptions(options) {
     };
     return options ? fjl.assignDeep(_options, options) : _options;
 };
-var regexValidator = fjl.curry(function (options, value) {
-    var ops = regexValidatorOptions(options),
-        result = ops.pattern.test(value),
+var regexValidatorNoNormalize$ = function regexValidatorNoNormalize$(options, value) {
+    var result = options.pattern.test(value),
 
 
     // If test failed
-    messages = !result ? [getErrorMsgByKey(ops, 'DOES_NOT_MATCH_PATTERN', value)] : [];
+    messages = !result ? [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] : [];
 
     return toValidationResult({ result: result, messages: messages, value: value });
-});
+};
+var regexValidator$ = function regexValidator$(options, value) {
+    return regexValidatorNoNormalize$(toRegexValidatorOptions(options), value);
+};
+var regexValidator = fjl.curry(regexValidator$);
 
 /**
  * Created by Ely on 1/21/2015.
+ * Module for validating alpha-numeric values.
  * @module alnumValidator
  */
 /**
@@ -127,16 +155,14 @@ var alnumValidator = fjl.curry(function (options, value) {
     }
   }, options), value);
 });
+var alnumValidator1 = function alnumValidator1(value) {
+  return alnumValidator(null, value);
+};
 
 /**
  * Created by Ely on 1/21/2015.
+ * Module for validating digits.
  * @module digitValidator
- */
-/**
- * @function module:digitValidator.digitValidator
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
  */
 var digitValidator = fjl.curry(function (options, value) {
   return regexValidator(fjl.assignDeep({
@@ -148,12 +174,15 @@ var digitValidator = fjl.curry(function (options, value) {
     }
   }, options), value);
 });
+var digitValidator1 = function digitValidator1(value) {
+  return digitValidator(null, value);
+};
 
 /**
  * Created by Ely on 7/21/2014.
  * @module notEmptyValidator
  */
-var notEmptyOptions = function notEmptyOptions(options) {
+var toNotEmptyOptions = function toNotEmptyOptions(options) {
     return toValidationOptions({
         messageTemplates: {
             EMPTY_NOT_ALLOWED: function EMPTY_NOT_ALLOWED() {
@@ -162,20 +191,26 @@ var notEmptyOptions = function notEmptyOptions(options) {
         }
     }, options);
 };
-var notEmptyValidator = fjl.curry(function (options, value) {
-    var ops = notEmptyOptions(options),
-        result = !fjl.isEmpty(value),
+var notEmptyValidatorNoNormalize$ = function notEmptyValidatorNoNormalize$(options, value) {
+    var result = !fjl.isEmpty(value),
 
     // If test failed
-    messages = !result ? [getErrorMsgByKey(ops, 'EMPTY_NOT_ALLOWED', value)] : [];
+    messages = !result ? [getErrorMsgByKey(options, 'EMPTY_NOT_ALLOWED', value)] : [];
     return toValidationResult({ result: result, messages: messages, value: value });
-});
+};
+var notEmptyValidator$ = function notEmptyValidator$(options, value) {
+    return notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value);
+};
+var notEmptyValidator1 = function notEmptyValidator1(value) {
+    return notEmptyValidatorNoNormalize$(null, value);
+};
+var notEmptyValidator = fjl.curry(notEmptyValidator$);
 
 /**
  * Created by Ely on 1/21/2015.
  * @module stringLengthValidator
  */
-var stringLengthOptions = function stringLengthOptions(options) {
+var toStringLengthOptions = function toStringLengthOptions(options) {
     var _options = fjlMutable.defineEnumProps$([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
 
     _options.messageTemplates = {
@@ -189,27 +224,30 @@ var stringLengthOptions = function stringLengthOptions(options) {
 
     return options ? fjl.assignDeep(_options, options) : _options;
 };
-var stringLengthValidator = fjl.curry(function (options, value) {
-    var ops = stringLengthOptions(options),
-        messages = [],
+var stringLengthValidatorNoNormalize$ = function stringLengthValidatorNoNormalize$(options, value) {
+    var messages = [],
         isOfType = fjl.isString(value),
         valLength = isOfType ? value.length : 0,
-        isWithinRange = valLength >= ops.min && valLength <= ops.max;
+        isWithinRange = valLength >= options.min && valLength <= options.max;
     if (!isOfType) {
-        messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
+        messages.push(getErrorMsgByKey(options, 'NOT_OF_TYPE', value));
     } else if (!isWithinRange) {
-        messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
+        messages.push(getErrorMsgByKey(options, 'NOT_WITHIN_RANGE', value));
     }
     return toValidationResult({
         result: isOfType && isWithinRange,
         messages: messages,
         value: value
     });
-});
+};
+var stringLengthValidator$ = function stringLengthValidator$(options, value) {
+    return stringLengthValidatorNoNormalize$(toStringLengthOptions(options), value);
+};
+var stringLengthValidator = fjl.curry(stringLengthValidator$);
 
 /**
  * Content generated by '{project-root}/build-scripts/VersionNumberReadStream.js'.
- * Generated Sat Feb 03 2018 12:21:18 GMT-0500 (Eastern Standard Time) 
+ * Generated Tue Apr 10 2018 20:41:55 GMT-0400 (EDT) 
  */
 
 var version = '0.6.10';
@@ -219,12 +257,21 @@ var version = '0.6.10';
  */
 
 exports.alnumValidator = alnumValidator;
+exports.alnumValidator1 = alnumValidator1;
 exports.digitValidator = digitValidator;
-exports.notEmptyOptions = notEmptyOptions;
+exports.digitValidator1 = digitValidator1;
+exports.toNotEmptyOptions = toNotEmptyOptions;
+exports.notEmptyValidatorNoNormalize$ = notEmptyValidatorNoNormalize$;
+exports.notEmptyValidator$ = notEmptyValidator$;
+exports.notEmptyValidator1 = notEmptyValidator1;
 exports.notEmptyValidator = notEmptyValidator;
-exports.regexValidatorOptions = regexValidatorOptions;
+exports.toRegexValidatorOptions = toRegexValidatorOptions;
+exports.regexValidatorNoNormalize$ = regexValidatorNoNormalize$;
+exports.regexValidator$ = regexValidator$;
 exports.regexValidator = regexValidator;
-exports.stringLengthOptions = stringLengthOptions;
+exports.toStringLengthOptions = toStringLengthOptions;
+exports.stringLengthValidatorNoNormalize$ = stringLengthValidatorNoNormalize$;
+exports.stringLengthValidator$ = stringLengthValidator$;
 exports.stringLengthValidator = stringLengthValidator;
 exports.defaultValueObscurator = defaultValueObscurator;
 exports.getErrorMsgByKey = getErrorMsgByKey;

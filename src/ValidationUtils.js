@@ -1,7 +1,7 @@
 /**
  * Created by Ely on 7/21/2014.
  * Initial idea borrowed from Zend Framework 2's Zend/Validator
- * @module ValidatorOptions
+ * @module ValidationUtils
  */
 import {assignDeep, assign, isset,
     call, isFunction, isString, apply, repeat, curry} from 'fjl';
@@ -12,7 +12,7 @@ export const
 
     /**
      * Default value obscurator.
-     * @function module:ValidatorOptions.defaultValueObscurator
+     * @function module:ValidationUtils.defaultValueObscurator
      * @param x {*} - Value to obscurate.
      * @returns {String} - Obscurated value.
      */
@@ -20,7 +20,7 @@ export const
 
     /**
      * Gets an error message by `messageTemplates` key from `options` object.
-     * @function module:ValidatorOptions.getErrorMsgByKey
+     * @function module:ValidationUtils.getErrorMsgByKey
      * @param options {Object}
      * @param key {(String|Function)}
      * @param value {*}
@@ -48,7 +48,7 @@ export const
 
     /**
      * Returns a strongly typed/normalized ValidatorOptions object.
-     * @function module:ValidatorOptions.toValidationOptions
+     * @function module:ValidationUtils.toValidationOptions
      * @param options {...Object}
      * @returns {Object}
      */
@@ -61,7 +61,7 @@ export const
 
     /**
      * Returns a strongly typed, normalized validation result object.
-     * @function module:ValidatorOptions.toValidationResult
+     * @function module:ValidationUtils.toValidationResult
      * @param options {...Object}
      * @returns {*}
      */

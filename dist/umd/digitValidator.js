@@ -3,11 +3,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.digitValidator = undefined;
+exports.digitValidator1 = exports.digitValidator = undefined;
 
 var _regexValidator = require('./regexValidator');
 
 var _fjl = require('fjl');
+
+/**
+ * Created by Ely on 1/21/2015.
+ * Module for validating digits.
+ * @module digitValidator
+ */
+var
 
 /**
  * @function module:digitValidator.digitValidator
@@ -15,11 +22,7 @@ var _fjl = require('fjl');
  * @param value {*}
  * @returns {Object}
  */
-/**
- * Created by Ely on 1/21/2015.
- * @module digitValidator
- */
-var digitValidator = exports.digitValidator = (0, _fjl.curry)(function (options, value) {
+digitValidator = exports.digitValidator = (0, _fjl.curry)(function (options, value) {
   return (0, _regexValidator.regexValidator)((0, _fjl.assignDeep)({
     pattern: /^\d+$/,
     messageTemplates: {
@@ -28,6 +31,17 @@ var digitValidator = exports.digitValidator = (0, _fjl.curry)(function (options,
       }
     }
   }, options), value);
-});
+}),
+
+
+/**
+ * Same as `digitValidator` though doesn't-require/ignores `options` parameter.
+ * @function module:digitValidator.digitValidator1
+ * @param value {*}
+ * @returns {Object}
+ */
+digitValidator1 = exports.digitValidator1 = function digitValidator1(value) {
+  return digitValidator(null, value);
+};
 
 exports.default = digitValidator;

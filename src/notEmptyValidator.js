@@ -26,13 +26,13 @@ export const
     /**
      * Un-curried version of notEmptyValidator which doesn't normalize the passed in
      * options parameter (since currently `notEmptyValidator` has no options other than it's `messageTemplates`
-     * field).  @see module:notEmptyValidator.notEmptyValidatorPure$ .
+     * field).  @see module:notEmptyValidator.notEmptyValidatorNoNormalize$ .
      * Also this method is useful when the user, themselves, have to call `toNotEmptyOptions` for a specific reason.
      * @param options {Object}
      * @param value {*}
      * @returns {*}
      */
-    notEmptyValidatorPure$ = (options, value) => {
+    notEmptyValidatorNoNormalize$ = (options, value) => {
         const result = !isEmpty(value),
             // If test failed
             messages = !result ? [getErrorMsgByKey(
@@ -49,7 +49,7 @@ export const
      * @returns {Object}
      */
     notEmptyValidator$ = (options, value) =>
-        notEmptyValidatorPure$(toNotEmptyOptions(options), value),
+        notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value),
 
     /**
      * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter).
@@ -57,7 +57,7 @@ export const
      * @param value {*}
      * @returns {Object}
      */
-    notEmptyValidator1 = value => notEmptyValidator1$(null, value),
+    notEmptyValidator1 = value => notEmptyValidatorNoNormalize$(null, value),
 
     /**
      * @function module:notEmptyValidator.notEmptyValidator

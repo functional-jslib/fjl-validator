@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.notEmptyValidator = exports.notEmptyOptions = undefined;
+exports.notEmptyValidator = exports.notEmptyValidator1 = exports.notEmptyValidator$ = exports.notEmptyValidatorNoNormalize$ = exports.toNotEmptyOptions = undefined;
 
 var _ValidationUtils = require('./ValidationUtils');
 
@@ -16,11 +16,14 @@ var _fjl = require('fjl');
 var
 
 /**
- * @function module:notEmptyValidator.notEmptyOptions
+ * Normalizes incoming options so that they are valid `notEmptyValidator` options.
+ * @note currently `notEmptyValidator` only takes the `messageTemplates` option (may
+ *  have more options in the future).
+ * @function module:notEmptyValidator.toNotEmptyOptions
  * @param options {Object}
  * @returns {Object}
  */
-notEmptyOptions = exports.notEmptyOptions = function notEmptyOptions(options) {
+toNotEmptyOptions = exports.toNotEmptyOptions = function toNotEmptyOptions(options) {
     return (0, _ValidationUtils.toValidationOptions)({
         messageTemplates: {
             EMPTY_NOT_ALLOWED: function EMPTY_NOT_ALLOWED() {
@@ -32,18 +35,52 @@ notEmptyOptions = exports.notEmptyOptions = function notEmptyOptions(options) {
 
 
 /**
+ * Un-curried version of notEmptyValidator which doesn't normalize the passed in
+ * options parameter (since currently `notEmptyValidator` has no options other than it's `messageTemplates`
+ * field).  @see module:notEmptyValidator.notEmptyValidatorNoNormalize$ .
+ * Also this method is useful when the user, themselves, have to call `toNotEmptyOptions` for a specific reason.
+ * @param options {Object}
+ * @param value {*}
+ * @returns {*}
+ */
+notEmptyValidatorNoNormalize$ = exports.notEmptyValidatorNoNormalize$ = function notEmptyValidatorNoNormalize$(options, value) {
+    var result = !(0, _fjl.isEmpty)(value),
+
+    // If test failed
+    messages = !result ? [(0, _ValidationUtils.getErrorMsgByKey)(options, 'EMPTY_NOT_ALLOWED', value)] : [];
+    return (0, _ValidationUtils.toValidationResult)({ result: result, messages: messages, value: value });
+},
+
+
+/**
+ * Un-curried version of `notEmptyValidator`
+ * @function module:notEmptyValidator.notEmptyValidator$
+ * @param options {Object}
+ * @param value {*}
+ * @returns {Object}
+ */
+notEmptyValidator$ = exports.notEmptyValidator$ = function notEmptyValidator$(options, value) {
+    return notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value);
+},
+
+
+/**
+ * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter).
+ * @function module:notEmptyValidator.notEmptyValidator1
+ * @param value {*}
+ * @returns {Object}
+ */
+notEmptyValidator1 = exports.notEmptyValidator1 = function notEmptyValidator1(value) {
+    return notEmptyValidatorNoNormalize$(null, value);
+},
+
+
+/**
  * @function module:notEmptyValidator.notEmptyValidator
  * @param options {Object}
  * @param value {*}
  * @returns {Object}
  */
-notEmptyValidator = exports.notEmptyValidator = (0, _fjl.curry)(function (options, value) {
-    var ops = notEmptyOptions(options),
-        result = !(0, _fjl.isEmpty)(value),
-
-    // If test failed
-    messages = !result ? [(0, _ValidationUtils.getErrorMsgByKey)(ops, 'EMPTY_NOT_ALLOWED', value)] : [];
-    return (0, _ValidationUtils.toValidationResult)({ result: result, messages: messages, value: value });
-});
+notEmptyValidator = exports.notEmptyValidator = (0, _fjl.curry)(notEmptyValidator$);
 
 exports.default = notEmptyValidator;

@@ -32,12 +32,12 @@ export const
      * @note Useful when the user has a need for calling `toRegexValidatorOptions`
      *  externally/from-outside-the-`regexValidator` call (helps to remove that one extra call in this case (since
      *  `regexValidator` calls `toRegexValidatorOptions` internally)).
-     * @function module:regexValidator.regexValidatorPure$
+     * @function module:regexValidator.regexValidatorNoNormalize$
      * @param options {Object}
      * @param value {*}
      * @returns {*}
      */
-    regexValidatorPure$ = (options, value) => {
+    regexValidatorNoNormalize$ = (options, value) => {
         const result = options.pattern.test(value),
 
             // If test failed
@@ -55,7 +55,7 @@ export const
      * @param value {*}
      * @returns {Object}
      */
-    regexValidator$ = (options, value) => regexValidatorPure$(toRegexValidatorOptions(options), value),
+    regexValidator$ = (options, value) => regexValidatorNoNormalize$(toRegexValidatorOptions(options), value),
 
     /**
      * Validates a value with the regex `pattern` option passed in.

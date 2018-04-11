@@ -9,16 +9,18 @@ var _fjl = require('fjl');
 
 var _fjlMutable = require('fjl-mutable');
 
-/**
- * Created by Ely on 7/21/2014.
- * Initial idea borrowed from Zend Framework 2's Zend/Validator
- * @module ValidatorOptions
- */
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /**
+                                                                                                                                                                                                     * Created by Ely on 7/21/2014.
+                                                                                                                                                                                                     * Initial idea borrowed from Zend Framework 2's Zend/Validator
+                                                                                                                                                                                                     * @module ValidationUtils
+                                                                                                                                                                                                     */
+
+
 var
 
 /**
  * Default value obscurator.
- * @function module:ValidatorOptions.defaultValueObscurator
+ * @function module:ValidationUtils.defaultValueObscurator
  * @param x {*} - Value to obscurate.
  * @returns {String} - Obscurated value.
  */
@@ -29,7 +31,7 @@ defaultValueObscurator = exports.defaultValueObscurator = function defaultValueO
 
 /**
  * Gets an error message by `messageTemplates` key from `options` object.
- * @function module:ValidatorOptions.getErrorMsgByKey
+ * @function module:ValidationUtils.getErrorMsgByKey
  * @param options {Object}
  * @param key {(String|Function)}
  * @param value {*}
@@ -59,7 +61,7 @@ getErrorMsgByKey = exports.getErrorMsgByKey = (0, _fjl.curry)(function (options,
 
 /**
  * Returns a strongly typed/normalized ValidatorOptions object.
- * @function module:ValidatorOptions.toValidationOptions
+ * @function module:ValidationUtils.toValidationOptions
  * @param options {...Object}
  * @returns {Object}
  */
@@ -68,21 +70,22 @@ toValidationOptions = exports.toValidationOptions = function toValidationOptions
         options[_key] = arguments[_key];
     }
 
-    var _options = (0, _fjlMutable.defineEnumProps$)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {});
-    return options.length ? (0, _fjl.apply)(_fjl.assignDeep, [_options].concat(options.filter(_fjl.isset))) : _options;
+    return _fjl.assignDeep.apply(undefined, [(0, _fjlMutable.defineEnumProps$)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
 },
 
 
 /**
  * Returns a strongly typed, normalized validation result object.
- * @function module:ValidatorOptions.toValidationResult
- * @param options {Object}
+ * @function module:ValidationUtils.toValidationResult
+ * @param options {...Object}
  * @returns {*}
  */
-toValidationResult = exports.toValidationResult = function toValidationResult(options) {
-    var _options = (0, _fjlMutable.defineEnumProps$)([[Boolean, 'result', false], [Array, 'messages', []]], {});
-    _options.value = undefined;
-    return options ? (0, _fjl.assign)(_options, options) : _options;
+toValidationResult = exports.toValidationResult = function toValidationResult() {
+    for (var _len2 = arguments.length, options = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        options[_key2] = arguments[_key2];
+    }
+
+    return _fjl.assignDeep.apply(undefined, [(0, _fjlMutable.defineEnumProps$)([[Boolean, 'result', false], [Array, 'messages', []]], {}), { value: undefined }].concat(_toConsumableArray(options.length ? options : [{}])));
 };
 
 exports.default = toValidationResult;

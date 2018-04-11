@@ -1,10 +1,10 @@
-import { apply, assign, assignDeep, call, curry, isEmpty, isFunction, isString, isset, repeat, typeOf } from 'fjl';
+import { assignDeep, call, curry, isEmpty, isFunction, isString, repeat, typeOf } from 'fjl';
 import { defineEnumProp$, defineEnumProps$ } from 'fjl-mutable';
 
 /**
  * Created by Ely on 7/21/2014.
  * Initial idea borrowed from Zend Framework 2's Zend/Validator
- * @module ValidatorOptions
+ * @module ValidationUtils
  */
 const defaultValueObscurator = x => repeat((x + '').length, '*');
 const getErrorMsgByKey = curry((options, key, value) => {
@@ -25,30 +25,27 @@ const getErrorMsgByKey = curry((options, key, value) => {
         }
         return message;
     });
-const toValidationOptions = (...options) => {
-        const _options = defineEnumProps$([
+const toValidationOptions = (...options) =>
+        assignDeep(defineEnumProps$([
             [Object, 'messageTemplates', {}],
             [Boolean, 'valueObscured', false],
             [Function, 'valueObscurator', defaultValueObscurator]
-        ], {});
-        return options.length ?
-            apply(assignDeep, [_options].concat(options.filter(isset))) :
-            _options;
-    };
-const toValidationResult = options => {
-        const _options = defineEnumProps$([
-            [Boolean, 'result', false],
-            [Array, 'messages', []]
-        ], {});
-        _options.value = undefined;
-        return options ? assign(_options, options) : _options;
-    };
+        ], {}), ...(options.length ? options : [{}]));
+const toValidationResult = (...options) =>
+        assignDeep(defineEnumProps$([
+                [Boolean, 'result', false],
+                [Array, 'messages', []]
+            ], {}),
+            {value: undefined},
+            ...(options.length ? options : [{}])
+        );
 
 /**
  * Created by Ely on 7/21/2014.
+ * Module for validating a value by regular expression.
  * @module regexValidator
  */
-const regexValidatorOptions = options => {
+const toRegexValidatorOptions = options => {
         const [_options] = defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./);
         _options.messageTemplates = {
             DOES_NOT_MATCH_PATTERN: (value, ops) =>
@@ -58,20 +55,22 @@ const regexValidatorOptions = options => {
         };
         return options ? assignDeep(_options, options) : _options;
     };
-const regexValidator = curry((options, value) => {
-        const ops = regexValidatorOptions(options),
-            result = ops.pattern.test(value),
+const regexValidatorNoNormalize$ = (options, value) => {
+        const result = options.pattern.test(value),
 
             // If test failed
             messages = !result ?
-                [getErrorMsgByKey(ops, 'DOES_NOT_MATCH_PATTERN', value)] :
+                [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] :
                 [];
 
         return toValidationResult({ result, messages, value });
-    });
+    };
+const regexValidator$ = (options, value) => regexValidatorNoNormalize$(toRegexValidatorOptions(options), value);
+const regexValidator = curry(regexValidator$);
 
 /**
  * Created by Ely on 1/21/2015.
+ * Module for validating alpha-numeric values.
  * @module alnumValidator
  */
 /**
@@ -80,23 +79,21 @@ const regexValidator = curry((options, value) => {
  * @param value {*}
  * @returns {Object}
  */
-const alnumValidator = curry((options, value) => regexValidator(assignDeep({
-        pattern: /^[\da-z]+$/i,
-        messageTemplates: {
-            DOES_NOT_MATCH_PATTERN: x =>
-                `Value is not alpha-numeric.  Value received: '${x}'.`
-        }
-    }, options), value));
+const alnumValidator = curry((options, value) =>
+        regexValidator(assignDeep({
+            pattern: /^[\da-z]+$/i,
+            messageTemplates: {
+                DOES_NOT_MATCH_PATTERN: x =>
+                    `Value is not alpha-numeric.  Value received: '${x}'.`
+            }
+        }, options), value)
+    );
+const alnumValidator1 = value => alnumValidator(null, value);
 
 /**
  * Created by Ely on 1/21/2015.
+ * Module for validating digits.
  * @module digitValidator
- */
-/**
- * @function module:digitValidator.digitValidator
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
  */
 const digitValidator = curry((options, value) => regexValidator(assignDeep({
         pattern: /^\d+$/,
@@ -106,33 +103,37 @@ const digitValidator = curry((options, value) => regexValidator(assignDeep({
                 `Value received: "${x}".`
         }
     }, options), value));
+const digitValidator1 = value => digitValidator(null, value);
 
 /**
  * Created by Ely on 7/21/2014.
  * @module notEmptyValidator
  */
-const notEmptyOptions = options =>
+const toNotEmptyOptions = options =>
         toValidationOptions({
             messageTemplates: {
                 EMPTY_NOT_ALLOWED: () =>
                     'Empty values are not allowed.'
             }
         }, options);
-const notEmptyValidator = curry((options, value) => {
-        const ops = notEmptyOptions(options),
-            result = !isEmpty(value),
+const notEmptyValidatorNoNormalize$ = (options, value) => {
+        const result = !isEmpty(value),
             // If test failed
             messages = !result ? [getErrorMsgByKey(
-                ops, 'EMPTY_NOT_ALLOWED', value
+                options, 'EMPTY_NOT_ALLOWED', value
             )] : [];
         return toValidationResult({result, messages, value});
-    });
+    };
+const notEmptyValidator$ = (options, value) =>
+        notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value);
+const notEmptyValidator1 = value => notEmptyValidatorNoNormalize$(null, value);
+const notEmptyValidator = curry(notEmptyValidator$);
 
 /**
  * Created by Ely on 1/21/2015.
  * @module stringLengthValidator
  */
-const stringLengthOptions = options => {
+const toStringLengthOptions = options => {
         const _options = defineEnumProps$([
             [Number, 'min', 0],
             [Number, 'max', Number.MAX_SAFE_INTEGER]
@@ -150,28 +151,30 @@ const stringLengthOptions = options => {
 
         return options ? assignDeep(_options, options) : _options;
     };
-const stringLengthValidator = curry((options, value) => {
-        const ops = stringLengthOptions(options),
-            messages = [],
+const stringLengthValidatorNoNormalize$ = (options, value) => {
+        const messages = [],
             isOfType = isString(value),
             valLength = isOfType ? value.length : 0,
-            isWithinRange = valLength >= ops.min && valLength <= ops.max;
+            isWithinRange = valLength >= options.min && valLength <= options.max;
         if (!isOfType) {
-            messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
+            messages.push(getErrorMsgByKey(options, 'NOT_OF_TYPE', value));
         }
         else if (!isWithinRange) {
-            messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
+            messages.push(getErrorMsgByKey(options, 'NOT_WITHIN_RANGE', value));
         }
         return toValidationResult({
             result: isOfType && isWithinRange,
             messages,
             value
         });
-    });
+    };
+const stringLengthValidator$ = (options, value) =>
+        stringLengthValidatorNoNormalize$(toStringLengthOptions(options), value);
+const stringLengthValidator = curry(stringLengthValidator$);
 
 /**
  * Content generated by '{project-root}/build-scripts/VersionNumberReadStream.js'.
- * Generated Sat Feb 03 2018 12:21:18 GMT-0500 (Eastern Standard Time) 
+ * Generated Tue Apr 10 2018 20:41:55 GMT-0400 (EDT) 
  */
  
 const version = '0.6.10';
@@ -180,4 +183,4 @@ const version = '0.6.10';
  * @module fjlValidator
  */
 
-export { alnumValidator, digitValidator, notEmptyOptions, notEmptyValidator, regexValidatorOptions, regexValidator, stringLengthOptions, stringLengthValidator, defaultValueObscurator, getErrorMsgByKey, toValidationOptions, toValidationResult, version };
+export { alnumValidator, alnumValidator1, digitValidator, digitValidator1, toNotEmptyOptions, notEmptyValidatorNoNormalize$, notEmptyValidator$, notEmptyValidator1, notEmptyValidator, toRegexValidatorOptions, regexValidatorNoNormalize$, regexValidator$, regexValidator, toStringLengthOptions, stringLengthValidatorNoNormalize$, stringLengthValidator$, stringLengthValidator, defaultValueObscurator, getErrorMsgByKey, toValidationOptions, toValidationResult, version };

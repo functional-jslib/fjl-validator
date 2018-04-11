@@ -1,4 +1,4 @@
-import {stringLengthOptions, stringLengthValidator} from '../src/stringLengthValidator';
+import {toStringLengthOptions, stringLengthValidator} from '../src/stringLengthValidator';
 import {typeOf, repeat, subsequences, concat} from 'fjl';
 import {expect} from 'chai';
 import {peek} from './utils';
@@ -8,8 +8,8 @@ import {peek} from './utils';
  */
 describe('stringLengthValidator', function () {
 
-    describe ('#stringLengthOptions', function () {
-        const strLenOptions = stringLengthOptions();
+    describe ('#toStringLengthOptions', function () {
+        const strLenOptions = toStringLengthOptions();
         test ('should have a min and max property.', function () {
             expect(typeOf(strLenOptions.min)).to.equal(Number.name);
             expect(typeOf(strLenOptions.max)).to.equal(Number.name);

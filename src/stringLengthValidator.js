@@ -9,11 +9,12 @@ import {defineEnumProps$} from 'fjl-mutable';
 export const
 
     /**
-     * @function module:stringLengthValidator.stringLengthOptions
+     * Normalizes (ensures has expected properties) `stringLengthValidator`'s options.
+     * @function module:stringLengthValidator.toStringLengthOptions
      * @param options {Object}
      * @returns {Object}
      */
-    stringLengthOptions = options => {
+    toStringLengthOptions = options => {
         const _options = defineEnumProps$([
             [Number, 'min', 0],
             [Number, 'max', Number.MAX_SAFE_INTEGER]
@@ -32,9 +33,17 @@ export const
         return options ? assignDeep(_options, options) : _options;
     },
 
-    toStringLengthOptions = stringLengthOptions,
-
-    stringLengthValidator1$ = (options, value) => {
+    /**
+     * Same as `stringLengthValidator$` except doesn't normalize the incoming options.
+     * Useful for cases where you have to call `toStringLengthValidator` options from outside of the `stringLengthValidator` call (
+     *  helps eliminate one call in this case).  Also useful for extreme cases (cases where you have hundreds of validators
+     *  and want to pull out every ounce of performance from them possible).
+     * @function module:stringLengthValidator.stringLengthValidatorNoNormalize$
+     * @param options {Object}
+     * @param value {*}
+     * @returns {Object}
+     */
+    stringLengthValidatorNoNormalize$ = (options, value) => {
         const messages = [],
             isOfType = isString(value),
             valLength = isOfType ? value.length : 0,
@@ -52,17 +61,22 @@ export const
         });
     },
 
-    stringLengValidator$ = (options, value) => stringLengthValidator1$(toStringLengthOptions(options), value),
-
-    stringLengthValidator1 = curry(stringLengthValidator1$),
+    /**
+     * @function module:stringLengthValidator.stringLengthValidator$
+     * @param options {Object}
+     * @param value {*}
+     * @returns {Object}
+     */
+    stringLengthValidator$ = (options, value) =>
+        stringLengthValidatorNoNormalize$(toStringLengthOptions(options), value),
 
     /**
      * @function module:stringLengthValidator.stringLengthValidator
      * @param options {Object}
-     * @value {*}
+     * @param value {*}
      * @returns {Object}
      */
-    stringLengthValidator = curry(stringLengValidator$)
+    stringLengthValidator = curry(stringLengthValidator$)
 
 ;
 
