@@ -31,7 +31,7 @@ describe('#fjl.validator.toValidationOptions', function () {
             assert.throws(() => toValidationOptions({messageTemplates: 99}), Error);
         });
         test ('should have the expected properties as expected types.', function () {
-            let validator = peek(toValidationOptions());
+            let validator = toValidationOptions();
             Object.keys(expectedPropertyAndTypes).forEach(key => {
                 expect(validator.hasOwnProperty(key)).to.equal(true);
                 expect(typeOf(validator[key])).to.equal(expectedPropertyAndTypes[key]);
