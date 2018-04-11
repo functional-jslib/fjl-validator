@@ -21,7 +21,7 @@ Functional validator(s) implementation (inspired by Zend/Validator validators).
 
 ## Usage:
 `fjl-validator` wasn't meant to be used alone though what a user will most likely want is 
-[`fjl-input-filter`]() though below is a standalone hypothetical scenario:
+[`fjl-input-filter`](https://github.com/functional-jslib/fjl-input-filter) though below is a standalone hypothetical scenario:
 
 ```
 // Let's say this is somewhere on the server:
