@@ -7,6 +7,8 @@ Functional validator(s) implementation (inspired by Zend/Validator validators).
 - [Docs](#docs)
 - [Quick Docs](#quick-docs)
 - [Supported Platforms](#supported-platforms)
+- [Development](#development)
+- [Testing](#testing)
 - [Resources](#resources)
 - [License](#license)
 
@@ -18,40 +20,7 @@ Functional validator(s) implementation (inspired by Zend/Validator validators).
     'fjl-input-filter' lib exports methods for this).
 
 ## Usage:
-
-### Usage example 1 (barebones usage):
-```
-import {regexValidator, stringLengthValidator} from 'fjl-validator';
-
-const formFieldValidators = {
-
-    // ...
-
-    location: [
-    
-        stringLength(fromDefaultStringLengthOps({min: 3, max: 144})),
-
-        regexValidator({
-            pattern: /^[a-z\d][a-z\d\s.\-,"'\n\t\r]*$/gim,
-            messageTemplates: {
-                DOES_NOT_MATCH_PATTERN: () =>
-                    `Locations format is incorrect.  ` +
-                    `Only letters, spaces, numbers, commas, dashes, and plain quotes (', ") are allowed.`
-            }
-        })
-    ],
-    
-    // ...
-    
-    },
-    
-    validateFormData = formData => {
-        // @todo finish examples
-    }
-;
-
-                
-```
+@todo include usage examples
 
 ### Importing:
 ### In Browser:
@@ -99,18 +68,18 @@ To see what other methods are exported in lib you can read the in-depth docs at
 
 ### Exported:
 
-#### `toValidationOptions(...options) {ValidatorOptions}`
+#### `toValidationOptions(...options) {ValidationOptions}`
 Returns valid validation options objects that can be used as validator options;
 
 ##### Params
 - `options {Object}`
   - `valueObscured {Boolean}` 
-  - `valueObscurator {Function}` - Obscurator function; E.g. `x => "..."`
-  - `messageTemplates {Object}` - Key value pairs of error messages or error message callbacks (
-    See virtual type `MessageTemplateCallback` above).
+  - `valueObscurator {Function.<String>}` - Obscurator function; E.g. `x => "..."`
+  - `messageTemplates {Object.<String, (MessageTemplateCallback|Function|String)>}` - Key value pairs of error messages or error message callbacks (
+    See virtual type `MessageTemplateCallback` @todo here).
     
 ##### Returns
-`{ValidatorOptions}` -  A strictly typed options object;  Merges passed in options onto strictly typed version which 
+`{ValidationOptions}` -  A strictly typed options object;  Merges passed in options onto strictly typed version which 
  will throw clear error message(s) if type(s) for properties do not match.
  
 #### `toValidationResult(...options) {ValidationResult}`
@@ -127,12 +96,29 @@ Returns a valid validation result object;
  A strictly typed validation result object;  Merges passed in options onto strictly typed version which 
  will throw clear error message(s) if type(s) do not match.
 
+#### `regexValidator(options, value) {ValidationResult}`
+Validates values using a regular expression.
+
+##### Params
+- `options {Object}`
+  - Inherits all properties from `{ValidationOptions}` type (`{valueObscurator, valueObscured, messageTemplates}`).
+  - `pattern {RegExp}`
+  - `messageTemplates {Object}`
+    - `DOES_NOT_MATCH_PATTERN` - Key on `messageTemplates` to populate for custom 'does-not-match-pattern' message.
+- `value {*}` - Value to validate.
+
+##### Returns
+`{ValidationResult}`
+
 #### `alnumValidator(options, value) {ValidationResult}`
 Alpha-numeric value validator.
 
 ##### Params
-- `options {Object}`
+- `options {Object}` - Same as `regexValidator`'s options.
 - `value {*}`
+
+##### Composed from
+`regexValidator`
 
 ##### Returns
 `{ValidationResult}`
@@ -142,18 +128,6 @@ Same as `alnumValidator` except doesn't require an options object.
 
 ##### Params
 - `value {*}`
-
-##### Returns
-`{ValidationResult}`
-
-#### `regexValidator(options, value) {ValidationResult}`
-Validates values using a regular expression.
-
-##### Params
-- `options {Object}`
-  - `pattern {RegExp}`
-  - `messageTemplates {Object}`
-- `value {*}` - Value to validate.
 
 ##### Returns
 `{ValidationResult}`
@@ -172,14 +146,18 @@ Validates digits.
 `{ValidationResult}`
 
 #### `notEmptyValidator(options, value) {ValidationResult}`
-Validates that a value is not empty;  I.e., 
+Validates that a value is not an empty;  I.e., 
 Checks that value is not one of 
 ```
     [[], '', null, undefined, {}, Map(), Set(), WeakSet(), WeakMap()]
 ```
+We'll refer to this set as `Empty` here.
 
 ##### Params
 - `options {Object}`
+  - Inherits all properties from `{ValidationOptions}` type (`{valueObscurator, valueObscured, messageTemplates}`) also.
+  - `messageTemplates`
+    - `EMPTY_NOT_ALLOWED` - Key that can be populated for custom message on receiving an `Empty` (in virtual types).
 - `value {*}` - Value to validate.
 
 ##### Returns
@@ -208,18 +186,22 @@ Validates a string's length.
 
 
 ## Virtual Types:
-- `ValidatorOptions {Object}`
-  - `valueObscured {Boolean}` - Whether to obscure value in validation error messages
-    when value doesn't pass validation.  Default `false`.
-  - `valueObscurator {Function}` - Function that takes the value
-    and returns an obscured version;  E.g., 
+#### `Empty` 
+One of `[null, undefined, '', 0, false, [], {}, Map(), Set(), WeakMap(), WeakSet()]`.
+
+#### `ValidationOptions {Object}`
+##### Properties
+- `valueObscured {Boolean}` - Whether to obscure value in validation error messages
+when value doesn't pass validation.  Default `false`.
+- `valueObscurator {Function}` - Function that takes the value
+and returns an obscured version;  E.g., 
 ```
 const obscurator = x => Array.fill('*', 0, (x + '').length).join('');
 obscure('hello') === '*****' // equals `true` 
 ```
-  - `messageTemplates {Object}` - Key-value pair hash where
-    the values should be either strings and/or functions in the form of `(value, options) => ""` 
-    or functions that return error messages for failed validations;  E.g.,
+- `messageTemplates {Object}` - Key-value pair hash where
+the values should be either strings and/or functions in the form of `(value, options) => ""` 
+or functions that return error messages for failed validations;  E.g.,
 ```
 import {digitValidator} from 'fjl-validator';
 
@@ -236,16 +218,36 @@ import {digitValidator} from 'fjl-validator';
     })
     ; // true
 ```
-- `MessageTemplateCallback {Function}`
-  - `value {*}`
-  - `options {ValidatorOptions}`
-- `ValidatorOptions {Object}`
-  - `result {Boolean}` - Whether value passes validation or not.
-  - `messages {Array}` - Validation error messages if any.
-  - `value {*}` - Value that was validated.
+
+#### `MessageTemplateCallback {Function}`
+##### Parameters
+- `value {*}`
+- `options {ValidationOptions}`
+
+#### `ValidationResult {Object}`
+##### Properties
+- `result {Boolean}` - Whether value passes validation or not.
+- `messages {Array.<String>}` - Validation error messages if any.
+- `value {*}` - Value that was validated.
+
+#### `Validator {Function}` - Curried validation function.  Parameters:
+##### Parameters
+- `options {ValidationOptions}` - Validation/Validator options.
+- `value {*}` - Value to be validated.
 
 #### `version {String}` 
 Library's version number.
+
+## Development
+- For commands see './package.json' scripts.
+
+#### Dir structure
+- Everything is in './src'.
+- Distrubution is in './dist'.
+- Docs are in './docs'.
+
+## Testing
+Using `jest`, `chai` - See './package.json' scripts.
 
 ## Requirements:
 - Javascript Ecmascript 5+.

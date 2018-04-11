@@ -50,6 +50,8 @@
 <li><a href="#docs">Docs</a></li>
 <li><a href="#quick-docs">Quick Docs</a></li>
 <li><a href="#supported-platforms">Supported Platforms</a></li>
+<li><a href="#development">Development</a></li>
+<li><a href="#testing">Testing</a></li>
 <li><a href="#resources">Resources</a></li>
 <li><a href="#license">License</a></li>
 </ul>
@@ -60,34 +62,8 @@
 <li>Needed a base library that could later, easily, accomadate validating via optionally using promises (
   'fjl-input-filter' lib exports methods for this).</li>
 </ul>
-<h2>Usage:</h2><h3>Usage example 1 (barebones usage):</h3><pre class="prettyprint source"><code>import {regexValidator, stringLengthValidator} from 'fjl-validator';
-
-const formFieldValidators = {
-
-    // ...
-
-    location: [
-
-        stringLength(fromDefaultStringLengthOps({min: 3, max: 144})),
-
-        regexValidator({
-            pattern: /^[a-z\d][a-z\d\s.\-,&quot;'\n\t\r]*$/gim,
-            messageTemplates: {
-                DOES_NOT_MATCH_PATTERN: () =>
-                    `Locations format is incorrect.  ` +
-                    `Only letters, spaces, numbers, commas, dashes, and plain quotes (', &quot;) are allowed.`
-            }
-        })
-    ],
-
-    // ...
-
-    },
-
-    validateFormData = formData => {
-        // @todo finish examples
-    }
-;</code></pre><h3>Importing:</h3><h3>In Browser:</h3><p>See desired export type below:</p>
+<h2>Usage:</h2><p>@todo include usage examples</p>
+<h3>Importing:</h3><h3>In Browser:</h3><p>See desired export type below:</p>
 <ul>
 <li>'./dist/amd/' - Asynchronous module format.</li>
 <li>'./dist/cjs/' - CommonJs module format.</li>
@@ -107,17 +83,17 @@ own validation functions, from the sources in lib (except for 'ValidationUtils` 
 <a href="https://functional-jslib.github.io/fjl-validator/">https://functional-jslib.github.io/fjl-validator/</a> .</p>
 </li>
 </ul>
-<h3>Exported:</h3><h4><code>toValidationOptions(...options) {ValidatorOptions}</code></h4><p>Returns valid validation options objects that can be used as validator options;</p>
+<h3>Exported:</h3><h4><code>toValidationOptions(...options) {ValidationOptions}</code></h4><p>Returns valid validation options objects that can be used as validator options;</p>
 <h5>Params</h5><ul>
 <li><code>options {Object}</code><ul>
 <li><code>valueObscured {Boolean}</code> </li>
-<li><code>valueObscurator {Function}</code> - Obscurator function; E.g. <code>x =&gt; &quot;...&quot;</code></li>
-<li><code>messageTemplates {Object}</code> - Key value pairs of error messages or error message callbacks (
-See virtual type <code>MessageTemplateCallback</code> above).</li>
+<li><code>valueObscurator {Function.&lt;String&gt;}</code> - Obscurator function; E.g. <code>x =&gt; &quot;...&quot;</code></li>
+<li><code>messageTemplates {Object.&lt;String, (MessageTemplateCallback|Function|String)&gt;}</code> - Key value pairs of error messages or error message callbacks (
+See virtual type <code>MessageTemplateCallback</code> @todo here).</li>
 </ul>
 </li>
 </ul>
-<h5>Returns</h5><p><code>{ValidatorOptions}</code> -  A strictly typed options object;  Merges passed in options onto strictly typed version which 
+<h5>Returns</h5><p><code>{ValidationOptions}</code> -  A strictly typed options object;  Merges passed in options onto strictly typed version which 
  will throw clear error message(s) if type(s) for properties do not match.</p>
 <h4><code>toValidationResult(...options) {ValidationResult}</code></h4><p>Returns a valid validation result object;</p>
 <h5>Params</h5><ul>
@@ -131,25 +107,30 @@ See virtual type <code>MessageTemplateCallback</code> above).</li>
 <h5>Returns</h5><p><code>{ValidationResult}</code> - 
  A strictly typed validation result object;  Merges passed in options onto strictly typed version which 
  will throw clear error message(s) if type(s) do not match.</p>
+<h4><code>regexValidator(options, value) {ValidationResult}</code></h4><p>Validates values using a regular expression.</p>
+<h5>Params</h5><ul>
+<li><code>options {Object}</code><ul>
+<li>Inherits all properties from <code>{ValidationOptions}</code> type (<code>{valueObscurator, valueObscured, messageTemplates}</code>).</li>
+<li><code>pattern {RegExp}</code></li>
+<li><code>messageTemplates {Object}</code><ul>
+<li><code>DOES_NOT_MATCH_PATTERN</code> - Key on <code>messageTemplates</code> to populate for custom 'does-not-match-pattern' message.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>value {*}</code> - Value to validate.</li>
+</ul>
+<h5>Returns</h5><p><code>{ValidationResult}</code></p>
 <h4><code>alnumValidator(options, value) {ValidationResult}</code></h4><p>Alpha-numeric value validator.</p>
 <h5>Params</h5><ul>
-<li><code>options {Object}</code></li>
+<li><code>options {Object}</code> - Same as <code>regexValidator</code>'s options.</li>
 <li><code>value {*}</code></li>
 </ul>
+<h5>Composed from</h5><p><code>regexValidator</code></p>
 <h5>Returns</h5><p><code>{ValidationResult}</code></p>
 <h4><code>alnumValidator1(value) {ValidationResult}</code></h4><p>Same as <code>alnumValidator</code> except doesn't require an options object.</p>
 <h5>Params</h5><ul>
 <li><code>value {*}</code></li>
-</ul>
-<h5>Returns</h5><p><code>{ValidationResult}</code></p>
-<h4><code>regexValidator(options, value) {ValidationResult}</code></h4><p>Validates values using a regular expression.</p>
-<h5>Params</h5><ul>
-<li><code>options {Object}</code><ul>
-<li><code>pattern {RegExp}</code></li>
-<li><code>messageTemplates {Object}</code></li>
-</ul>
-</li>
-<li><code>value {*}</code> - Value to validate.</li>
 </ul>
 <h5>Returns</h5><p><code>{ValidationResult}</code></p>
 <h4><code>digitValidator(options, value) {ValidationResult}</code></h4><p>Validates digits.  </p>
@@ -159,10 +140,18 @@ See virtual type <code>MessageTemplateCallback</code> above).</li>
 <li><code>value {*}</code> - Value to validate.</li>
 </ul>
 <h5>Returns</h5><p><code>{ValidationResult}</code></p>
-<h4><code>notEmptyValidator(options, value) {ValidationResult}</code></h4><p>Validates that a value is not empty;  I.e., 
+<h4><code>notEmptyValidator(options, value) {ValidationResult}</code></h4><p>Validates that a value is not an empty;  I.e., 
 Checks that value is not one of </p>
-<pre class="prettyprint source"><code>    [[], '', null, undefined, {}, Map(), Set(), WeakSet(), WeakMap()]</code></pre><h5>Params</h5><ul>
-<li><code>options {Object}</code></li>
+<pre class="prettyprint source"><code>    [[], '', null, undefined, {}, Map(), Set(), WeakSet(), WeakMap()]</code></pre><p>We'll refer to this set as <code>Empty</code> here.</p>
+<h5>Params</h5><ul>
+<li><code>options {Object}</code><ul>
+<li>Inherits all properties from <code>{ValidationOptions}</code> type (<code>{valueObscurator, valueObscured, messageTemplates}</code>) also.</li>
+<li><code>messageTemplates</code><ul>
+<li><code>EMPTY_NOT_ALLOWED</code> - Key that can be populated for custom message on receiving an <code>Empty</code> (in virtual types).</li>
+</ul>
+</li>
+</ul>
+</li>
 <li><code>value {*}</code> - Value to validate.</li>
 </ul>
 <h5>Returns</h5><p><code>{ValidationResult}</code></p>
@@ -181,9 +170,8 @@ Checks that value is not one of </p>
 <li><code>value {*}</code> - Value to validate.</li>
 </ul>
 <h5>Returns</h5><p><code>{ValidationResult}</code></p>
-<h2>Virtual Types:</h2><ul>
-<li><p><code>ValidatorOptions {Object}</code></p>
-<ul>
+<h2>Virtual Types:</h2><h4><code>Empty</code></h4><p>One of <code>[null, undefined, '', 0, false, [], {}, Map(), Set(), WeakMap(), WeakSet()]</code>.</p>
+<h4><code>ValidationOptions {Object}</code></h4><h5>Properties</h5><ul>
 <li><code>valueObscured {Boolean}</code> - Whether to obscure value in validation error messages
 when value doesn't pass validation.  Default <code>false</code>.</li>
 <li><code>valueObscurator {Function}</code> - Function that takes the value
@@ -194,33 +182,42 @@ the values should be either strings and/or functions in the form of <code>(value
 or functions that return error messages for failed validations;  E.g.,</p>
 <pre class="prettyprint source"><code>import {digitValidator} from 'fjl-validator';
 
-const validateDigits = digitValidator({
-    messageTemplates: {
-        DOES_NOT_MATCH_PATTERN: x =>
-            `Only digits accepted.  Value entered: &quot;${x}&quot;.`
-    }
-});
+  const validateDigits = digitValidator({
+      messageTemplates: {
+          DOES_NOT_MATCH_PATTERN: x =>
+              `Only digits accepted.  Value entered: &quot;${x}&quot;.`
+      }
+  });
 
-deepEquals(validateDigits('abcdef'), {
-    result: false,
-    messages: ['Only digits accepted.  Value entered: &quot;abcdef&quot;']
-})
-; // true</code></pre></li>
+  deepEquals(validateDigits('abcdef'), {
+      result: false,
+      messages: ['Only digits accepted.  Value entered: &quot;abcdef&quot;']
+  })
+  ; // true</code></pre></li>
 </ul>
-</li>
-<li><code>MessageTemplateCallback {Function}</code><ul>
+<h4><code>MessageTemplateCallback {Function}</code></h4><h5>Parameters</h5><ul>
 <li><code>value {*}</code></li>
-<li><code>options {ValidatorOptions}</code></li>
+<li><code>options {ValidationOptions}</code></li>
 </ul>
-</li>
-<li><code>ValidatorOptions {Object}</code><ul>
+<h4><code>ValidationResult {Object}</code></h4><h5>Properties</h5><ul>
 <li><code>result {Boolean}</code> - Whether value passes validation or not.</li>
-<li><code>messages {Array}</code> - Validation error messages if any.</li>
+<li><code>messages {Array.&lt;String&gt;}</code> - Validation error messages if any.</li>
 <li><code>value {*}</code> - Value that was validated.</li>
 </ul>
-</li>
+<h4><code>Validator {Function}</code> - Curried validation function.  Parameters:</h4><h5>Parameters</h5><ul>
+<li><code>options {ValidationOptions}</code> - Validation/Validator options.</li>
+<li><code>value {*}</code> - Value to be validated.</li>
 </ul>
 <h4><code>version {String}</code></h4><p>Library's version number.</p>
+<h2>Development</h2><ul>
+<li>For commands see './package.json' scripts.</li>
+</ul>
+<h4>Dir structure</h4><ul>
+<li>Everything is in './src'.</li>
+<li>Distrubution is in './dist'.</li>
+<li>Docs are in './docs'.</li>
+</ul>
+<h2>Testing</h2><p>Using <code>jest</code>, <code>chai</code> - See './package.json' scripts.</p>
 <h2>Requirements:</h2><ul>
 <li>Javascript Ecmascript 5+.</li>
 </ul>
@@ -250,7 +247,7 @@ deepEquals(validateDigits('abcdef'), {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 10 2018 20:42:00 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Apr 11 2018 10:12:37 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
