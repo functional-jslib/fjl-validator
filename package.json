@@ -16,7 +16,7 @@
     "test": "jest --testMatch **/tests/test-*.js"
   },
   "dependencies": {
-    "fjl": "0.23.1",
+    "fjl": "1",
     "fjl-mutable": "^0.16.0"
   },
   "devDependencies": {
@@ -29,7 +29,6 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
-    "fjl-range": "^1.0.3",
     "graceful-fs": "^4.1.11",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",

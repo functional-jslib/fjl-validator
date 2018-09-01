@@ -3,8 +3,7 @@
  * Initial idea borrowed from Zend Framework 2's Zend/Validator
  * @module ValidationUtils
  */
-import {assignDeep, assign, isset,
-    call, isFunction, isString, apply, repeat, curry} from 'fjl';
+import {assignDeep, call, isFunction, isString, repeat, curry} from 'fjl';
 
 import {defineEnumProps$} from 'fjl-mutable';
 

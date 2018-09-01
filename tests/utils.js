@@ -1,13 +1,8 @@
-import {range$} from 'fjl-range';
+import {range, log, peek} from 'fjl';
+
+export {log, peek};
 
 export const
-
-    log = console.log.bind(console),
-
-    peek = x => {
-        log(x);
-        return x;
-    },
 
     genRan = (min, max) => Math.round(Math.random() * max),
 
@@ -15,7 +10,7 @@ export const
         String.fromCharCode(genRan(min, max)),
 
     genRanStr = (min = 0, max = 100) =>
-        range$(min, max)
+        range(min, max)
             .reduce(str => str + genRanChar(min, max), '')
 
 ;

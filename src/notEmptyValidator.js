@@ -33,12 +33,12 @@ export const
      * @returns {*}
      */
     notEmptyValidatorNoNormalize$ = (options, value) => {
-        const result = !isEmpty(value),
+        const result = isEmpty(value),
             // If test failed
-            messages = !result ? [getErrorMsgByKey(
+            messages = result ? [getErrorMsgByKey(
                 options, 'EMPTY_NOT_ALLOWED', value
             )] : [];
-        return toValidationResult({result, messages, value});
+        return toValidationResult({result: !result, messages, value});
     },
 
     /**
