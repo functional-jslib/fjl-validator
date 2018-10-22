@@ -3,7 +3,7 @@
  * Initial idea borrowed from Zend Framework 2's Zend/Validator
  * @module ValidationUtils
  */
-import {assignDeep, call, isFunction, isString, repeat, curry} from 'fjl';
+import {assignDeep, call, isFunction, isString, repeat, curry, toTypeRefName, typeOf} from 'fjl';
 
 import {defineEnumProps$} from 'fjl-mutable';
 
@@ -71,7 +71,14 @@ export const
             ], {}),
             {value: undefined},
             ...(options.length ? options : [{}])
-        )
+        ),
+
+    isOneOf = (x, ...types) => {
+        const typeName = typeOf(x);
+        return types
+            .map(toTypeRefName)
+            .some(name => typeName === name);
+    }
 
 ;
 

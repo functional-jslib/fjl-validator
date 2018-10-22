@@ -16,7 +16,6 @@
     "test": "jest --testMatch **/tests/test-*.js"
   },
   "dependencies": {
-    "fjl": "1",
     "fjl-mutable": "^0.16.0"
   },
   "devDependencies": {
