@@ -2,16 +2,15 @@
  * Created by edelacruz on 7/28/2014.
  */
 import {regexValidator, toRegexValidatorOptions} from '../src/regexValidator';
-import {expect, assert} from 'chai';
-import {typeOf, keys} from 'fjl';
+import {keys} from 'fjl';
 
 describe('regexValidator`', function () {
 
     describe ('#toRegexValidatorOptions', function () {
         test ('should be an object with a `pattern` property', function () {
-            expect(toRegexValidatorOptions().hasOwnProperty('pattern')).to.equal(true);
+            expect(toRegexValidatorOptions(undefined).hasOwnProperty('pattern')).toEqual(true);
         });
-        test ('should generate expected error messages from ')
+        test ('should have error case(s) tests', () => {});
     });
 
     describe ('#regexValidator', function () {
@@ -23,16 +22,16 @@ describe('regexValidator`', function () {
                     'The value passed in does not match pattern"'
                     + ops.pattern + '".  Value passed in: "'
                     + value + '".';
-            expect(result).to.equal(false);
-            expect(messages[0]).to.equal(expectedErrMsg('', exampleOps));
+            expect(result).toEqual(false);
+            expect(messages[0]).toEqual(expectedErrMsg('', exampleOps));
         });
 
         const regexTest = (keyValMap, expected) => {
                keys(keyValMap).map(key => {
                     test ('should return ' + expected + ' when testing "' + key + '" with "' + keyValMap[key] + '".', function () {
                         const value = keyValMap[key],
-                            {result, messages} = regexValidator({pattern: new RegExp(key, 'i')}, value);
-                        expect(result).to.equal(expected);
+                            {result} = regexValidator({pattern: new RegExp(key, 'i')}, value);
+                        expect(result).toEqual(expected);
                     });
                 });
             },
