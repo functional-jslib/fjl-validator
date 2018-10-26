@@ -1,7 +1,5 @@
 import {toStringLengthOptions, stringLengthValidator} from '../src/stringLengthValidator';
-import {typeOf, repeat, subsequences, concat} from 'fjl';
-import {expect} from 'chai';
-import {peek} from './utils';
+import {typeOf, repeat, subsequences} from 'fjl';
 
 /**
  * Created by elyde on 1/15/2016.
@@ -11,14 +9,14 @@ describe('stringLengthValidator', function () {
     describe ('#toStringLengthOptions', function () {
         const strLenOptions = toStringLengthOptions();
         test ('should have a min and max property.', function () {
-            expect(typeOf(strLenOptions.min)).to.equal(Number.name);
-            expect(typeOf(strLenOptions.max)).to.equal(Number.name);
+            expect(typeOf(strLenOptions.min)).toEqual(Number.name);
+            expect(typeOf(strLenOptions.max)).toEqual(Number.name);
         });
         test ('should have a default value of `0` for `min` property.', function () {
-            expect(strLenOptions.min).to.equal(0);
+            expect(strLenOptions.min).toEqual(0);
         });
         test ('should have a default value of `' + Number.MAX_SAFE_INTEGER + '` for `max` property.', function () {
-            expect(strLenOptions.max).to.equal(Number.MAX_SAFE_INTEGER);
+            expect(strLenOptions.max).toEqual(Number.MAX_SAFE_INTEGER);
         });
     });
 
@@ -36,9 +34,9 @@ describe('stringLengthValidator', function () {
                     expectedMsg = `Value is not a String.  ` +
                         `Value type received: ${typeOf(value)}.  ` +
                         `Value received: "${value}".`;
-                    expect(result).to.equal(expected);
-                    expect(messages.length).to.equal(messagesLength);
-                    expect(messages[0]).to.equal(expectedMsg);
+                    expect(result).toEqual(expected);
+                    expect(messages.length).toEqual(messagesLength);
+                    expect(messages[0]).toEqual(expectedMsg);
                 });
         });
         test ('it should return a validation result object with a `result` of `false` and ' +
@@ -54,9 +52,9 @@ describe('stringLengthValidator', function () {
                 .map(x => [false, x, 1])
                 .forEach(([expected, value, messagesLength]) => {
                     const {result, messages} = strValidator(value);
-                    expect(result).to.equal(expected);
-                    expect(messages.length).to.equal(messagesLength);
-                    expect(messages[0]).to.equal(errMsgTmpl(value, exampleOps));
+                    expect(result).toEqual(expected);
+                    expect(messages.length).toEqual(messagesLength);
+                    expect(messages[0]).toEqual(errMsgTmpl(value, exampleOps));
                 });
         });
         test ('it should return a validation result object with a `result` of `true` and ' +
@@ -66,8 +64,8 @@ describe('stringLengthValidator', function () {
                 .map(x => [true, x, 0])
                 .forEach(([expected, value, messagesLength]) => {
                     const {result, messages} = strValidator(value);
-                    expect(result).to.equal(expected);
-                    expect(messages.length).to.equal(messagesLength);
+                    expect(result).toEqual(expected);
+                    expect(messages.length).toEqual(messagesLength);
                 });
         });
     });
