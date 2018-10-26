@@ -1,195 +1,191 @@
 /**
- * Created by elyde on 12/13/2016.
+ * @todo Consolidate use of hard-coded path strings in this file into './gulpfileConfig.json'.
  */
+const
 
-'use strict';
-
-const fs = require('fs'),
+    /** System and config includes **/
     path = require('path'),
-    crypto = require('crypto'),
+    fs = require('fs'),
     packageJson = require('./package'),
-    gulpConfig = packageJson.buildConfig,
+    {buildConfig, buildConfig: {srcsGlob}} = packageJson,
 
     /** Gulp Modules (or modules used by gulp) **/
     gulp =          require('gulp'),
-    eslint =        require('gulp-eslint'),
     concat =        require('gulp-concat'),
+    eslint =        require('gulp-eslint'),
     header =        require('gulp-header'),
     uglify =        require('gulp-uglify'),
-    fncallback =    require('gulp-fncallback'),
     jsdoc =         require('gulp-jsdoc3'),
-    lazyPipe =      require('lazypipe'),
-    gulpUglifyEs =  require('gulp-uglify-es').default,
     gulpRollup =    require('gulp-better-rollup'),
     gulpBabel =     require('gulp-babel'),
 
-    // Rollup plugins
+    /** Rollup plugins **/
     rollup = require('rollup'),
     rollupBabel = require('rollup-plugin-babel'),
     rollupResolve = require('rollup-plugin-node-resolve'),
 
     /** Util Modules **/
-    chalk = require('chalk'),
     del = require('del'),
+    moduleMemberListsReadStream = require('./node-scripts/moduleMemberListsReadStream'),
+    getReadStreamFinish = (resolve, reject) => err => err ? reject(err) : resolve(),
 
-    {dist, docs} = gulpConfig.paths,
-    {amd, iife, cjs, es6Module, umd} = gulpConfig.folderNames,
-    {inputModuleName, inputFilePath,
-        outputFileNameMin, outputFileName, srcsGlob} = gulpConfig,
+    /** Paths **/
+    {docs: docsBuildPath, dist: buildPathRoot} = buildConfig.paths,
 
-    buildPath = (...tails) => path.join.apply(path, [dist].concat(tails)),
-    VersionNumberReadStream = require('./build-scripts/VersionNumberReadStream'),
-    yargs = require('yargs'),
-
-    argv = yargs()
-        .default('dev', false)
-        .default('skipLint', false)
-        .alias('skip-lint', 'skipLint')
-        .argv,
-
-    {skipLint} = argv,
-
-    eslintPipe = lazyPipe()
-        .pipe(eslint)
-        .pipe(eslint.format)
-        .pipe(eslint.failOnError),
+    buildPath = (...tails) => path.join(buildPathRoot, ...tails),
 
     log = console.log.bind(console),
 
-    deleteFilePaths = pathsToDelete => {
-        return del(pathsToDelete)
+    // Build paths
+    cjsBuildPath = buildPath(buildConfig.folderNames.cjs),
+    amdBuildPath  = buildPath(buildConfig.folderNames.amd),
+    umdBuildPath  = buildPath(buildConfig.folderNames.umd),
+    iifeBuildPath  = buildPath(buildConfig.folderNames.iife),
+    es6BuildPath  = buildPath(buildConfig.folderNames.es6Module),
+    packageBuildPath  = buildPath(buildConfig.folderNames.package),
+
+    // Module names
+    {outputFileNameMin, outputFileName, outputFileNameMjs, inputModuleName} = buildConfig,
+
+    {series, dest, src, parallel} = gulp,
+
+    deleteFilePaths = pathsToDelete =>
+        del(pathsToDelete)
             .then(deletedPaths => {
                 if (deletedPaths.length) {
-                    log(chalk.dim('\nThe following paths have been deleted: \n - ' + deletedPaths.join('\n - ') + '\n'));
+                    log('\nThe following paths have been deleted: \n - ' + deletedPaths.join('\n -'));
                     return;
                 }
-                log(chalk.dim(' - No paths to clean.') + '\n', '--mandatory');
+                log(' - No paths to clean.\n', '--mandatory');
             })
-            .catch(log);
-    };
+            .catch(log),
 
-gulp.task('version', () => {
-    return (new VersionNumberReadStream())
-        .pipe(fs.createWriteStream('./src/generated/version.js'));
-});
+    cleanTask = () => {
+        let pathsToDelete = [cjsBuildPath, amdBuildPath, umdBuildPath, iifeBuildPath, es6BuildPath]
+            .map(partialPath => path.join(partialPath, '**', '*.js'));
+        return deleteFilePaths(pathsToDelete);
+    },
 
-gulp.task('clean', () => {
-    let pathsToDelete = [amd, cjs, es6Module, iife, umd]
-        .map(partialPath => buildPath(partialPath, '**', '*.js'));
-    return deleteFilePaths(pathsToDelete);
-});
+    eslintTask = () =>
+        src([srcsGlob, '!node_modules/**'])
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(eslint.failOnError()),
 
-gulp.task('eslint', () => gulp.src([
-    srcsGlob,
-    './tests/**/*-test.js',
-    '!node_modules/**'
-]).pipe(eslintPipe()));
+    umdTask = () =>
+        src(srcsGlob)
+        .pipe(gulpBabel(buildConfig.buildUmdOptions.babel))
+        .pipe(dest(umdBuildPath)),
 
-gulp.task('umd', ['eslint'], () =>
-    gulp.src(srcsGlob)
-        .pipe(gulpBabel(gulpConfig.umdRollup.babel))
-        .pipe(gulp.dest(buildPath(umd))));
+    amdTask = () =>
+        src(srcsGlob)
+            .pipe(gulpBabel(buildConfig.buildAmdOptions.babel))
+            .pipe(dest(amdBuildPath)),
 
-gulp.task('amd', ['eslint'], () =>
-    gulp.src(srcsGlob)
-        .pipe(gulpBabel(gulpConfig.amdRollup.babel))
-        .pipe(gulp.dest(buildPath(amd))));
+    cjsTask = () =>
+        src(srcsGlob)
+            .pipe(gulpBabel(buildConfig.buildCjsOptions.babel))
+            .pipe(dest(cjsBuildPath)),
 
-gulp.task('cjs', ['eslint'], () =>
-    gulp.src(srcsGlob)
-        .pipe(gulpBabel(gulpConfig.cjsRollup.babel))
-        .pipe(gulp.dest(buildPath(cjs))));
+    iifeTask = () =>
+        rollup.rollup({
+            input: `src/${inputModuleName}.js`,
+            plugins: [
+                rollupResolve(),
+                rollupBabel({
+                    babelrc: false,
+                    presets: [
+                        [
+                            'es2015',
+                            {
+                                modules: false
+                            }
+                        ]
+                    ],
+                    plugins: [
+                        'external-helpers'
+                    ],
+                    exclude: 'node_modules/**' // only transpile our source code
+                })
+            ]
+        })
+        .then(bundle => bundle.write({
+            file: path.join(iifeBuildPath, outputFileName),
+            format: 'iife',
+            name: inputModuleName,
+            sourcemap: true
+        })),
 
-gulp.task('iife', ['eslint', 'version'], () =>
-    rollup.rollup({
-        input: inputFilePath,
-        plugins: [
-            rollupResolve(),
-            rollupBabel({
-                babelrc: false,
-                presets: [['es2015', {
-                            modules: false
-                        }]],
-                plugins: [
-                    'external-helpers'
-                ],
-                exclude: 'node_modules/**' // only transpile our source code
-            })
-        ],
-        external: ['fjl-mutable', 'fjl'],
-    })
-    .then(bundle => bundle.write({
-        file: buildPath(iife, outputFileName),
-        format: 'iife',
-        name: inputModuleName,
-        globals: {fjl: 'fjl', 'fjl-mutable': 'fjlMutable'},
-        sourcemap: true
-    })));
+    es6ModuleTask = () =>
+        src(`./src/${inputModuleName}.js`)
+            .pipe(gulpRollup(null, {moduleName: inputModuleName, format: 'es'}))
+            .pipe(concat(path.join(es6BuildPath, outputFileName)))
+            .pipe(dest('./')),
 
-gulp.task('es6-module', ['eslint', 'version'], () => {
-    return Promise.all([
-        gulp.src(inputFilePath)
-            .pipe(gulpRollup({external: ['fjl-mutable', 'fjl']}, {
-                name: inputModuleName,
-                format: 'es',
-            }))
-            .pipe(concat(buildPath(es6Module, outputFileName)))
-            .pipe(gulp.dest('./'))
+    uglifyTask = () => {
+        const data = {};
+        return src(path.join(iifeBuildPath, outputFileName))
+            .pipe(concat(path.join(iifeBuildPath, outputFileNameMin)))
+            .pipe(uglify(buildConfig.uglifyOptions))
+            .pipe(header('/**! ' + outputFileName + ' <%= version %> | License: <%= license %> | ' +
+                'Built-on: <%= (new Date()) %> **/', Object.assign(data, packageJson)))
+            .pipe(dest('./'));
+    },
+
+    buildJsForPackageTask = () => {
+        return src(`./src/${inputModuleName}.js`)
+            .pipe(gulpRollup(null, {moduleName: inputModuleName, format: 'es'}))
+            .pipe(concat(path.join(packageBuildPath, outputFileNameMjs)))
+            .pipe(dest('./'))
+            .pipe(gulpBabel(buildConfig.buildCjsOptions.babel))
+            .pipe(concat(path.join(packageBuildPath, outputFileName)))
+            .pipe(dest('./'));
+    },
+
+    buildJsTask = parallel(series(iifeTask, uglifyTask), cjsTask, amdTask, umdTask, es6ModuleTask, buildJsForPackageTask),
+
+    buildTask = series(cleanTask, buildJsTask),
+
+    readmeTask = () => {
+        const moduleMemberListOutputPath = './markdown-fragments-generated/module-and-member-list.md';
+
+        return deleteFilePaths([
+            './markdown-fragments-generated/*.md',
+            './README.md'
         ])
-        .then(_ =>
-            gulp.src(buildPath(es6Module, outputFileName))
-                .pipe(gulpUglifyEs())
-                .pipe(concat(buildPath(es6Module, outputFileNameMin)))
-                .pipe(gulp.dest('./')));
-});
+            .then(() => new Promise((resolve, reject) => moduleMemberListsReadStream()
+                .pipe(fs.createWriteStream(moduleMemberListOutputPath))
+                .on('finish', getReadStreamFinish(resolve, reject))
+            ))
+            .then(() => new Promise((resolve, reject) => gulp.src(buildConfig.readme)
+                .pipe(concat('./README.md'))
+                .pipe(gulp.dest('./'))
+                .on('finish', getReadStreamFinish(resolve, reject))
+            ));
+    },
 
-gulp.task('uglify', ['iife'], () => {
-    const data = {
-        version: packageJson.version,
-        license: packageJson.license,
-        fileHash: ''
-    };
-    return gulp.src(buildPath(iife, outputFileName))
-        .pipe(concat(buildPath(iife, outputFileNameMin)))
-        .pipe(uglify({}))
-        .pipe(fncallback((file, enc, cb) => {
-            let hasher = crypto.createHash('md5');
-            hasher.update(file.contents.toString(enc));
-            data.fileHash = hasher.digest('hex');
-            return cb();
-        }))
-        .pipe(header('/**! ' + outputFileNameMin + ' <%= version %> | License: <%= license %> | ' +
-            'md5checksum: <%= fileHash %> | Built-on: <%= (new Date()) %> **/', data))
-        .pipe(gulp.dest('./'));
-});
+    docTask = series(readmeTask, function docTask () {
+        return deleteFilePaths([`${docsBuildPath}/**/*`])
+            .then(() => new Promise((resolve, reject) =>
+                src(['README.md', srcsGlob])
+                    .on('finish', getReadStreamFinish(resolve, reject))
+                    .pipe(jsdoc(buildConfig.jsdoc))
+            ));
+    }),
 
-gulp.task('build-js', ['version', 'iife', 'uglify', 'cjs', 'amd', 'umd', 'es6-module']);
+    watchTask = series(buildTask, function watchTask () {
+            return gulp.watch([srcsGlob, './node_modules/**'], buildJsTask);
+        }
+    );
 
-gulp.task('jsdoc', () =>
-    deleteFilePaths(['./docs/**/*'])
-        .then(_ =>
-            gulp.src(['README.md', srcsGlob], {read: false})
-                .pipe(jsdoc({
-                    opts: {
-                        'template': 'templates/default',  // same as -t templates/default
-                        'encoding': 'utf8',               // same as -e utf8
-                        'destination': docs,       // same as -d ./out/
-                        'recurse': true
-                    }
-                }))
-        )
-);
+    gulp.task('eslint', eslintTask);
 
-gulp.task('build-docs', ['jsdoc']);
+    gulp.task('build', buildTask);
 
-gulp.task('build', ['build-js']);
+    gulp.task('readme', readmeTask);
 
-gulp.task('watch', ['build'], () =>
-    gulp.watch([
-        srcsGlob,
-        './node_modules/**'
-    ], [
-        'build-js'
-    ]));
+    gulp.task('docs', docTask);
 
-gulp.task('default', ['build', 'watch']);
+    gulp.task('watch', watchTask);
+
+    gulp.task('default', watchTask);

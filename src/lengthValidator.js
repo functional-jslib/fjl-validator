@@ -3,7 +3,7 @@
  * @module lengthValidator
  */
 import {toValidationResult, getErrorMsgByKey, toValidationOptions, isOneOf} from './ValidationUtils';
-import {typeOf, isString, assignDeep, curry, isset} from 'fjl';
+import {typeOf, assignDeep, curry} from 'fjl';
 import {defineEnumProps$} from 'fjl-mutable';
 
 export const
@@ -47,7 +47,7 @@ export const
             isWithinRange,
             result = false
         ;
-        if (isOneOf(value, ['Null', 'Undefined', 'NaN', 'Symbol']) || !value.hasOwnProperty('length')) {
+        if (isOneOf(value, 'Null', 'Undefined', 'NaN', 'Symbol') || !value.hasOwnProperty('length')) {
             messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
             return toValidationResult({result, messages, value});
         }
