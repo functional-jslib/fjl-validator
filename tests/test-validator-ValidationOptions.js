@@ -1,9 +1,7 @@
 /**
  * Created by elyde on 1/15/2016.
  */
-import {typeOf, keys, isString, concat, isType, jsonClone, log, peek} from 'fjl';
-import {expect, assert} from 'chai';
-
+import {typeOf, keys, isString, concat} from 'fjl';
 import {toValidationOptions, toValidationResult, getErrorMsgByKey} from '../src/ValidationUtils';
 
 describe('#fjl.validator.toValidationOptions', function () {
@@ -23,26 +21,26 @@ describe('#fjl.validator.toValidationOptions', function () {
 
             // Ensure passed in allowed type is merged in
             keys(messageTemplates).forEach(key => {
-                expect(v.messageTemplates[key]).to.equal(messageTemplates[key]);
+                expect(v.messageTemplates[key]).toEqual(messageTemplates[key]);
             });
 
             // Ensure not allowed type is blocked
             // messages must be of type `Array` so should throw error
-            assert.throws(() => toValidationOptions({messageTemplates: 99}), Error);
+            expect(() => toValidationOptions({messageTemplates: 99})).toThrow(Error);
         });
         test ('should have the expected properties as expected types.', function () {
             let validator = toValidationOptions();
             Object.keys(expectedPropertyAndTypes).forEach(key => {
-                expect(validator.hasOwnProperty(key)).to.equal(true);
-                expect(typeOf(validator[key])).to.equal(expectedPropertyAndTypes[key]);
+                expect(validator.hasOwnProperty(key)).toEqual(true);
+                expect(typeOf(validator[key])).toEqual(expectedPropertyAndTypes[key]);
             });
         });
         test ('should still return a valid "ValidationOptions" object even if receiving `null` or `undefined`.', () => {
             [toValidationOptions(null), toValidationOptions()]
                 .forEach(validationOptions => {
                     Object.keys(expectedPropertyAndTypes).forEach(key => {
-                        expect(validationOptions.hasOwnProperty(key)).to.equal(true);
-                        expect(typeOf(validationOptions[key])).to.equal(expectedPropertyAndTypes[key]);
+                        expect(validationOptions.hasOwnProperty(key)).toEqual(true);
+                        expect(typeOf(validationOptions[key])).toEqual(expectedPropertyAndTypes[key]);
                     });
                 });
         });
@@ -61,22 +59,21 @@ describe('#fjl.validator.toValidationOptions', function () {
             testErrorMessages = concat([
                 [getErrorMsgByKey(validationOptions, EMPTY_NOT_ALLOWED, 'someEmptyValue')],
                 [getErrorMsgByKey(validationOptions, EXAMPLE_CASE, 'someValue')],
-                [getErrorMsgByKey(validationOptions, _ => emptyNotAllowedMsg, 'someValue')]
+                [getErrorMsgByKey(validationOptions, () => emptyNotAllowedMsg, 'someValue')]
             ]);
         test ('should return a `string` when key exists on options.messageTemplates', function () {
-            expect(testErrorMessages.every(x => isString(x))).to.equal(true);
+            expect(testErrorMessages.every(x => isString(x))).toEqual(true);
         });
         test ('should have returned expected error messages when key is valid (exists and is string or function)', function () {
-            const someValue = 'someValue',
-                messages = testErrorMessages;
-            expect(messages.length).to.equal(3);
-            expect(messages[0]).to.equal(messageTemplates.EMPTY_NOT_ALLOWED);
-            expect(messages[1]).to.equal(messageTemplates.EXAMPLE_CASE('someValue', validationOptions));
-            expect(messages[2]).to.equal(emptyNotAllowedMsg);
+            const messages = testErrorMessages;
+            expect(messages.length).toEqual(3);
+            expect(messages[0]).toEqual(messageTemplates.EMPTY_NOT_ALLOWED);
+            expect(messages[1]).toEqual(messageTemplates.EXAMPLE_CASE('someValue', validationOptions));
+            expect(messages[2]).toEqual(emptyNotAllowedMsg);
         });
         test ('should return `undefined` if `key` is not a function and `key` doesn\'t exist on ' +
             '`messageTemplates`', function () {
-            expect(getErrorMsgByKey(validationOptions, 'SOME_OTHER_CASE', 'someValue')).to.equal(undefined);
+            expect(getErrorMsgByKey(validationOptions, 'SOME_OTHER_CASE', 'someValue')).toEqual(undefined);
         });
     });
 
@@ -90,7 +87,7 @@ describe ('#fjl.validator.toValidationResults', function () {
             ['messages', 'result', 'value']
                 .every(key => vResults.hasOwnProperty(key))
         )
-            .to.equal(true);
+            .toEqual(true);
     });
 
     test ('should have properties that obey their types', function () {
@@ -110,14 +107,15 @@ describe ('#fjl.validator.toValidationResults', function () {
                     return vResults[name] === correct;
                 })
         )
-            .to.equal(true);
+            .toEqual(true);
 
         // Assert types are obeyed when values are of incorrect types
-        cases.map(([name, Type, _, incorrect]) => {
-            assert.throws(
-                ((_name, _incorrect) => () => vResults[_name] = _incorrect)(name, incorrect),
-                Error
-            );
+        cases.map(([name, __, _, incorrect]) => {
+            expect(
+                ((_name, _incorrect) =>
+                    () => { vResults[_name] = _incorrect; }
+                )(name, incorrect)
+            ).toThrow(Error);
         });
 
     });
@@ -129,8 +127,8 @@ describe ('#fjl.validator.toValidationResults', function () {
         [toValidationResult(null), toValidationResult()]
             .forEach(validationResult => {
                 Object.keys(expectedPropertyAndTypes).forEach(key => {
-                    expect(validationResult.hasOwnProperty(key)).to.equal(true);
-                    expect(typeOf(validationResult[key])).to.equal(expectedPropertyAndTypes[key]);
+                    expect(validationResult.hasOwnProperty(key)).toEqual(true);
+                    expect(typeOf(validationResult[key])).toEqual(expectedPropertyAndTypes[key]);
                 });
             });
     });

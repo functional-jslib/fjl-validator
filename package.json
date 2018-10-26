@@ -8,12 +8,17 @@
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
   "scripts": {
-    "pre-publish": "npm test && npm run build && npm run docs",
-    "prepub": "npm run pre-publish",
-    "build": "gulp clean && gulp build && npm run test-builds",
-    "docs": "gulp jsdoc",
+    "build": "gulp docs build && npm run test-builds",
     "test-builds": "jest --testMatch **/tests/*-test-*.js",
-    "test": "jest --testMatch **/tests/test-*.js"
+    "test": "jest --testMatch **/tests/test-*.js",
+    "eslint": "gulp eslint",
+    "readme": "gulp readme",
+    "docs": "gulp docs"
+  },
+  "directories": {
+    "test": "tests",
+    "lib": "src",
+    "doc": "README.md"
   },
   "dependencies": {
     "fjl": "^1.6.2",
@@ -147,6 +152,41 @@
           "babel-plugin-add-module-exports",
           "transform-es2015-modules-umd"
         ]
+      }
+    },
+    "readme": {
+      "files": [
+        "./markdown-fragments/readme-header.md",
+        "./markdown-fragments/sections/sections.md",
+        "./markdown-fragments/sections/requirements.md",
+        "./markdown-fragments/sections/getting-started.md",
+        "./markdown-fragments/sections/docs.md",
+        "./markdown-fragments-generated/module-and-member-list.md",
+        "./markdown-fragments/sections/docs/docs-footer.md",
+        "./markdown-fragments/sections/development.md",
+        "./markdown-fragments/sections/license.md",
+        "./markdown-fragments/sections/resources.md",
+        "./markdown-fragments/sections/changelog.md"
+      ]
+    },
+    "jsdoc": {
+      "opts": {
+        "template": "node_modules/tui-jsdoc-template",
+        "encoding": "utf8",
+        "destination": "./docs/",
+        "recurse": true,
+        "templates": {
+          "useCollapsibles": false
+        }
+      },
+      "templates": {
+        "logo": {
+          "url": "http://elycruz.com/fjl-logo-v2.svg",
+          "width": "144px",
+          "height": "55px",
+          "link": "https://github.com/functional-jslib/fjl-validator"
+        },
+        "footerText": "fjl-validator library - BSD 3.0 License - JsDoc Template -> tui-jsdoc-template - by NHN Entertainment - Frontend Development Lab"
       }
     }
   }
