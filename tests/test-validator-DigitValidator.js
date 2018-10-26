@@ -2,8 +2,6 @@
  * Created by elyde on 1/15/2016.
  */
 import {digitValidator} from '../src/digitValidator';
-import {expect, assert} from 'chai';
-import {typeOf} from 'fjl';
 
 describe('digitValidator', function () {
 
@@ -24,9 +22,9 @@ describe('digitValidator', function () {
         // Validate values and expect value[0] to be return value of validation check
         values.forEach(function (value) {
             const {result, messages} = validator(value[1]);
-            expect(result).to.equal(value[0]);
+            expect(result).toEqual(value[0]);
             if (value[0] === false) {
-                expect(messages.length >= 1).to.equal(true);
+                expect(messages.length >= 1).toEqual(true);
             }
         });
     });
