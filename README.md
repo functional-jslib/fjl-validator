@@ -1,25 +1,34 @@
+[![Build Status](https://travis-ci.org/functional-jslib/fjl-validator.png)](https://travis-ci.org/functional-jslib/fjl-validator)
+[![GitHub version](https://badge.fury.io/gh/functional-jslib%2Ffjl-validator.svg)](http://badge.fury.io/gh/functional-jslib%2Ffjl-validator)
+[![NPM version](https://badge.fury.io/js/fjl-validator.svg)](http://badge.fury.io/js/fjl-validator)
+[![Dependencies](https://david-dm.org/functional-jslib/fjl-validator.png)](https://david-dm.org/functional-jslib/fjl-validator)
 # fjl-validator
 Functional validator(s) implementation (inspired by Zend/Validator validators).
 
-## In this doc:
-- [Reasoning](#reasoning-for-lib)
-- [Usage](#usage)
+## Sections in Readme:
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
 - [Docs](#docs)
-- [Quick Docs](#quick-docs)
-- [Supported Platforms](#supported-platforms)
+- [Motivation](#motivations)
 - [Development](#development)
-- [Testing](#testing)
-- [Resources](#resources)
+- [Supported Platforms](#supported-platforms)
 - [License](#license)
+- [Resources](#resources)
+- [Change log](#change-log)
 
-## Reasoning for lib
-- Needed a way to supply custom error messages to different value validation scenarios.
-- Wanted to use validators in a functional way.
-- Needed a base library from which to build more complex ones ('fjl-input-filter', 'fjl-validator-recaptcha' etc.).
-- Needed a base library that could later, easily, accomadate validating via optionally using promises (
-    'fjl-input-filter' lib exports methods for this).
+## Requirements:
+- Javascript Ecmascript 5+.
 
-## Usage:
+### Supported Platforms:
+
+#### Browsers
+- IE9+, and all other modern day browsers.
+
+#### NodeJs
+- 8+
+
+## Getting Started:
+
 `fjl-validator` wasn't meant to be used alone though what a user will most likely want is 
 [`fjl-input-filter`](https://github.com/functional-jslib/fjl-input-filter) though below is a standalone hypothetical scenario:
 
@@ -108,10 +117,44 @@ import {...} from 'fjl-validator';
 const {...} = require('fjl-validator');
 ```
 
-## Docs:
-(https://functional-jslib.github.io/fjl-validator/) [https://functional-jslib.github.io/fjl-validator/]
+## Docs
 
-## Quick Docs:
+**JSDocs** are here (https://functional-jslib.github.io/fjl-validator/) [https://functional-jslib.github.io/fjl-validator/].
+
+### `alnumValidator` methods
+ ```
+alnumValidator, alnumValidator1, default
+```
+### `digitValidator` methods
+ ```
+digitValidator, digitValidator1, default
+```
+### `lengthValidator` methods
+ ```
+toLengthOptions, lengthValidator, default
+```
+### `notEmptyValidator` methods
+ ```
+toNotEmptyOptions, notEmptyValidatorNoNormalize$, notEmptyValidator$,
+notEmptyValidator1, notEmptyValidator, default
+```
+### `regexValidator` methods
+ ```
+toRegexValidatorOptions, regexValidatorNoNormalize$, regexValidator$,
+regexValidator, default
+```
+### `stringLengthValidator` methods
+ ```
+toStringLengthOptions, stringLengthValidatorNoNormalize$,
+stringLengthValidator$, stringLengthValidator, default
+```
+### `ValidationUtils` methods
+ ```
+defaultValueObscurator, getErrorMsgByKey, toValidationOptions,
+toValidationResult, isOneOf, default
+```
+
+### Quick Docs:
 
 ### Preamble:
 All methods that are multiary (take two or more arguments), and don't end with a '$'
@@ -305,30 +348,67 @@ import {digitValidator} from 'fjl-validator';
 #### `version {String}` 
 Library's version number.
 
-## Development
+## Development:
 - For commands see './package.json' scripts.
 
-#### Dir structure
+### Dir structure
 - Everything is in './src'.
 - Distrubution is in './dist'.
 - Docs are in './docs'.
 
-## Testing
-Using `jest`, `chai` - See './package.json' scripts.
+### Testing
+Using `jest` (see './package.json' scripts).
 
-## Requirements:
-- Javascript Ecmascript 5+.
+## License:
+BSD 3 Clause - Included in sources.
 
-### Supported Platforms:
+## Resources:
+- - Zend/Validator - https://zendframework.github.io/zend-validator/intro/
 
-#### Browsers
-- IE9+, and all other modern day browsers.
 
-#### NodeJs
-- 8+
+## Change log
 
-## Resources
-- Zend/Validator - https://zendframework.github.io/zend-validator/intro/
+### 1.6.2
+- String support for `takeWhile`, `group`, and `groupBy`, `dropWhileEnd`.
+- Tablelized tests for `takeWhile`, `dropWhileEnd`, and `dropWhileEnd`.
 
-## License
-BSD 3.0
+### 1.6.0
+- A few more functions now support strings:
+    - `map`, `intersperse`, `append`, `reverse`, and `concat`.
+- `range` function doc-block updated.
+- `listUtil` functions updated and their docs unblocked from jsdocs.
+- `listUtil` methods are now exported from 'src/list'.
+- Tests overhaul stage 1 progress.  
+    - Converted some tests to table format (where implementations were touched and 
+        where the functional programming style was too extreme).
+    - Removed some library functions from tests where said functions were not being tested (use native functions for tests only (no-library functions intermingle (in tests))).
+- Cleaned up imports in some places to protect from cyclic dependency issues.
+
+### 1.5.1, 1.5.2
+- Added './types/index.d.ts' file.
+
+### 1.5.0
+#### Breaking changes
+- `reduceRightUntil` changed to `reduceUntilRight`.
+- `lengthsToSmallest` changed to `toShortest`.
+
+##### Changes that affect development of the library:
+- package.json.scripts - Removed unnecessary commands (cleaned up scripts section).
+- Updated gulp to version 4.
+- Updated gulpfile to use new `gulp 4` api.
+- Removed unnecessary dev dependencies:
+    - random-js
+    - lazypipe
+    - requirejs
+    - gulp-fncallback
+
+#### Other changes
+- Cleaned up README.md to reflect latest changes.
+- Curried functions (functions curried via `curry*` functions) now retain their arity property value (`length` value).
+
+### 1.3.0
+- Added `noop` (no-op (op as in operation)) method (useful as a placeholder for variables/properties that should always contain a function).
+- Added test for `noop` addition.
+- Updated './docs'.
+- Added entry in 'docs' config to take into account upcoming logo for 'fjl'.
+

@@ -1,14 +1,14 @@
 {
   "name": "fjl-validator",
-  "version": "0.6.17",
+  "version": "0.6.20",
   "description": "Functional validators for forms and the like.\"",
   "main": "dist/cjs/fjlValidator.js",
-  "module": "dist/es6-module/fjl-validator.js",
+  "module": "dist/es6-module/fjl-validator.mjs",
   "repository": "git@github.com:functional-jslib/fjl-validator.git",
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD",
   "scripts": {
-    "build": "gulp docs build && npm run test-builds",
+    "build": "gulp build docs && npm run test-builds",
     "test-builds": "jest --testMatch **/tests/*-test-*.js",
     "test": "jest --testMatch **/tests/test-*.js",
     "eslint": "gulp eslint",
@@ -22,34 +22,37 @@
   },
   "dependencies": {
     "fjl": "^1.6.2",
-    "fjl-mutable": "^0.16.0"
+    "fjl-mutable": "^0.17.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/plugin-transform-modules-amd": "^7.1.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/plugin-transform-modules-umd": "^7.1.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@types/jest": "^23.3.7",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-jest": "^22.4.3",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "babel-register": "^6.26.0",
-    "del": "^2.2.2",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
+    "babel-upgrade": "0.0.24",
+    "del": "^3.0.0",
     "gulp": "4.0.0",
-    "gulp-babel": "^7.0.0",
-    "gulp-better-rollup": "^1.1.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-better-rollup": "^3.4.0",
     "gulp-concat": "^2.6.1",
     "gulp-duration": "0.0.0",
-    "gulp-eslint": "^3.0.1",
-    "gulp-header": "^1.8.9",
+    "gulp-eslint": "^5.0.0",
+    "gulp-header": "^2.0.5",
     "gulp-if": "^2.0.2",
-    "gulp-jsdoc3": "^1.0.1",
-    "gulp-replace": "^0.5.4",
-    "gulp-uglify": "^2.1.2",
-    "jest": "^22.4.3",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^2.7.1",
+    "gulp-jsdoc3": "^2.0.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-uglify": "^3.0.1",
+    "jest": "^23.6.0",
+    "rollup": "^0.66.6",
+    "rollup-plugin-babel": "^4.0.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "tui-jsdoc-template": "^1.2.2"
   },
@@ -89,71 +92,57 @@
         "sourcemap": true
       }
     },
-    "amdRollup": {
-      "babelPlugin": {
+    "buildAmdOptions": {
+      "babel": {
+        "babelrc": false,
+        "presets": [
+          "@babel/preset-env"
+        ],
+        "plugins": [
+          "@babel/plugin-transform-modules-amd"
+        ],
+        "exclude": ["node_modules/**/*"]
+      }
+    },
+    "buildCjsOptions": {
+      "babel": {
+        "babelrc": false,
+        "presets": [
+          "@babel/preset-env"
+        ],
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ],
+        "exclude": ["node_modules/**/*"]
+      }
+    },
+    "buildUmdOptions": {
+      "babel": {
+        "babelrc": false,
+        "presets": [
+          "@babel/preset-env"
+        ],
+        "plugins": [
+          "@babel/plugin-transform-modules-umd"
+        ],
+        "exclude": ["node_modules/**/*"]
+      }
+    },
+    "buildIifeOptions": {
+      "babel": {
         "babelrc": false,
         "presets": [
           [
-            "env",
+            "@babel/preset-env",
             {
               "modules": false
             }
           ]
         ],
-        "plugins": [
-          "transform-es2015-modules-amd"
-        ]
+        "exclude": ["node_modules/**/*"]
       }
     },
-    "cjsRollup": {
-      "babelPlugin": {
-        "babelrc": false,
-        "presets": [
-          [
-            "env",
-            {
-              "modules": false
-            }
-          ]
-        ],
-        "plugins": [
-          "babel-plugin-add-module-exports"
-        ]
-      }
-    },
-    "iifeRollup": {
-      "babelPlugin": {
-        "babelrc": false,
-        "presets": [
-          [
-            "env",
-            {
-              "modules": false
-            }
-          ]
-        ],
-        "plugins": [
-          "external-helpers"
-        ]
-      }
-    },
-    "umdRollup": {
-      "babelPlugin": {
-        "babelrc": false,
-        "presets": [
-          [
-            "env",
-            {
-              "modules": false
-            }
-          ]
-        ],
-        "plugins": [
-          "babel-plugin-add-module-exports",
-          "transform-es2015-modules-umd"
-        ]
-      }
-    },
+    "uglifyOptions": {},
     "readme": {
       "files": [
         "./markdown-fragments/readme-header.md",

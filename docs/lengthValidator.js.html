@@ -1,0 +1,150 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: lengthValidator.js | Source: lengthValidator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 144px; height: 55px">
+        
+            <a href="https://github.com/functional-jslib/fjl-validator" rel="noopener noreferrer" target="_blank">
+                <img src="http://elycruz.com/fjl-logo-v2.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Source: lengthValidator.js</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-alnumValidator.html">alnumValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:alnumValidator_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-alnumValidator.html#.alnumValidator">alnumValidator</a></li><li><a href="module-alnumValidator.html#.alnumValidator">alnumValidator</a></li><li><a href="module-alnumValidator.html#.alnumValidator1">alnumValidator1</a></li></ul></div></li><li><a href="module-digitValidator.html">digitValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:digitValidator_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-digitValidator.html#.digitValidator">digitValidator</a></li><li><a href="module-digitValidator.html#.digitValidator1">digitValidator1</a></li></ul></div></li><li><a href="module-fjlValidator.html">fjlValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:fjlValidator_sub"></div></li><li><a href="module-lengthValidator.html">lengthValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lengthValidator_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lengthValidator.html#.lengthValidator">lengthValidator</a></li><li><a href="module-lengthValidator.html#.toLengthOptions">toLengthOptions</a></li></ul></div></li><li><a href="module-notEmptyValidator.html">notEmptyValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:notEmptyValidator_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-notEmptyValidator.html#.notEmptyValidator">notEmptyValidator</a></li><li><a href="module-notEmptyValidator.html#.notEmptyValidator1">notEmptyValidator1</a></li><li><a href="module-notEmptyValidator.html#.notEmptyValidator$">notEmptyValidator$</a></li><li><a href="module-notEmptyValidator.html#.toNotEmptyOptions">toNotEmptyOptions</a></li><li><a href="module-notEmptyValidator.html#~notEmptyValidatorNoNormalize$">notEmptyValidatorNoNormalize$</a></li></ul></div></li><li><a href="module-regexValidator.html">regexValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:regexValidator_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-regexValidator.html#.regexValidator">regexValidator</a></li><li><a href="module-regexValidator.html#.regexValidator$">regexValidator$</a></li><li><a href="module-regexValidator.html#.regexValidatorNoNormalize$">regexValidatorNoNormalize$</a></li><li><a href="module-regexValidator.html#.toRegexValidatorOptions">toRegexValidatorOptions</a></li></ul></div></li><li><a href="module-stringLengthValidator.html">stringLengthValidator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:stringLengthValidator_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-stringLengthValidator.html#.stringLengthValidator">stringLengthValidator</a></li><li><a href="module-stringLengthValidator.html#.stringLengthValidator$">stringLengthValidator$</a></li><li><a href="module-stringLengthValidator.html#.stringLengthValidatorNoNormalize$">stringLengthValidatorNoNormalize$</a></li><li><a href="module-stringLengthValidator.html#.toStringLengthOptions">toStringLengthOptions</a></li></ul></div></li><li><a href="module-ValidationUtils.html">ValidationUtils</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:ValidationUtils_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-ValidationUtils.html#.defaultValueObscurator">defaultValueObscurator</a></li><li><a href="module-ValidationUtils.html#.getErrorMsgByKey">getErrorMsgByKey</a></li><li><a href="module-ValidationUtils.html#.toValidationOptions">toValidationOptions</a></li><li><a href="module-ValidationUtils.html#.toValidationResult">toValidationResult</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by Ely on 1/21/2015.
+ * @module lengthValidator
+ */
+import {toValidationResult, getErrorMsgByKey, toValidationOptions, isOneOf} from './ValidationUtils';
+import {typeOf, assignDeep, curry} from 'fjl';
+import {defineEnumProps$} from 'fjl-mutable';
+
+export const
+
+    /**
+     * Normalizes `lengthValidator` options.
+     * @function module:lengthValidator.toLengthOptions
+     * @param options {Object}
+     * @returns {Object}
+     */
+    toLengthOptions = options => {
+        const _options = defineEnumProps$([
+            [Number, 'min', 0],
+            [Number, 'max', Number.MAX_SAFE_INTEGER]
+        ], toValidationOptions());
+        _options.messageTemplates = {
+            NOT_OF_TYPE: value => `Value does not have a \`length\` property.  ` +
+                `Type received: \`${typeOf(value)}\`.  ` +
+                `Value received: \`${value}\`.`,
+            NOT_WITHIN_RANGE: (value, ops) => `Value's length is not within range ` +
+                `${ops.min} to ${ops.max}.  ` +
+                `Evaluated length is \`${value.length}\`.  ` +
+                `Value received: \`${value}\`.`
+        };
+        return options ? assignDeep(_options, options) : _options;
+    },
+
+    /**
+     * Validates whether given value has a length and whether length is between
+     *  given range (@see options for range props).
+     * @function module:lengthValidator.lengthValidator
+     * @param options {Object}
+     * @param value {*}
+     * @returns {Object}
+     */
+    lengthValidator = curry((options, value) => {
+        const ops = toLengthOptions(options),
+            messages = []
+        ;
+        let valLength,
+            isWithinRange,
+            result = false
+        ;
+        if (isOneOf(value, 'Null', 'Undefined', 'NaN', 'Symbol') || !value.hasOwnProperty('length')) {
+            messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
+            return toValidationResult({result, messages, value});
+        }
+        valLength = value.length;
+        isWithinRange = valLength >= ops.min &amp;&amp; valLength &lt;= ops.max;
+        if (!isWithinRange) {
+            messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
+        }
+        else {
+            result = true;
+        }
+        return toValidationResult({
+            result,
+            messages,
+            value
+        });
+    })
+;
+
+export default lengthValidator;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="http://elycruz.com/fjl-logo-v2.svg" style="width: 144px; height: 55px">
+    <div class="footer-text">fjl-validator library - BSD 3.0 License - JsDoc Template -> tui-jsdoc-template - by NHN Entertainment - Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
