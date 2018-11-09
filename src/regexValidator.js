@@ -5,7 +5,7 @@
  */
 import {toValidationResult, toValidationOptions, getErrorMsgByKey}
     from './ValidationUtils';
-import {defineEnumProp$} from 'fjl-mutable';
+import {defineEnumProp} from 'fjl-mutable';
 import {curry, assignDeep} from 'fjl';
 
 export const
@@ -17,7 +17,7 @@ export const
      * @returns {Object}
      */
     toRegexValidatorOptions = options => {
-        const [_options] = defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./);
+        const [_options] = defineEnumProp(RegExp, toValidationOptions(), 'pattern', /./);
         _options.messageTemplates = {
             DOES_NOT_MATCH_PATTERN: (value, ops) =>
                 'The value passed in does not match pattern"'
@@ -32,12 +32,12 @@ export const
      * @note Useful when the user has a need for calling `toRegexValidatorOptions`
      *  externally/from-outside-the-`regexValidator` call (helps to remove that one extra call in this case (since
      *  `regexValidator` calls `toRegexValidatorOptions` internally)).
-     * @function module:regexValidator.regexValidatorNoNormalize$
+     * @function module:regexValidator.regexValidatorNoNormalize
      * @param options {Object}
      * @param value {*}
      * @returns {*}
      */
-    regexValidatorNoNormalize$ = (options, value) => {
+    regexValidatorNoNormalize = curry((options, value) => {
         const result = options.pattern.test(value),
 
             // If test failed
@@ -46,26 +46,16 @@ export const
                 [];
 
         return toValidationResult({ result, messages, value });
-    },
-
-    /**
-     * Un-curried version of `regexValidator`.
-     * @function module:regexValidator.regexValidator$
-     * @param options {Object}
-     * @param value {*}
-     * @returns {Object}
-     */
-    regexValidator$ = (options, value) => regexValidatorNoNormalize$(toRegexValidatorOptions(options), value),
+    }),
 
     /**
      * Validates a value with the regex `pattern` option passed in.
-     * @curried
      * @function module:regexValidator.regexValidator
      * @param options {Object}
      * @param value {*}
      * @returns {Object}
      */
-    regexValidator = curry(regexValidator$)
+    regexValidator = curry((options, value) => regexValidatorNoNormalize(toRegexValidatorOptions(options), value))
 
 ;
 

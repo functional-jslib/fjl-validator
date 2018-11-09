@@ -5,7 +5,7 @@
  */
 import {assignDeep, call, isFunction, isString, repeat, curry, toTypeRefName, typeOf} from 'fjl';
 
-import {defineEnumProps$} from 'fjl-mutable';
+import {defineEnumProps} from 'fjl-mutable';
 
 export const
 
@@ -52,7 +52,7 @@ export const
      * @returns {Object}
      */
     toValidationOptions = (...options) =>
-        assignDeep(defineEnumProps$([
+        assignDeep(defineEnumProps([
             [Object, 'messageTemplates', {}],
             [Boolean, 'valueObscured', false],
             [Function, 'valueObscurator', defaultValueObscurator]
@@ -65,7 +65,7 @@ export const
      * @returns {*}
      */
     toValidationResult = (...options) =>
-        assignDeep(defineEnumProps$([
+        assignDeep(defineEnumProps([
                 [Boolean, 'result', false],
                 [Array, 'messages', []]
             ], {}),

@@ -24,47 +24,45 @@ export const
         }, options),
 
     /**
-     * Un-curried version of notEmptyValidator which doesn't normalize the passed in
+     * Validates whether incoming `value` is empty* or not also doesn't normalize the passed in
      * options parameter (since currently `notEmptyValidator` has no options other than it's `messageTemplates`
-     * field).  @see module:notEmptyValidator.notEmptyValidatorNoNormalize$ .
+     * field). * 'empty' in our context means one of `null`, `undefined`, empty lists (strings/arrays) (`x.length === 0`), `false`, empty object (obj with `0` enumerable props), and empty collection/iterable object (`Map`, `Set` etc.), NaN,
      * Also this method is useful when the user, themselves, have to call `toNotEmptyOptions` for a specific reason.
+     * @function module:notEmptyValidator.notEmptyValidatorNoNormalize
      * @param options {Object}
      * @param value {*}
      * @returns {*}
      */
-    notEmptyValidatorNoNormalize$ = (options, value) => {
+    notEmptyValidatorNoNormalize = curry((options, value) => {
         const result = isEmpty(value),
             // If test failed
             messages = result ? [getErrorMsgByKey(
                 options, 'EMPTY_NOT_ALLOWED', value
             )] : [];
         return toValidationResult({result: !result, messages, value});
-    },
+    }),
 
     /**
-     * Un-curried version of `notEmptyValidator`
-     * @function module:notEmptyValidator.notEmptyValidator$
-     * @param options {Object}
-     * @param value {*}
-     * @returns {Object}
-     */
-    notEmptyValidator$ = (options, value) =>
-        notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value),
-
-    /**
-     * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter).
-     * @function module:notEmptyValidator.notEmptyValidator1
-     * @param value {*}
-     * @returns {Object}
-     */
-    notEmptyValidator1 = value => notEmptyValidatorNoNormalize$(null, value),
-
-    /**
+     * Returns a validation result indicating whether give `value`
+     * is an empty* value or not (*@see `notEmptyValidatorNoNormalize` for more about
+     * empties).
      * @function module:notEmptyValidator.notEmptyValidator
      * @param options {Object}
      * @param value {*}
      * @returns {Object}
      */
-    notEmptyValidator = curry(notEmptyValidator$);
+    notEmptyValidator = curry((options, value) =>
+        notEmptyValidatorNoNormalize(toNotEmptyOptions(options), value)),
+
+    /**
+     * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter). (*@see `notEmptyValidatorNoNormalize` for more about
+     * empties).
+     * @function module:notEmptyValidator.notEmptyValidator1
+     * @param value {*}
+     * @returns {Object}
+     */
+    notEmptyValidator1 = value => notEmptyValidatorNoNormalize(null, value)
+
+;
 
 export default notEmptyValidator;

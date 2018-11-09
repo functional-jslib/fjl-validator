@@ -111,7 +111,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       options[_key] = arguments[_key];
     }
 
-    return fjl.assignDeep.apply(void 0, [fjlMutable.defineEnumProps$([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
+    return fjl.assignDeep.apply(void 0, [fjlMutable.defineEnumProps([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
   },
 
   /**
@@ -125,7 +125,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       options[_key2] = arguments[_key2];
     }
 
-    return fjl.assignDeep.apply(void 0, [fjlMutable.defineEnumProps$([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
+    return fjl.assignDeep.apply(void 0, [fjlMutable.defineEnumProps([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
       value: undefined
     }].concat(_toConsumableArray(options.length ? options : [{}])));
   },
@@ -149,9 +149,9 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @returns {Object}
    */
   toRegexValidatorOptions = function toRegexValidatorOptions(options) {
-    var _defineEnumProp$ = fjlMutable.defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./),
-        _defineEnumProp$2 = _slicedToArray(_defineEnumProp$, 1),
-        _options = _defineEnumProp$2[0];
+    var _defineEnumProp = fjlMutable.defineEnumProp(RegExp, toValidationOptions(), 'pattern', /./),
+        _defineEnumProp2 = _slicedToArray(_defineEnumProp, 1),
+        _options = _defineEnumProp2[0];
 
     _options.messageTemplates = {
       DOES_NOT_MATCH_PATTERN: function DOES_NOT_MATCH_PATTERN(value, ops) {
@@ -166,12 +166,12 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @note Useful when the user has a need for calling `toRegexValidatorOptions`
    *  externally/from-outside-the-`regexValidator` call (helps to remove that one extra call in this case (since
    *  `regexValidator` calls `toRegexValidatorOptions` internally)).
-   * @function module:regexValidator.regexValidatorNoNormalize$
+   * @function module:regexValidator.regexValidatorNoNormalize
    * @param options {Object}
    * @param value {*}
    * @returns {*}
    */
-  regexValidatorNoNormalize$ = function regexValidatorNoNormalize$(options, value) {
+  regexValidatorNoNormalize = fjl.curry(function (options, value) {
     var result = options.pattern.test(value),
         // If test failed
     messages = !result ? [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] : [];
@@ -180,41 +180,24 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       messages: messages,
       value: value
     });
-  },
-
-  /**
-   * Un-curried version of `regexValidator`.
-   * @function module:regexValidator.regexValidator$
-   * @param options {Object}
-   * @param value {*}
-   * @returns {Object}
-   */
-  regexValidator$ = function regexValidator$(options, value) {
-    return regexValidatorNoNormalize$(toRegexValidatorOptions(options), value);
-  },
+  }),
 
   /**
    * Validates a value with the regex `pattern` option passed in.
-   * @curried
    * @function module:regexValidator.regexValidator
    * @param options {Object}
    * @param value {*}
    * @returns {Object}
    */
-  regexValidator = fjl.curry(regexValidator$);
+  regexValidator = fjl.curry(function (options, value) {
+    return regexValidatorNoNormalize(toRegexValidatorOptions(options), value);
+  });
 
   /**
    * Created by Ely on 1/21/2015.
    * Module for validating alpha-numeric values.
    * @module alnumValidator
    */
-  /**
-   * @function module:alnumValidator.alnumValidator
-   * @param options {Object}
-   * @param value {*}
-   * @returns {Object}
-   */
-
   var 
   /**
    * @function module:alnumValidator.alnumValidator
@@ -279,6 +262,8 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
   /**
    * Created by Ely on 1/21/2015.
    * @module lengthValidator
+   * @todo Allow validator option generators to receive `zero` object (object on which to extend on).
+   * @todo Allow validator option generators to receive more than one options object.
    */
   var 
   /**
@@ -288,7 +273,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @returns {Object}
    */
   toLengthOptions = function toLengthOptions(options) {
-    var _options = fjlMutable.defineEnumProps$([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
+    var _options = fjlMutable.defineEnumProps([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
 
     _options.messageTemplates = {
       NOT_OF_TYPE: function NOT_OF_TYPE(value) {
@@ -303,21 +288,21 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
 
   /**
    * Validates whether given value has a length and whether length is between
-   *  given range (@see options for range props).
-   * @function module:lengthValidator.lengthValidator
+   *  given range (if given) but doesn't normalize options.
+   *  (@see `toLengthOptions` for range props).
+   * @function module:lengthValidator.lengthValidatorNoNormalize
    * @param options {Object}
    * @param value {*}
    * @returns {Object}
    */
-  lengthValidator = fjl.curry(function (options, value) {
-    var ops = toLengthOptions(options),
-        messages = [];
+  lengthValidatorNoNormalize = fjl.curry(function (options, value) {
+    var messages = [];
     var valLength,
         isWithinRange,
         result = false;
 
     if (isOneOf(value, 'Null', 'Undefined', 'NaN', 'Symbol') || !value.hasOwnProperty('length')) {
-      messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
+      messages.push(getErrorMsgByKey(options, 'NOT_OF_TYPE', value));
       return toValidationResult({
         result: result,
         messages: messages,
@@ -326,10 +311,10 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
     }
 
     valLength = value.length;
-    isWithinRange = valLength >= ops.min && valLength <= ops.max;
+    isWithinRange = valLength >= options.min && valLength <= options.max;
 
     if (!isWithinRange) {
-      messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
+      messages.push(getErrorMsgByKey(options, 'NOT_WITHIN_RANGE', value));
     } else {
       result = true;
     }
@@ -339,6 +324,19 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       messages: messages,
       value: value
     });
+  }),
+
+  /**
+   * Validates whether given value has a length and whether length is between
+   *  given range (if given).  Same as `lengthValidatorNoNormalize` except normalizes incoming options.
+   *  (@see `toLengthOptions` for more on options).
+   * @function module:lengthValidator.lengthValidator
+   * @param options {Object}
+   * @param value {*}
+   * @returns {Object}
+   */
+  lengthValidator = fjl.curry(function (options, value) {
+    return lengthValidatorNoNormalize(toLengthOptions(options), value);
   });
 
   /**
@@ -365,15 +363,16 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
   },
 
   /**
-   * Un-curried version of notEmptyValidator which doesn't normalize the passed in
+   * Validates whether incoming `value` is empty* or not also doesn't normalize the passed in
    * options parameter (since currently `notEmptyValidator` has no options other than it's `messageTemplates`
-   * field).  @see module:notEmptyValidator.notEmptyValidatorNoNormalize$ .
+   * field). * 'empty' in our context means one of `null`, `undefined`, empty lists (strings/arrays) (`x.length === 0`), `false`, empty object (obj with `0` enumerable props), and empty collection/iterable object (`Map`, `Set` etc.), NaN,
    * Also this method is useful when the user, themselves, have to call `toNotEmptyOptions` for a specific reason.
+   * @function module:notEmptyValidator.notEmptyValidatorNoNormalize
    * @param options {Object}
    * @param value {*}
    * @returns {*}
    */
-  notEmptyValidatorNoNormalize$ = function notEmptyValidatorNoNormalize$(options, value) {
+  notEmptyValidatorNoNormalize = fjl.curry(function (options, value) {
     var result = fjl.isEmpty(value),
         // If test failed
     messages = result ? [getErrorMsgByKey(options, 'EMPTY_NOT_ALLOWED', value)] : [];
@@ -382,36 +381,31 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       messages: messages,
       value: value
     });
-  },
+  }),
 
   /**
-   * Un-curried version of `notEmptyValidator`
-   * @function module:notEmptyValidator.notEmptyValidator$
-   * @param options {Object}
-   * @param value {*}
-   * @returns {Object}
-   */
-  notEmptyValidator$ = function notEmptyValidator$(options, value) {
-    return notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value);
-  },
-
-  /**
-   * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter).
-   * @function module:notEmptyValidator.notEmptyValidator1
-   * @param value {*}
-   * @returns {Object}
-   */
-  notEmptyValidator1 = function notEmptyValidator1(value) {
-    return notEmptyValidatorNoNormalize$(null, value);
-  },
-
-  /**
+   * Returns a validation result indicating whether give `value`
+   * is an empty* value or not (*@see `notEmptyValidatorNoNormalize` for more about
+   * empties).
    * @function module:notEmptyValidator.notEmptyValidator
    * @param options {Object}
    * @param value {*}
    * @returns {Object}
    */
-  notEmptyValidator = fjl.curry(notEmptyValidator$);
+  notEmptyValidator = fjl.curry(function (options, value) {
+    return notEmptyValidatorNoNormalize(toNotEmptyOptions(options), value);
+  }),
+
+  /**
+   * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter). (*@see `notEmptyValidatorNoNormalize` for more about
+   * empties).
+   * @function module:notEmptyValidator.notEmptyValidator1
+   * @param value {*}
+   * @returns {Object}
+   */
+  notEmptyValidator1 = function notEmptyValidator1(value) {
+    return notEmptyValidatorNoNormalize(null, value);
+  };
 
   /**
    * Created by Ely on 1/21/2015.
@@ -425,30 +419,27 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @returns {Object}
    */
   toStringLengthOptions = function toStringLengthOptions(options) {
-    var _options = fjlMutable.defineEnumProps$([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
-
-    _options.messageTemplates = {
-      NOT_OF_TYPE: function NOT_OF_TYPE(value) {
-        return "Value is not a String.  " + "Value type received: ".concat(fjl.typeOf(value), ".  ") + "Value received: \"".concat(value, "\".");
-      },
-      NOT_WITHIN_RANGE: function NOT_WITHIN_RANGE(value, ops) {
-        return "Value is not within range " + "".concat(ops.min, " to ").concat(ops.max, ".  ") + "Value length given: \"" + value.length + "\".  " + "Value received: \"" + value + "\".";
+    var _options = {
+      messageTemplates: {
+        NOT_OF_TYPE: function NOT_OF_TYPE(value) {
+          return "Value is not a String.  " + "Value type received: ".concat(fjl.typeOf(value), ".  ") + "Value received: \"".concat(value, "\".");
+        }
       }
     };
-    return options ? fjl.assignDeep(_options, options) : _options;
+    return toLengthOptions(options ? fjl.assignDeep(_options, options) : _options);
   },
 
   /**
-   * Same as `stringLengthValidator$` except doesn't normalize the incoming options.
+   * Same as `stringLengthValidator` except doesn't normalize the incoming options.
    * Useful for cases where you have to call `toStringLengthValidator` options from outside of the `stringLengthValidator` call (
    *  helps eliminate one call in this case).  Also useful for extreme cases (cases where you have hundreds of validators
    *  and want to pull out every ounce of performance from them possible).
-   * @function module:stringLengthValidator.stringLengthValidatorNoNormalize$
+   * @function module:stringLengthValidator.stringLengthValidatorNoNormalize
    * @param options {Object}
    * @param value {*}
    * @returns {Object}
    */
-  stringLengthValidatorNoNormalize$ = function stringLengthValidatorNoNormalize$(options, value) {
+  stringLengthValidatorNoNormalize = fjl.curry(function (options, value) {
     var messages = [],
         isOfType = fjl.isString(value),
         valLength = isOfType ? value.length : 0,
@@ -465,17 +456,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       messages: messages,
       value: value
     });
-  },
-
-  /**
-   * @function module:stringLengthValidator.stringLengthValidator$
-   * @param options {Object}
-   * @param value {*}
-   * @returns {Object}
-   */
-  stringLengthValidator$ = function stringLengthValidator$(options, value) {
-    return stringLengthValidatorNoNormalize$(toStringLengthOptions(options), value);
-  },
+  }),
 
   /**
    * @function module:stringLengthValidator.stringLengthValidator
@@ -483,7 +464,9 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @param value {*}
    * @returns {Object}
    */
-  stringLengthValidator = fjl.curry(stringLengthValidator$);
+  stringLengthValidator = fjl.curry(function (options, value) {
+    return stringLengthValidatorNoNormalize(toStringLengthOptions(options), value);
+  });
 
   /**
    * @module fjlValidator
@@ -494,19 +477,17 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
   exports.digitValidator = digitValidator;
   exports.digitValidator1 = digitValidator1;
   exports.toLengthOptions = toLengthOptions;
+  exports.lengthValidatorNoNormalize = lengthValidatorNoNormalize;
   exports.lengthValidator = lengthValidator;
   exports.toNotEmptyOptions = toNotEmptyOptions;
-  exports.notEmptyValidatorNoNormalize$ = notEmptyValidatorNoNormalize$;
-  exports.notEmptyValidator$ = notEmptyValidator$;
-  exports.notEmptyValidator1 = notEmptyValidator1;
+  exports.notEmptyValidatorNoNormalize = notEmptyValidatorNoNormalize;
   exports.notEmptyValidator = notEmptyValidator;
+  exports.notEmptyValidator1 = notEmptyValidator1;
   exports.toRegexValidatorOptions = toRegexValidatorOptions;
-  exports.regexValidatorNoNormalize$ = regexValidatorNoNormalize$;
-  exports.regexValidator$ = regexValidator$;
+  exports.regexValidatorNoNormalize = regexValidatorNoNormalize;
   exports.regexValidator = regexValidator;
   exports.toStringLengthOptions = toStringLengthOptions;
-  exports.stringLengthValidatorNoNormalize$ = stringLengthValidatorNoNormalize$;
-  exports.stringLengthValidator$ = stringLengthValidator$;
+  exports.stringLengthValidatorNoNormalize = stringLengthValidatorNoNormalize;
   exports.stringLengthValidator = stringLengthValidator;
   exports.defaultValueObscurator = defaultValueObscurator;
   exports.getErrorMsgByKey = getErrorMsgByKey;

@@ -16,7 +16,7 @@
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.regexValidator = _exports.regexValidator$ = _exports.regexValidatorNoNormalize$ = _exports.toRegexValidatorOptions = void 0;
+  _exports.default = _exports.regexValidator = _exports.regexValidatorNoNormalize = _exports.toRegexValidatorOptions = void 0;
 
   function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -34,9 +34,9 @@
    * @returns {Object}
    */
   toRegexValidatorOptions = function toRegexValidatorOptions(options) {
-    var _defineEnumProp$ = (0, _fjlMutable.defineEnumProp$)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
-        _defineEnumProp$2 = _slicedToArray(_defineEnumProp$, 1),
-        _options = _defineEnumProp$2[0];
+    var _defineEnumProp = (0, _fjlMutable.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
+        _defineEnumProp2 = _slicedToArray(_defineEnumProp, 1),
+        _options = _defineEnumProp2[0];
 
     _options.messageTemplates = {
       DOES_NOT_MATCH_PATTERN: function DOES_NOT_MATCH_PATTERN(value, ops) {
@@ -51,12 +51,12 @@
    * @note Useful when the user has a need for calling `toRegexValidatorOptions`
    *  externally/from-outside-the-`regexValidator` call (helps to remove that one extra call in this case (since
    *  `regexValidator` calls `toRegexValidatorOptions` internally)).
-   * @function module:regexValidator.regexValidatorNoNormalize$
+   * @function module:regexValidator.regexValidatorNoNormalize
    * @param options {Object}
    * @param value {*}
    * @returns {*}
    */
-  regexValidatorNoNormalize$ = function regexValidatorNoNormalize$(options, value) {
+  regexValidatorNoNormalize = (0, _fjl.curry)(function (options, value) {
     var result = options.pattern.test(value),
         // If test failed
     messages = !result ? [(0, _ValidationUtils.getErrorMsgByKey)(options, 'DOES_NOT_MATCH_PATTERN', value)] : [];
@@ -65,32 +65,21 @@
       messages: messages,
       value: value
     });
-  },
-
-  /**
-   * Un-curried version of `regexValidator`.
-   * @function module:regexValidator.regexValidator$
-   * @param options {Object}
-   * @param value {*}
-   * @returns {Object}
-   */
-  regexValidator$ = function regexValidator$(options, value) {
-    return regexValidatorNoNormalize$(toRegexValidatorOptions(options), value);
-  },
+  }),
 
   /**
    * Validates a value with the regex `pattern` option passed in.
-   * @curried
    * @function module:regexValidator.regexValidator
    * @param options {Object}
    * @param value {*}
    * @returns {Object}
    */
-  regexValidator = (0, _fjl.curry)(regexValidator$);
+  regexValidator = (0, _fjl.curry)(function (options, value) {
+    return regexValidatorNoNormalize(toRegexValidatorOptions(options), value);
+  });
 
   _exports.regexValidator = regexValidator;
-  _exports.regexValidator$ = regexValidator$;
-  _exports.regexValidatorNoNormalize$ = regexValidatorNoNormalize$;
+  _exports.regexValidatorNoNormalize = regexValidatorNoNormalize;
   _exports.toRegexValidatorOptions = toRegexValidatorOptions;
   var _default = regexValidator;
   _exports.default = _default;

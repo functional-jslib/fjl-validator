@@ -1,11 +1,10 @@
 ### Quick Docs:
 
 ### Preamble:
-All methods that are multiary (take two or more arguments), and don't end with a '$'
-symbol are curried:  I.e.,
+All methods that take more than one named param (take two or more arguments) are curried:  I.e.,
 ```
 alnumValidator, digitValidator, notEmptyValidator, 
-regexValidator, stringLengthValidator, getErrorMsgByKey
+regexValidator, stringLengthValidator, getErrorMsgByKey, // et. al.
 ```
 
 - Explicit one arg variadic methods (`(...args) => (...)`) are not curried:
@@ -124,6 +123,21 @@ Same as `notEmptyValidator` except ignores first parameter.
 ##### Returns
 `{ValidationResult}`
 
+#### `lengthValidator(options, value) {ValidationResult}`
+Validates a lengthable items length.
+
+##### Params
+- `options {Object}`
+    - `min {Number}` - Default `0`.
+    - `max {Number}` - Default `Number.MAX_SAFE_INTEGER`
+    - `messageTemplates {Object}`
+        - `NOT_OF_TYPE {String|Function}` - Key for generating 'not of type' error.
+        - `NOT_WITHIN_RANGE {String|Function}` - Key for generating 'not within range' error.
+- `value {*}` - Value to validate.
+
+##### Returns
+`{ValidationResult}`
+
 #### `stringLengthValidator(options, value) {ValidationResult}`
 Validates a string's length.
 
@@ -131,6 +145,9 @@ Validates a string's length.
 - `options {Object}`
     - `min {Number}` - Default `0`.
     - `max {Number}` - Default `Number.MAX_SAFE_INTEGER`
+    - `messageTemplates {Object}`
+            - `NOT_OF_TYPE {String|Function}` - Key for generating 'not of type' error.
+            - `NOT_WITHIN_RANGE {String|Function}` - Key for generating 'not within range' error.
 - `value {*}` - Value to validate.
 
 ##### Returns

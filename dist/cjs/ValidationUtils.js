@@ -69,7 +69,7 @@ toValidationOptions = function toValidationOptions() {
     options[_key] = arguments[_key];
   }
 
-  return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps$)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
+  return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
 },
 
 /**
@@ -83,7 +83,7 @@ toValidationResult = function toValidationResult() {
     options[_key2] = arguments[_key2];
   }
 
-  return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps$)([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
+  return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps)([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
     value: undefined
   }].concat(_toConsumableArray(options.length ? options : [{}])));
 },

@@ -42,19 +42,13 @@ describe('stringLengthValidator', function () {
         test ('it should return a validation result object with a `result` of `false` and ' +
             'one error message when the passed in value is not within length range', function () {
             const exampleOps = {min: 6, max: 13},
-                strValidator = stringLengthValidator(exampleOps),
-                errMsgTmpl = (value, ops) =>
-                    `Value is not within range ` +
-                    `${ops.min} to ${ops.max}.  ` +
-                    `Value length given: "` + value.length + `".  ` +
-                    `Value received: "` + value + `".`;
+                strValidator = stringLengthValidator(exampleOps);
                 testArgs
                 .map(x => [false, x, 1])
                 .forEach(([expected, value, messagesLength]) => {
                     const {result, messages} = strValidator(value);
                     expect(result).toEqual(expected);
                     expect(messages.length).toEqual(messagesLength);
-                    expect(messages[0]).toEqual(errMsgTmpl(value, exampleOps));
                 });
         });
         test ('it should return a validation result object with a `result` of `true` and ' +

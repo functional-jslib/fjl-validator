@@ -1,6 +1,6 @@
 ## Getting Started:
 
-`fjl-validator` wasn't meant to be used alone though what a user will most likely want is 
+`fjl-validator` was'nt meant to be used alone though what a user will most likely want is 
 [`fjl-input-filter`](https://github.com/functional-jslib/fjl-input-filter) though below is a standalone hypothetical scenario:
 
 ```
@@ -67,15 +67,6 @@ class SomeReactFormComponent extends Component {
 #### Other examples:
 - [fjl-input-filter test-fixture example](https://github.com/functional-jslib/fjl-input-filter/blob/master/tests/fixtures/input-filter-1.js)
 
-### Importing:
-### In Browser:
-See desired export type below:
-- './dist/amd/' - Asynchronous module format.
-- './dist/cjs/' - CommonJs module format.
-- './dist/umd/' - Universal module definition format.
-- './dist/iife/' - Immediately Invoked Function Execution - (exports `fjl` as a global).
-- './dist/es6-module/' - Ecmascript 6 module format.
-
 ### In NodeJs: 
 
 #### Using es2015 modules:
@@ -87,3 +78,11 @@ import {...} from 'fjl-validator';
 ```
 const {...} = require('fjl-validator');
 ```
+
+### In Browser:
+See desired export type below:
+- './dist/amd/' - Asynchronous module format.
+- './dist/cjs/' - CommonJs module format.
+- './dist/umd/' - Universal module definition format.
+- './dist/iife/' - Immediately Invoked Function Execution - (exports `fjl` as a global).
+- './dist/es6-module/' - Ecmascript 6 module format.

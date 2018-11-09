@@ -6,12 +6,6 @@
 import {regexValidator} from './regexValidator';
 import {curry, assignDeep} from 'fjl';
 
-/**
- * @function module:alnumValidator.alnumValidator
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
- */
 export const
 
     /**

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.lengthValidator = exports.toLengthOptions = void 0;
+exports.default = exports.lengthValidator = exports.lengthValidatorNoNormalize = exports.toLengthOptions = void 0;
 
 var _ValidationUtils = require("./ValidationUtils");
 
@@ -14,6 +14,8 @@ var _fjlMutable = require("fjl-mutable");
 /**
  * Created by Ely on 1/21/2015.
  * @module lengthValidator
+ * @todo Allow validator option generators to receive `zero` object (object on which to extend on).
+ * @todo Allow validator option generators to receive more than one options object.
  */
 var
 /**
@@ -23,7 +25,7 @@ var
  * @returns {Object}
  */
 toLengthOptions = function toLengthOptions(options) {
-  var _options = (0, _fjlMutable.defineEnumProps$)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
+  var _options = (0, _fjlMutable.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
 
   _options.messageTemplates = {
     NOT_OF_TYPE: function NOT_OF_TYPE(value) {
@@ -38,21 +40,21 @@ toLengthOptions = function toLengthOptions(options) {
 
 /**
  * Validates whether given value has a length and whether length is between
- *  given range (@see options for range props).
- * @function module:lengthValidator.lengthValidator
+ *  given range (if given) but doesn't normalize options.
+ *  (@see `toLengthOptions` for range props).
+ * @function module:lengthValidator.lengthValidatorNoNormalize
  * @param options {Object}
  * @param value {*}
  * @returns {Object}
  */
-lengthValidator = (0, _fjl.curry)(function (options, value) {
-  var ops = toLengthOptions(options),
-      messages = [];
+lengthValidatorNoNormalize = (0, _fjl.curry)(function (options, value) {
+  var messages = [];
   var valLength,
       isWithinRange,
       result = false;
 
   if ((0, _ValidationUtils.isOneOf)(value, 'Null', 'Undefined', 'NaN', 'Symbol') || !value.hasOwnProperty('length')) {
-    messages.push((0, _ValidationUtils.getErrorMsgByKey)(ops, 'NOT_OF_TYPE', value));
+    messages.push((0, _ValidationUtils.getErrorMsgByKey)(options, 'NOT_OF_TYPE', value));
     return (0, _ValidationUtils.toValidationResult)({
       result: result,
       messages: messages,
@@ -61,10 +63,10 @@ lengthValidator = (0, _fjl.curry)(function (options, value) {
   }
 
   valLength = value.length;
-  isWithinRange = valLength >= ops.min && valLength <= ops.max;
+  isWithinRange = valLength >= options.min && valLength <= options.max;
 
   if (!isWithinRange) {
-    messages.push((0, _ValidationUtils.getErrorMsgByKey)(ops, 'NOT_WITHIN_RANGE', value));
+    messages.push((0, _ValidationUtils.getErrorMsgByKey)(options, 'NOT_WITHIN_RANGE', value));
   } else {
     result = true;
   }
@@ -74,9 +76,23 @@ lengthValidator = (0, _fjl.curry)(function (options, value) {
     messages: messages,
     value: value
   });
+}),
+
+/**
+ * Validates whether given value has a length and whether length is between
+ *  given range (if given).  Same as `lengthValidatorNoNormalize` except normalizes incoming options.
+ *  (@see `toLengthOptions` for more on options).
+ * @function module:lengthValidator.lengthValidator
+ * @param options {Object}
+ * @param value {*}
+ * @returns {Object}
+ */
+lengthValidator = (0, _fjl.curry)(function (options, value) {
+  return lengthValidatorNoNormalize(toLengthOptions(options), value);
 });
 
 exports.lengthValidator = lengthValidator;
+exports.lengthValidatorNoNormalize = lengthValidatorNoNormalize;
 exports.toLengthOptions = toLengthOptions;
 var _default = lengthValidator;
 exports.default = _default;

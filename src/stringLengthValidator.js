@@ -2,9 +2,9 @@
  * Created by Ely on 1/21/2015.
  * @module stringLengthValidator
  */
-import {toValidationResult, getErrorMsgByKey, toValidationOptions} from './ValidationUtils';
+import {toValidationResult, getErrorMsgByKey} from './ValidationUtils';
 import {typeOf, isString, assignDeep, curry} from 'fjl';
-import {defineEnumProps$} from 'fjl-mutable';
+import {toLengthOptions} from "./lengthValidator";
 
 export const
 
@@ -15,35 +15,29 @@ export const
      * @returns {Object}
      */
     toStringLengthOptions = options => {
-        const _options = defineEnumProps$([
-            [Number, 'min', 0],
-            [Number, 'max', Number.MAX_SAFE_INTEGER]
-        ], toValidationOptions());
-
-        _options.messageTemplates = {
-            NOT_OF_TYPE: (value) => `Value is not a String.  ` +
-                `Value type received: ${typeOf(value)}.  ` +
-                `Value received: "${value}".`,
-            NOT_WITHIN_RANGE: (value, ops) => `Value is not within range ` +
-                `${ops.min} to ${ops.max}.  ` +
-                `Value length given: "` + value.length + `".  ` +
-                `Value received: "` + value + `".`
+        const _options = {
+            messageTemplates: {
+                NOT_OF_TYPE: (value) => `Value is not a String.  ` +
+                    `Value type received: ${typeOf(value)}.  ` +
+                    `Value received: "${value}".`
+            }
         };
-
-        return options ? assignDeep(_options, options) : _options;
+        return toLengthOptions(
+            options ? assignDeep(_options, options) : _options
+        );
     },
 
     /**
-     * Same as `stringLengthValidator$` except doesn't normalize the incoming options.
+     * Same as `stringLengthValidator` except doesn't normalize the incoming options.
      * Useful for cases where you have to call `toStringLengthValidator` options from outside of the `stringLengthValidator` call (
      *  helps eliminate one call in this case).  Also useful for extreme cases (cases where you have hundreds of validators
      *  and want to pull out every ounce of performance from them possible).
-     * @function module:stringLengthValidator.stringLengthValidatorNoNormalize$
+     * @function module:stringLengthValidator.stringLengthValidatorNoNormalize
      * @param options {Object}
      * @param value {*}
      * @returns {Object}
      */
-    stringLengthValidatorNoNormalize$ = (options, value) => {
+    stringLengthValidatorNoNormalize = curry((options, value) => {
         const messages = [],
             isOfType = isString(value),
             valLength = isOfType ? value.length : 0,
@@ -59,16 +53,7 @@ export const
             messages,
             value
         });
-    },
-
-    /**
-     * @function module:stringLengthValidator.stringLengthValidator$
-     * @param options {Object}
-     * @param value {*}
-     * @returns {Object}
-     */
-    stringLengthValidator$ = (options, value) =>
-        stringLengthValidatorNoNormalize$(toStringLengthOptions(options), value),
+    }),
 
     /**
      * @function module:stringLengthValidator.stringLengthValidator
@@ -76,7 +61,8 @@ export const
      * @param value {*}
      * @returns {Object}
      */
-    stringLengthValidator = curry(stringLengthValidator$)
+    stringLengthValidator = curry((options, value) =>
+        stringLengthValidatorNoNormalize(toStringLengthOptions(options), value))
 
 ;
 

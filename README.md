@@ -29,7 +29,7 @@ Functional validator(s) implementation (inspired by Zend/Validator validators).
 
 ## Getting Started:
 
-`fjl-validator` wasn't meant to be used alone though what a user will most likely want is 
+`fjl-validator` was'nt meant to be used alone though what a user will most likely want is 
 [`fjl-input-filter`](https://github.com/functional-jslib/fjl-input-filter) though below is a standalone hypothetical scenario:
 
 ```
@@ -96,15 +96,6 @@ class SomeReactFormComponent extends Component {
 #### Other examples:
 - [fjl-input-filter test-fixture example](https://github.com/functional-jslib/fjl-input-filter/blob/master/tests/fixtures/input-filter-1.js)
 
-### Importing:
-### In Browser:
-See desired export type below:
-- './dist/amd/' - Asynchronous module format.
-- './dist/cjs/' - CommonJs module format.
-- './dist/umd/' - Universal module definition format.
-- './dist/iife/' - Immediately Invoked Function Execution - (exports `fjl` as a global).
-- './dist/es6-module/' - Ecmascript 6 module format.
-
 ### In NodeJs: 
 
 #### Using es2015 modules:
@@ -116,6 +107,14 @@ import {...} from 'fjl-validator';
 ```
 const {...} = require('fjl-validator');
 ```
+
+### In Browser:
+See desired export type below:
+- './dist/amd/' - Asynchronous module format.
+- './dist/cjs/' - CommonJs module format.
+- './dist/umd/' - Universal module definition format.
+- './dist/iife/' - Immediately Invoked Function Execution - (exports `fjl` as a global).
+- './dist/es6-module/' - Ecmascript 6 module format.
 
 ## Docs
 
@@ -131,22 +130,22 @@ digitValidator, digitValidator1, default
 ```
 ### `lengthValidator` methods
  ```
-toLengthOptions, lengthValidator, default
+toLengthOptions, lengthValidatorNoNormalize, lengthValidator, default
 ```
 ### `notEmptyValidator` methods
  ```
-toNotEmptyOptions, notEmptyValidatorNoNormalize$, notEmptyValidator$,
-notEmptyValidator1, notEmptyValidator, default
+toNotEmptyOptions, notEmptyValidatorNoNormalize, notEmptyValidator,
+notEmptyValidator1, default
 ```
 ### `regexValidator` methods
  ```
-toRegexValidatorOptions, regexValidatorNoNormalize$, regexValidator$,
-regexValidator, default
+toRegexValidatorOptions, regexValidatorNoNormalize, regexValidator,
+default
 ```
 ### `stringLengthValidator` methods
  ```
-toStringLengthOptions, stringLengthValidatorNoNormalize$,
-stringLengthValidator$, stringLengthValidator, default
+toStringLengthOptions, stringLengthValidatorNoNormalize,
+stringLengthValidator, default
 ```
 ### `ValidationUtils` methods
  ```
@@ -157,11 +156,10 @@ toValidationResult, isOneOf, default
 ### Quick Docs:
 
 ### Preamble:
-All methods that are multiary (take two or more arguments), and don't end with a '$'
-symbol are curried:  I.e.,
+All methods that take more than one named param (take two or more arguments) are curried:  I.e.,
 ```
 alnumValidator, digitValidator, notEmptyValidator, 
-regexValidator, stringLengthValidator, getErrorMsgByKey
+regexValidator, stringLengthValidator, getErrorMsgByKey, // et. al.
 ```
 
 - Explicit one arg variadic methods (`(...args) => (...)`) are not curried:
@@ -280,6 +278,21 @@ Same as `notEmptyValidator` except ignores first parameter.
 ##### Returns
 `{ValidationResult}`
 
+#### `lengthValidator(options, value) {ValidationResult}`
+Validates a lengthable items length.
+
+##### Params
+- `options {Object}`
+    - `min {Number}` - Default `0`.
+    - `max {Number}` - Default `Number.MAX_SAFE_INTEGER`
+    - `messageTemplates {Object}`
+        - `NOT_OF_TYPE {String|Function}` - Key for generating 'not of type' error.
+        - `NOT_WITHIN_RANGE {String|Function}` - Key for generating 'not within range' error.
+- `value {*}` - Value to validate.
+
+##### Returns
+`{ValidationResult}`
+
 #### `stringLengthValidator(options, value) {ValidationResult}`
 Validates a string's length.
 
@@ -287,6 +300,9 @@ Validates a string's length.
 - `options {Object}`
     - `min {Number}` - Default `0`.
     - `max {Number}` - Default `Number.MAX_SAFE_INTEGER`
+    - `messageTemplates {Object}`
+            - `NOT_OF_TYPE {String|Function}` - Key for generating 'not of type' error.
+            - `NOT_WITHIN_RANGE {String|Function}` - Key for generating 'not within range' error.
 - `value {*}` - Value to validate.
 
 ##### Returns
@@ -368,47 +384,11 @@ BSD 3 Clause - Included in sources.
 
 ## Change log
 
-### 1.6.2
-- String support for `takeWhile`, `group`, and `groupBy`, `dropWhileEnd`.
-- Tablelized tests for `takeWhile`, `dropWhileEnd`, and `dropWhileEnd`.
-
-### 1.6.0
-- A few more functions now support strings:
-    - `map`, `intersperse`, `append`, `reverse`, and `concat`.
-- `range` function doc-block updated.
-- `listUtil` functions updated and their docs unblocked from jsdocs.
-- `listUtil` methods are now exported from 'src/list'.
-- Tests overhaul stage 1 progress.  
-    - Converted some tests to table format (where implementations were touched and 
-        where the functional programming style was too extreme).
-    - Removed some library functions from tests where said functions were not being tested (use native functions for tests only (no-library functions intermingle (in tests))).
-- Cleaned up imports in some places to protect from cyclic dependency issues.
-
-### 1.5.1, 1.5.2
-- Added './types/index.d.ts' file.
-
-### 1.5.0
+### 0.7.0
 #### Breaking changes
-- `reduceRightUntil` changed to `reduceUntilRight`.
-- `lengthsToSmallest` changed to `toShortest`.
-
-##### Changes that affect development of the library:
-- package.json.scripts - Removed unnecessary commands (cleaned up scripts section).
-- Updated gulp to version 4.
-- Updated gulpfile to use new `gulp 4` api.
-- Removed unnecessary dev dependencies:
-    - random-js
-    - lazypipe
-    - requirejs
-    - gulp-fncallback
-
+- Removed methods ending with '$' also known as un-curried methods
+  (use their curried counter parts instead).
+  
 #### Other changes
-- Cleaned up README.md to reflect latest changes.
-- Curried functions (functions curried via `curry*` functions) now retain their arity property value (`length` value).
-
-### 1.3.0
-- Added `noop` (no-op (op as in operation)) method (useful as a placeholder for variables/properties that should always contain a function).
-- Added test for `noop` addition.
-- Updated './docs'.
-- Added entry in 'docs' config to take into account upcoming logo for 'fjl'.
-
+- Updated build process to use babel 7.
+- Added `lengthValidator` to the mix of validators.

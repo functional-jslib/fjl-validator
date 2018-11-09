@@ -1,5 +1,5 @@
 import { assignDeep, call, isFunction, isString, repeat, curry, toTypeRefName, typeOf, isEmpty } from 'fjl';
-import { defineEnumProps$, defineEnumProp$ } from 'fjl-mutable';
+import { defineEnumProps, defineEnumProp } from 'fjl-mutable';
 
 /**
  * Created by Ely on 7/21/2014.
@@ -53,7 +53,7 @@ getErrorMsgByKey = curry((options, key, value) => {
  * @param options {...Object}
  * @returns {Object}
  */
-toValidationOptions = (...options) => assignDeep(defineEnumProps$([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {}), ...(options.length ? options : [{}])),
+toValidationOptions = (...options) => assignDeep(defineEnumProps([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {}), ...(options.length ? options : [{}])),
 
 /**
  * Returns a strongly typed, normalized validation result object.
@@ -61,7 +61,7 @@ toValidationOptions = (...options) => assignDeep(defineEnumProps$([[Object, 'mes
  * @param options {...Object}
  * @returns {*}
  */
-toValidationResult = (...options) => assignDeep(defineEnumProps$([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
+toValidationResult = (...options) => assignDeep(defineEnumProps([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
   value: undefined
 }, ...(options.length ? options : [{}])),
       isOneOf = (x, ...types) => {
@@ -82,7 +82,7 @@ const
  * @returns {Object}
  */
 toRegexValidatorOptions = options => {
-  const [_options] = defineEnumProp$(RegExp, toValidationOptions(), 'pattern', /./);
+  const [_options] = defineEnumProp(RegExp, toValidationOptions(), 'pattern', /./);
   _options.messageTemplates = {
     DOES_NOT_MATCH_PATTERN: (value, ops) => 'The value passed in does not match pattern"' + ops.pattern + '".  Value passed in: "' + value + '".'
   };
@@ -94,12 +94,12 @@ toRegexValidatorOptions = options => {
  * @note Useful when the user has a need for calling `toRegexValidatorOptions`
  *  externally/from-outside-the-`regexValidator` call (helps to remove that one extra call in this case (since
  *  `regexValidator` calls `toRegexValidatorOptions` internally)).
- * @function module:regexValidator.regexValidatorNoNormalize$
+ * @function module:regexValidator.regexValidatorNoNormalize
  * @param options {Object}
  * @param value {*}
  * @returns {*}
  */
-regexValidatorNoNormalize$ = (options, value) => {
+regexValidatorNoNormalize = curry((options, value) => {
   const result = options.pattern.test(value),
         // If test failed
   messages = !result ? [getErrorMsgByKey(options, 'DOES_NOT_MATCH_PATTERN', value)] : [];
@@ -108,39 +108,22 @@ regexValidatorNoNormalize$ = (options, value) => {
     messages,
     value
   });
-},
-
-/**
- * Un-curried version of `regexValidator`.
- * @function module:regexValidator.regexValidator$
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
- */
-regexValidator$ = (options, value) => regexValidatorNoNormalize$(toRegexValidatorOptions(options), value),
+}),
 
 /**
  * Validates a value with the regex `pattern` option passed in.
- * @curried
  * @function module:regexValidator.regexValidator
  * @param options {Object}
  * @param value {*}
  * @returns {Object}
  */
-regexValidator = curry(regexValidator$);
+regexValidator = curry((options, value) => regexValidatorNoNormalize(toRegexValidatorOptions(options), value));
 
 /**
  * Created by Ely on 1/21/2015.
  * Module for validating alpha-numeric values.
  * @module alnumValidator
  */
-/**
- * @function module:alnumValidator.alnumValidator
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
- */
-
 const 
 /**
  * @function module:alnumValidator.alnumValidator
@@ -193,6 +176,8 @@ digitValidator1 = value => digitValidator(null, value);
 /**
  * Created by Ely on 1/21/2015.
  * @module lengthValidator
+ * @todo Allow validator option generators to receive `zero` object (object on which to extend on).
+ * @todo Allow validator option generators to receive more than one options object.
  */
 const 
 /**
@@ -202,7 +187,7 @@ const
  * @returns {Object}
  */
 toLengthOptions = options => {
-  const _options = defineEnumProps$([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
+  const _options = defineEnumProps([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
 
   _options.messageTemplates = {
     NOT_OF_TYPE: value => `Value does not have a \`length\` property.  ` + `Type received: \`${typeOf(value)}\`.  ` + `Value received: \`${value}\`.`,
@@ -213,21 +198,21 @@ toLengthOptions = options => {
 
 /**
  * Validates whether given value has a length and whether length is between
- *  given range (@see options for range props).
- * @function module:lengthValidator.lengthValidator
+ *  given range (if given) but doesn't normalize options.
+ *  (@see `toLengthOptions` for range props).
+ * @function module:lengthValidator.lengthValidatorNoNormalize
  * @param options {Object}
  * @param value {*}
  * @returns {Object}
  */
-lengthValidator = curry((options, value) => {
-  const ops = toLengthOptions(options),
-        messages = [];
+lengthValidatorNoNormalize = curry((options, value) => {
+  const messages = [];
   let valLength,
       isWithinRange,
       result = false;
 
   if (isOneOf(value, 'Null', 'Undefined', 'NaN', 'Symbol') || !value.hasOwnProperty('length')) {
-    messages.push(getErrorMsgByKey(ops, 'NOT_OF_TYPE', value));
+    messages.push(getErrorMsgByKey(options, 'NOT_OF_TYPE', value));
     return toValidationResult({
       result,
       messages,
@@ -236,10 +221,10 @@ lengthValidator = curry((options, value) => {
   }
 
   valLength = value.length;
-  isWithinRange = valLength >= ops.min && valLength <= ops.max;
+  isWithinRange = valLength >= options.min && valLength <= options.max;
 
   if (!isWithinRange) {
-    messages.push(getErrorMsgByKey(ops, 'NOT_WITHIN_RANGE', value));
+    messages.push(getErrorMsgByKey(options, 'NOT_WITHIN_RANGE', value));
   } else {
     result = true;
   }
@@ -249,6 +234,19 @@ lengthValidator = curry((options, value) => {
     messages,
     value
   });
+}),
+
+/**
+ * Validates whether given value has a length and whether length is between
+ *  given range (if given).  Same as `lengthValidatorNoNormalize` except normalizes incoming options.
+ *  (@see `toLengthOptions` for more on options).
+ * @function module:lengthValidator.lengthValidator
+ * @param options {Object}
+ * @param value {*}
+ * @returns {Object}
+ */
+lengthValidator = curry((options, value) => {
+  return lengthValidatorNoNormalize(toLengthOptions(options), value);
 });
 
 /**
@@ -271,15 +269,16 @@ toNotEmptyOptions = options => toValidationOptions({
 }, options),
 
 /**
- * Un-curried version of notEmptyValidator which doesn't normalize the passed in
+ * Validates whether incoming `value` is empty* or not also doesn't normalize the passed in
  * options parameter (since currently `notEmptyValidator` has no options other than it's `messageTemplates`
- * field).  @see module:notEmptyValidator.notEmptyValidatorNoNormalize$ .
+ * field). * 'empty' in our context means one of `null`, `undefined`, empty lists (strings/arrays) (`x.length === 0`), `false`, empty object (obj with `0` enumerable props), and empty collection/iterable object (`Map`, `Set` etc.), NaN,
  * Also this method is useful when the user, themselves, have to call `toNotEmptyOptions` for a specific reason.
+ * @function module:notEmptyValidator.notEmptyValidatorNoNormalize
  * @param options {Object}
  * @param value {*}
  * @returns {*}
  */
-notEmptyValidatorNoNormalize$ = (options, value) => {
+notEmptyValidatorNoNormalize = curry((options, value) => {
   const result = isEmpty(value),
         // If test failed
   messages = result ? [getErrorMsgByKey(options, 'EMPTY_NOT_ALLOWED', value)] : [];
@@ -288,32 +287,27 @@ notEmptyValidatorNoNormalize$ = (options, value) => {
     messages,
     value
   });
-},
+}),
 
 /**
- * Un-curried version of `notEmptyValidator`
- * @function module:notEmptyValidator.notEmptyValidator$
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
- */
-notEmptyValidator$ = (options, value) => notEmptyValidatorNoNormalize$(toNotEmptyOptions(options), value),
-
-/**
- * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter).
- * @function module:notEmptyValidator.notEmptyValidator1
- * @param value {*}
- * @returns {Object}
- */
-notEmptyValidator1 = value => notEmptyValidatorNoNormalize$(null, value),
-
-/**
+ * Returns a validation result indicating whether give `value`
+ * is an empty* value or not (*@see `notEmptyValidatorNoNormalize` for more about
+ * empties).
  * @function module:notEmptyValidator.notEmptyValidator
  * @param options {Object}
  * @param value {*}
  * @returns {Object}
  */
-notEmptyValidator = curry(notEmptyValidator$);
+notEmptyValidator = curry((options, value) => notEmptyValidatorNoNormalize(toNotEmptyOptions(options), value)),
+
+/**
+ * Same as `notEmptyValidator` except doesn't require first parameter ("options" parameter). (*@see `notEmptyValidatorNoNormalize` for more about
+ * empties).
+ * @function module:notEmptyValidator.notEmptyValidator1
+ * @param value {*}
+ * @returns {Object}
+ */
+notEmptyValidator1 = value => notEmptyValidatorNoNormalize(null, value);
 
 /**
  * Created by Ely on 1/21/2015.
@@ -327,26 +321,25 @@ const
  * @returns {Object}
  */
 toStringLengthOptions = options => {
-  const _options = defineEnumProps$([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
-
-  _options.messageTemplates = {
-    NOT_OF_TYPE: value => `Value is not a String.  ` + `Value type received: ${typeOf(value)}.  ` + `Value received: "${value}".`,
-    NOT_WITHIN_RANGE: (value, ops) => `Value is not within range ` + `${ops.min} to ${ops.max}.  ` + `Value length given: "` + value.length + `".  ` + `Value received: "` + value + `".`
+  const _options = {
+    messageTemplates: {
+      NOT_OF_TYPE: value => `Value is not a String.  ` + `Value type received: ${typeOf(value)}.  ` + `Value received: "${value}".`
+    }
   };
-  return options ? assignDeep(_options, options) : _options;
+  return toLengthOptions(options ? assignDeep(_options, options) : _options);
 },
 
 /**
- * Same as `stringLengthValidator$` except doesn't normalize the incoming options.
+ * Same as `stringLengthValidator` except doesn't normalize the incoming options.
  * Useful for cases where you have to call `toStringLengthValidator` options from outside of the `stringLengthValidator` call (
  *  helps eliminate one call in this case).  Also useful for extreme cases (cases where you have hundreds of validators
  *  and want to pull out every ounce of performance from them possible).
- * @function module:stringLengthValidator.stringLengthValidatorNoNormalize$
+ * @function module:stringLengthValidator.stringLengthValidatorNoNormalize
  * @param options {Object}
  * @param value {*}
  * @returns {Object}
  */
-stringLengthValidatorNoNormalize$ = (options, value) => {
+stringLengthValidatorNoNormalize = curry((options, value) => {
   const messages = [],
         isOfType = isString(value),
         valLength = isOfType ? value.length : 0,
@@ -363,15 +356,7 @@ stringLengthValidatorNoNormalize$ = (options, value) => {
     messages,
     value
   });
-},
-
-/**
- * @function module:stringLengthValidator.stringLengthValidator$
- * @param options {Object}
- * @param value {*}
- * @returns {Object}
- */
-stringLengthValidator$ = (options, value) => stringLengthValidatorNoNormalize$(toStringLengthOptions(options), value),
+}),
 
 /**
  * @function module:stringLengthValidator.stringLengthValidator
@@ -379,11 +364,11 @@ stringLengthValidator$ = (options, value) => stringLengthValidatorNoNormalize$(t
  * @param value {*}
  * @returns {Object}
  */
-stringLengthValidator = curry(stringLengthValidator$);
+stringLengthValidator = curry((options, value) => stringLengthValidatorNoNormalize(toStringLengthOptions(options), value));
 
 /**
  * @module fjlValidator
  */
 
-export { alnumValidator, alnumValidator1, digitValidator, digitValidator1, toLengthOptions, lengthValidator, toNotEmptyOptions, notEmptyValidatorNoNormalize$, notEmptyValidator$, notEmptyValidator1, notEmptyValidator, toRegexValidatorOptions, regexValidatorNoNormalize$, regexValidator$, regexValidator, toStringLengthOptions, stringLengthValidatorNoNormalize$, stringLengthValidator$, stringLengthValidator, defaultValueObscurator, getErrorMsgByKey, toValidationOptions, toValidationResult, isOneOf };
+export { alnumValidator, alnumValidator1, digitValidator, digitValidator1, toLengthOptions, lengthValidatorNoNormalize, lengthValidator, toNotEmptyOptions, notEmptyValidatorNoNormalize, notEmptyValidator, notEmptyValidator1, toRegexValidatorOptions, regexValidatorNoNormalize, regexValidator, toStringLengthOptions, stringLengthValidatorNoNormalize, stringLengthValidator, defaultValueObscurator, getErrorMsgByKey, toValidationOptions, toValidationResult, isOneOf };
 //# sourceMappingURL=fjl-validator.js.map

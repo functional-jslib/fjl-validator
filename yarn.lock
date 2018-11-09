@@ -2485,25 +2485,12 @@ fined@^1.0.1:
     object.pick "^1.2.0"
     parse-filepath "^1.0.1"
 
-fjl-error-throwing@^0.7.9:
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/fjl-error-throwing/-/fjl-error-throwing-0.7.9.tgz#ea52b7309e1e1bccc70258bab0a4497a5f07e068"
-  integrity sha512-BK1vz7K9LCFbMa51narhVBPN/uROGgnrFkG8hfmTv/8guk2TdcTVseOkHm1gTxAHPQZ0h5QfWKajGqP34Mi4dg==
+fjl-mutable@^0.18.2:
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/fjl-mutable/-/fjl-mutable-0.18.2.tgz#28df5859520b4a3c3749ae7121979bdfa80fab93"
+  integrity sha512-UYvn4sTChDVhzEzFfiRzy/+QqBPMQNd4WbjMpO+7EzRGhKql0kmjlmOMzHABDW1KfnWlq2WlCNhvpSRYcLf+tA==
   dependencies:
-    fjl "0.25.2"
-
-fjl-mutable@^0.17.1:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/fjl-mutable/-/fjl-mutable-0.17.1.tgz#69d58ed87824633f56f04fbe198367980a4009ec"
-  integrity sha512-mXcBHKFDdTgXgpBwS2FVJ+Dbm0om5GueacWnkufVvEzRHOEd9lWtdTigIMnfqd7IPkRnfSoYU4goDMiSC2QsCQ==
-  dependencies:
-    fjl "0.25.2"
-    fjl-error-throwing "^0.7.9"
-
-fjl@0.25.2:
-  version "0.25.2"
-  resolved "https://registry.yarnpkg.com/fjl/-/fjl-0.25.2.tgz#9afc53e0908d2759fa0412517c55efb168667e7a"
-  integrity sha512-J855Hq1fQ5VlYY19UqANvudAQvQs5PSie4lCCfWElsYABcS7TuA+ftN2/lJYnjr91WSS9dXB2a1Yov4lxQGgBA==
+    fjl "^1.6.2"
 
 fjl@^1.6.2:
   version "1.6.2"

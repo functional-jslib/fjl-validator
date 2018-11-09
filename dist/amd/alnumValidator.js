@@ -11,13 +11,6 @@ define(["exports", "./regexValidator", "fjl"], function (_exports, _regexValidat
    * Module for validating alpha-numeric values.
    * @module alnumValidator
    */
-
-  /**
-   * @function module:alnumValidator.alnumValidator
-   * @param options {Object}
-   * @param value {*}
-   * @returns {Object}
-   */
   var
   /**
    * @function module:alnumValidator.alnumValidator
