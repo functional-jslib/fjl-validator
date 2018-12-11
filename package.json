@@ -1,6 +1,6 @@
 {
   "name": "fjl-validator",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Functional validators for forms and the like.\"",
   "main": "dist/cjs/fjlValidator.js",
   "module": "dist/es6-module/fjl-validator.mjs",
@@ -21,8 +21,7 @@
     "doc": "README.md"
   },
   "dependencies": {
-    "fjl": "^1.6.2",
-    "fjl-mutable": "^0.18.2"
+    "fjl": "^1.10.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

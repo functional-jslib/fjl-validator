@@ -9,8 +9,6 @@ var _ValidationUtils = require("./ValidationUtils");
 
 var _fjl = require("fjl");
 
-var _fjlMutable = require("fjl-mutable");
-
 /**
  * Created by Ely on 1/21/2015.
  * @module lengthValidator
@@ -25,7 +23,7 @@ var
  * @returns {Object}
  */
 toLengthOptions = function toLengthOptions(options) {
-  var _options = (0, _fjlMutable.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
+  var _options = (0, _fjl.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
 
   _options.messageTemplates = {
     NOT_OF_TYPE: function NOT_OF_TYPE(value) {

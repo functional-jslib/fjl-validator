@@ -1,4 +1,4 @@
-define(["exports", "./ValidationUtils", "fjl-mutable", "fjl"], function (_exports, _ValidationUtils, _fjlMutable, _fjl) {
+define(["exports", "./ValidationUtils", "fjl"], function (_exports, _ValidationUtils, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -22,7 +22,7 @@ define(["exports", "./ValidationUtils", "fjl-mutable", "fjl"], function (_export
    * @returns {Object}
    */
   toRegexValidatorOptions = function toRegexValidatorOptions(options) {
-    var _defineEnumProp = (0, _fjlMutable.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
+    var _defineEnumProp = (0, _fjl.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
         _defineEnumProp2 = _slicedToArray(_defineEnumProp, 1),
         _options = _defineEnumProp2[0];
 

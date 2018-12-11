@@ -1,4 +1,4 @@
-define(["exports", "./ValidationUtils", "fjl", "fjl-mutable"], function (_exports, _ValidationUtils, _fjl, _fjlMutable) {
+define(["exports", "./ValidationUtils", "fjl"], function (_exports, _ValidationUtils, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -20,7 +20,7 @@ define(["exports", "./ValidationUtils", "fjl", "fjl-mutable"], function (_export
    * @returns {Object}
    */
   toLengthOptions = function toLengthOptions(options) {
-    var _options = (0, _fjlMutable.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
+    var _options = (0, _fjl.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
 
     _options.messageTemplates = {
       NOT_OF_TYPE: function NOT_OF_TYPE(value) {

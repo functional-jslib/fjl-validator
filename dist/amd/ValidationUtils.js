@@ -1,4 +1,4 @@
-define(["exports", "fjl", "fjl-mutable"], function (_exports, _fjl, _fjlMutable) {
+define(["exports", "fjl"], function (_exports, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -66,7 +66,7 @@ define(["exports", "fjl", "fjl-mutable"], function (_exports, _fjl, _fjlMutable)
       options[_key] = arguments[_key];
     }
 
-    return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
+    return _fjl.assignDeep.apply(void 0, [(0, _fjl.defineEnumProps)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
   },
 
   /**
@@ -80,7 +80,7 @@ define(["exports", "fjl", "fjl-mutable"], function (_exports, _fjl, _fjlMutable)
       options[_key2] = arguments[_key2];
     }
 
-    return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps)([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
+    return _fjl.assignDeep.apply(void 0, [(0, _fjl.defineEnumProps)([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
       value: undefined
     }].concat(_toConsumableArray(options.length ? options : [{}])));
   },

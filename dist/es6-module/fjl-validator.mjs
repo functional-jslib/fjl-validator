@@ -1,5 +1,4 @@
-import { assignDeep, call, isFunction, isString, repeat, curry, toTypeRefName, typeOf, isEmpty } from 'fjl';
-import { defineEnumProps, defineEnumProp } from 'fjl-mutable';
+import { assignDeep, call, isFunction, isString, repeat, curry, toTypeRefName, typeOf, defineEnumProps, defineEnumProp, isEmpty } from 'fjl';
 
 /**
  * Created by Ely on 7/21/2014.

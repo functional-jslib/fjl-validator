@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["exports", "fjl", "fjl-mutable"], factory);
+    define(["exports", "fjl"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("fjl"), require("fjl-mutable"));
+    factory(exports, require("fjl"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.fjl, global.fjlMutable);
+    factory(mod.exports, global.fjl);
     global.ValidationUtils = mod.exports;
   }
-})(this, function (_exports, _fjl, _fjlMutable) {
+})(this, function (_exports, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -78,7 +78,7 @@
       options[_key] = arguments[_key];
     }
 
-    return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
+    return _fjl.assignDeep.apply(void 0, [(0, _fjl.defineEnumProps)([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
   },
 
   /**
@@ -92,7 +92,7 @@
       options[_key2] = arguments[_key2];
     }
 
-    return _fjl.assignDeep.apply(void 0, [(0, _fjlMutable.defineEnumProps)([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
+    return _fjl.assignDeep.apply(void 0, [(0, _fjl.defineEnumProps)([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
       value: undefined
     }].concat(_toConsumableArray(options.length ? options : [{}])));
   },

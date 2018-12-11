@@ -5,8 +5,7 @@
  * @todo Allow validator option generators to receive more than one options object.
  */
 import {toValidationResult, getErrorMsgByKey, toValidationOptions, isOneOf} from './ValidationUtils';
-import {typeOf, assignDeep, curry} from 'fjl';
-import {defineEnumProps} from 'fjl-mutable';
+import {typeOf, assignDeep, curry, defineEnumProps} from 'fjl';
 
 export const
 

@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["exports", "./ValidationUtils", "fjl", "fjl-mutable"], factory);
+    define(["exports", "./ValidationUtils", "fjl"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("./ValidationUtils"), require("fjl"), require("fjl-mutable"));
+    factory(exports, require("./ValidationUtils"), require("fjl"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.ValidationUtils, global.fjl, global.fjlMutable);
+    factory(mod.exports, global.ValidationUtils, global.fjl);
     global.lengthValidator = mod.exports;
   }
-})(this, function (_exports, _ValidationUtils, _fjl, _fjlMutable) {
+})(this, function (_exports, _ValidationUtils, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -32,7 +32,7 @@
    * @returns {Object}
    */
   toLengthOptions = function toLengthOptions(options) {
-    var _options = (0, _fjlMutable.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
+    var _options = (0, _fjl.defineEnumProps)([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], (0, _ValidationUtils.toValidationOptions)());
 
     _options.messageTemplates = {
       NOT_OF_TYPE: function NOT_OF_TYPE(value) {

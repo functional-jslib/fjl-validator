@@ -7,8 +7,6 @@ exports.default = exports.regexValidator = exports.regexValidatorNoNormalize = e
 
 var _ValidationUtils = require("./ValidationUtils");
 
-var _fjlMutable = require("fjl-mutable");
-
 var _fjl = require("fjl");
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -27,7 +25,7 @@ var
  * @returns {Object}
  */
 toRegexValidatorOptions = function toRegexValidatorOptions(options) {
-  var _defineEnumProp = (0, _fjlMutable.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
+  var _defineEnumProp = (0, _fjl.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
       _defineEnumProp2 = _slicedToArray(_defineEnumProp, 1),
       _options = _defineEnumProp2[0];
 

@@ -1,4 +1,4 @@
-var fjlValidator = (function (exports,fjl,fjlMutable) {
+var fjlValidator = (function (exports,fjl) {
   'use strict';
 
   function _slicedToArray(arr, i) {
@@ -111,7 +111,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       options[_key] = arguments[_key];
     }
 
-    return fjl.assignDeep.apply(void 0, [fjlMutable.defineEnumProps([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
+    return fjl.assignDeep.apply(void 0, [fjl.defineEnumProps([[Object, 'messageTemplates', {}], [Boolean, 'valueObscured', false], [Function, 'valueObscurator', defaultValueObscurator]], {})].concat(_toConsumableArray(options.length ? options : [{}])));
   },
 
   /**
@@ -125,7 +125,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
       options[_key2] = arguments[_key2];
     }
 
-    return fjl.assignDeep.apply(void 0, [fjlMutable.defineEnumProps([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
+    return fjl.assignDeep.apply(void 0, [fjl.defineEnumProps([[Boolean, 'result', false], [Array, 'messages', []]], {}), {
       value: undefined
     }].concat(_toConsumableArray(options.length ? options : [{}])));
   },
@@ -149,7 +149,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @returns {Object}
    */
   toRegexValidatorOptions = function toRegexValidatorOptions(options) {
-    var _defineEnumProp = fjlMutable.defineEnumProp(RegExp, toValidationOptions(), 'pattern', /./),
+    var _defineEnumProp = fjl.defineEnumProp(RegExp, toValidationOptions(), 'pattern', /./),
         _defineEnumProp2 = _slicedToArray(_defineEnumProp, 1),
         _options = _defineEnumProp2[0];
 
@@ -273,7 +273,7 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
    * @returns {Object}
    */
   toLengthOptions = function toLengthOptions(options) {
-    var _options = fjlMutable.defineEnumProps([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
+    var _options = fjl.defineEnumProps([[Number, 'min', 0], [Number, 'max', Number.MAX_SAFE_INTEGER]], toValidationOptions());
 
     _options.messageTemplates = {
       NOT_OF_TYPE: function NOT_OF_TYPE(value) {
@@ -497,5 +497,5 @@ var fjlValidator = (function (exports,fjl,fjlMutable) {
 
   return exports;
 
-}({},fjl,fjlMutable));
+}({},fjl));
 //# sourceMappingURL=fjl-validator.js.map

@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["exports", "./ValidationUtils", "fjl-mutable", "fjl"], factory);
+    define(["exports", "./ValidationUtils", "fjl"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("./ValidationUtils"), require("fjl-mutable"), require("fjl"));
+    factory(exports, require("./ValidationUtils"), require("fjl"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.ValidationUtils, global.fjlMutable, global.fjl);
+    factory(mod.exports, global.ValidationUtils, global.fjl);
     global.regexValidator = mod.exports;
   }
-})(this, function (_exports, _ValidationUtils, _fjlMutable, _fjl) {
+})(this, function (_exports, _ValidationUtils, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -34,7 +34,7 @@
    * @returns {Object}
    */
   toRegexValidatorOptions = function toRegexValidatorOptions(options) {
-    var _defineEnumProp = (0, _fjlMutable.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
+    var _defineEnumProp = (0, _fjl.defineEnumProp)(RegExp, (0, _ValidationUtils.toValidationOptions)(), 'pattern', /./),
         _defineEnumProp2 = _slicedToArray(_defineEnumProp, 1),
         _options = _defineEnumProp2[0];
 
