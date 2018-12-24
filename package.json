@@ -1,6 +1,6 @@
 {
   "name": "fjl-validator",
-  "version": "0.7.1",
+  "version": "0.7.8",
   "description": "Functional validators for forms and the like.\"",
   "main": "dist/cjs/fjlValidator.js",
   "module": "dist/es6-module/fjl-validator.mjs",
