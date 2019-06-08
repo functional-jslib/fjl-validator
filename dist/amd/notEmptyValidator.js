@@ -4,7 +4,7 @@ define(["exports", "./ValidationUtils", "fjl"], function (_exports, _ValidationU
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.notEmptyValidator1 = _exports.notEmptyValidator = _exports.notEmptyValidatorNoNormalize = _exports.toNotEmptyOptions = void 0;
+  _exports["default"] = _exports.notEmptyValidator1 = _exports.notEmptyValidator = _exports.notEmptyValidatorNoNormalize = _exports.toNotEmptyOptions = void 0;
 
   /**
    * Created by Ely on 7/21/2014.
@@ -79,5 +79,5 @@ define(["exports", "./ValidationUtils", "fjl"], function (_exports, _ValidationU
   _exports.notEmptyValidatorNoNormalize = notEmptyValidatorNoNormalize;
   _exports.toNotEmptyOptions = toNotEmptyOptions;
   var _default = notEmptyValidator;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });

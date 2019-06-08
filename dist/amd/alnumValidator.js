@@ -4,7 +4,7 @@ define(["exports", "./regexValidator", "fjl"], function (_exports, _regexValidat
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.alnumValidator1 = _exports.alnumValidator = void 0;
+  _exports["default"] = _exports.alnumValidator1 = _exports.alnumValidator = void 0;
 
   /**
    * Created by Ely on 1/21/2015.
@@ -42,5 +42,5 @@ define(["exports", "./regexValidator", "fjl"], function (_exports, _regexValidat
   _exports.alnumValidator1 = alnumValidator1;
   _exports.alnumValidator = alnumValidator;
   var _default = alnumValidator;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });

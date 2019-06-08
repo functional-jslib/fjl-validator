@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.stringLengthValidator = exports.stringLengthValidatorNoNormalize = exports.toStringLengthOptions = void 0;
+exports["default"] = exports.stringLengthValidator = exports.stringLengthValidatorNoNormalize = exports.toStringLengthOptions = void 0;
 
 var _ValidationUtils = require("./ValidationUtils");
 
@@ -76,4 +76,4 @@ exports.stringLengthValidator = stringLengthValidator;
 exports.stringLengthValidatorNoNormalize = stringLengthValidatorNoNormalize;
 exports.toStringLengthOptions = toStringLengthOptions;
 var _default = stringLengthValidator;
-exports.default = _default;
+exports["default"] = _default;

@@ -16,7 +16,7 @@
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.regexValidator = _exports.regexValidatorNoNormalize = _exports.toRegexValidatorOptions = void 0;
+  _exports["default"] = _exports.regexValidator = _exports.regexValidatorNoNormalize = _exports.toRegexValidatorOptions = void 0;
 
   function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -82,5 +82,5 @@
   _exports.regexValidatorNoNormalize = regexValidatorNoNormalize;
   _exports.toRegexValidatorOptions = toRegexValidatorOptions;
   var _default = regexValidator;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });

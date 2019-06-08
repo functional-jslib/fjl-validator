@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.digitValidator1 = exports.digitValidator = void 0;
+exports["default"] = exports.digitValidator1 = exports.digitValidator = void 0;
 
 var _regexValidator = require("./regexValidator");
 
@@ -45,4 +45,4 @@ digitValidator1 = function digitValidator1(value) {
 exports.digitValidator1 = digitValidator1;
 exports.digitValidator = digitValidator;
 var _default = digitValidator;
-exports.default = _default;
+exports["default"] = _default;

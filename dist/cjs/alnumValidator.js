@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.alnumValidator1 = exports.alnumValidator = void 0;
+exports["default"] = exports.alnumValidator1 = exports.alnumValidator = void 0;
 
 var _regexValidator = require("./regexValidator");
 
@@ -45,4 +45,4 @@ alnumValidator1 = function alnumValidator1(value) {
 exports.alnumValidator1 = alnumValidator1;
 exports.alnumValidator = alnumValidator;
 var _default = alnumValidator;
-exports.default = _default;
+exports["default"] = _default;

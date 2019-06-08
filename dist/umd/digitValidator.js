@@ -16,7 +16,7 @@
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.digitValidator1 = _exports.digitValidator = void 0;
+  _exports["default"] = _exports.digitValidator1 = _exports.digitValidator = void 0;
 
   /**
    * Created by Ely on 1/21/2015.
@@ -54,5 +54,5 @@
   _exports.digitValidator1 = digitValidator1;
   _exports.digitValidator = digitValidator;
   var _default = digitValidator;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });

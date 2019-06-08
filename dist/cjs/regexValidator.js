@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.regexValidator = exports.regexValidatorNoNormalize = exports.toRegexValidatorOptions = void 0;
+exports["default"] = exports.regexValidator = exports.regexValidatorNoNormalize = exports.toRegexValidatorOptions = void 0;
 
 var _ValidationUtils = require("./ValidationUtils");
 
@@ -73,4 +73,4 @@ exports.regexValidator = regexValidator;
 exports.regexValidatorNoNormalize = regexValidatorNoNormalize;
 exports.toRegexValidatorOptions = toRegexValidatorOptions;
 var _default = regexValidator;
-exports.default = _default;
+exports["default"] = _default;

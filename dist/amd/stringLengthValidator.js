@@ -4,7 +4,7 @@ define(["exports", "./ValidationUtils", "fjl", "./lengthValidator"], function (_
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.stringLengthValidator = _exports.stringLengthValidatorNoNormalize = _exports.toStringLengthOptions = void 0;
+  _exports["default"] = _exports.stringLengthValidator = _exports.stringLengthValidatorNoNormalize = _exports.toStringLengthOptions = void 0;
 
   /**
    * Created by Ely on 1/21/2015.
@@ -71,5 +71,5 @@ define(["exports", "./ValidationUtils", "fjl", "./lengthValidator"], function (_
   _exports.stringLengthValidatorNoNormalize = stringLengthValidatorNoNormalize;
   _exports.toStringLengthOptions = toStringLengthOptions;
   var _default = stringLengthValidator;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
