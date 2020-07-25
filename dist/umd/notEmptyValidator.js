@@ -10,7 +10,7 @@
     factory(mod.exports, global.ValidationUtils, global.fjl);
     global.notEmptyValidator = mod.exports;
   }
-})(this, function (_exports, _ValidationUtils, _fjl) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _ValidationUtils, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {

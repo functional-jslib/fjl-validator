@@ -10,7 +10,7 @@
     factory(mod.exports, global.ValidationUtils, global.fjl, global.lengthValidator);
     global.stringLengthValidator = mod.exports;
   }
-})(this, function (_exports, _ValidationUtils, _fjl, _lengthValidator) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _ValidationUtils, _fjl, _lengthValidator) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {

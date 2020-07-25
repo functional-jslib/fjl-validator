@@ -365,9 +365,5 @@ stringLengthValidatorNoNormalize = curry((options, value) => {
  */
 stringLengthValidator = curry((options, value) => stringLengthValidatorNoNormalize(toStringLengthOptions(options), value));
 
-/**
- * @module fjlValidator
- */
-
 export { alnumValidator, alnumValidator1, defaultValueObscurator, digitValidator, digitValidator1, getErrorMsgByKey, isOneOf, lengthValidator, lengthValidatorNoNormalize, notEmptyValidator, notEmptyValidator1, notEmptyValidatorNoNormalize, regexValidator, regexValidatorNoNormalize, stringLengthValidator, stringLengthValidatorNoNormalize, toLengthOptions, toNotEmptyOptions, toRegexValidatorOptions, toStringLengthOptions, toValidationOptions, toValidationResult };
 //# sourceMappingURL=fjl-validator.js.map

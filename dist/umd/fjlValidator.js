@@ -10,7 +10,7 @@
     factory(mod.exports, global.alnumValidator, global.digitValidator, global.lengthValidator, global.notEmptyValidator, global.regexValidator, global.stringLengthValidator, global.ValidationUtils);
     global.fjlValidator = mod.exports;
   }
-})(this, function (_exports, _alnumValidator, _digitValidator, _lengthValidator, _notEmptyValidator, _regexValidator, _stringLengthValidator, _ValidationUtils) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _alnumValidator, _digitValidator, _lengthValidator, _notEmptyValidator, _regexValidator, _stringLengthValidator, _ValidationUtils) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
