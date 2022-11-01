@@ -38,7 +38,7 @@
     "babel-jest": "^24.8.0",
     "babel-upgrade": "1.0.1",
     "del": "^5.0.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-better-rollup": "^4.0.1",
     "gulp-concat": "^2.6.1",
