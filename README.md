@@ -1,3 +1,6 @@
+> **Warning**
+> This repo is deprecated.  Please see the [fjl](https://github.com/functional-jslib/fjl/tree/monorepo) monorepo for the latest sources.
+
 [![Build Status](https://travis-ci.org/functional-jslib/fjl-validator.png)](https://travis-ci.org/functional-jslib/fjl-validator)
 [![GitHub version](https://badge.fury.io/gh/functional-jslib%2Ffjl-validator.svg)](http://badge.fury.io/gh/functional-jslib%2Ffjl-validator)
 [![NPM version](https://badge.fury.io/js/fjl-validator.svg)](http://badge.fury.io/js/fjl-validator)
